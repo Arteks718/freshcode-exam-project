@@ -46,10 +46,12 @@ const Payment = (props) => {
   return (
     <div>
       <div className={styles.header}>
-        <img
-          src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
-          alt="blue-logo"
-        />
+        <a href="/">
+          <img
+            src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`}
+            alt="blue-logo"
+          />
+        </a>
       </div>
       <div className={styles.mainContainer}>
         <div className={styles.paymentContainer}>

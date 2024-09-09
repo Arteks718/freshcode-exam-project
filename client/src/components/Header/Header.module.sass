@@ -8,6 +8,7 @@
   .navContainer
     width: 100%
     margin: 0 auto
+    padding: 10px 0
     display: flex
     justify-content: space-around
     align-items: center
@@ -31,7 +32,8 @@
       border-radius: 5px
       font-size: 14px
       font-weight: 400
-      margin-bottom: 10px
+      cursor: pointer
+      transition: background-color .2s linear
 
       &:hover
         color: white
@@ -39,8 +41,8 @@
 
     .leftNav
       display: flex
+      align-items: center
       @media(max-width: 750px)
-        align-items: center
         flex-direction: column
 
       .nav
@@ -129,7 +131,6 @@
     align-items: center
     justify-content: space-around
     border: 1px solid #ebebeb
-    margin-bottom: 13px
 
     .userButtonsContainer
       margin-left: 100px

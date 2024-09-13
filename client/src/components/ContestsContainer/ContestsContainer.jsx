@@ -1,44 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router';
 import styles from './ContestContainer.module.sass';
 import Spinner from '../Spinner/Spinner';
 
-class ContestsContainer extends React.Component {
-  componentDidMount () {
-    window.addEventListener('scroll', this.scrollHandler);
-  }
+const ContestsContainer = (props) => {
+  const { isFetching, loadMore, haveMore, children } = props;
 
-  componentWillUnmount () {
-    window.removeEventListener('scroll', this.scrollHandler);
-  }
-
-  scrollHandler = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      if (this.props.haveMore) {
-        this.props.loadMore(this.props.children.length);
+  useEffect(() => {
+    const scrollHandler = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight
+      ) {
+        if (haveMore) {
+          loadMore(children.length);
+        }
       }
-    }
-  };
+    };
 
-  render () {
-    const { isFetching } = this.props;
-    if (!isFetching && this.props.children.length === 0) {
-      return <div className={styles.notFound}>Nothing not found</div>;
-    }
-    return (
-      <div>
-        {this.props.children}
-        {isFetching && (
-          <div className={styles.spinnerContainer}>
-            <Spinner />
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+    window.addEventListener('scroll', scrollHandler);
+    return () => {
+      window.removeEventListener('scroll', scrollHandler);
+    };
+  }, []);
+
+  return (
+    <div>
+      {children}
+      {isFetching && (
+        <div className={styles.spinnerContainer}>
+          <Spinner />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default ContestsContainer;

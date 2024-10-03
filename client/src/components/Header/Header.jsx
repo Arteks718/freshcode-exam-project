@@ -10,10 +10,10 @@ const Header = (props) => {
   const { clearUserStore, data, getUser, history, isFetching } = props;
 
   useEffect(() => {
-    if(!data) {
-      getUser()
+    if (!data) {
+      getUser();
     }
-  }, [])
+  }, []);
 
   const logOut = () => {
     localStorage.clear();
@@ -95,7 +95,6 @@ const Header = (props) => {
     );
   };
 
-
   if (isFetching) {
     return null;
   }
@@ -176,7 +175,9 @@ const Header = (props) => {
                 />
                 <ul>
                   <li>
-                    <a href="http://www.google.com">HOW IT WORKS</a>
+                    <Link to="/how-it-works" style={{ textDecoration: 'none' }}>
+                      HOW IT WORKS
+                    </Link>
                   </li>
                   <li>
                     <a href="http://www.google.com">PRICING</a>
@@ -272,10 +273,7 @@ const Header = (props) => {
             </ul>
           </div>
           {data && data.role !== CONSTANTS.CREATOR && (
-            <div
-              className={styles.startContestBtn}
-              onClick={startContests}
-            >
+            <div className={styles.startContestBtn} onClick={startContests}>
               START CONTEST
             </div>
           )}

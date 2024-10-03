@@ -1,0 +1,72 @@
+.homeHeroSection
+  padding: 40px 50px
+  margin: 0 auto
+  max-width: 1040px
+  font-family: "Product Sans", sans-serif
+
+  @media (max-width: 1200px)
+    max-width: 960px
+
+  @media (max-width: 992px)
+    max-width: 720px
+    padding: 20px
+
+  @media (max-width: 768px)
+    max-width: 540px
+
+  .homeHeroContainer
+    display: flex
+    justify-content: space-between
+    align-items: center
+    column-gap: 40px
+
+    @media (max-width: 1200px)
+      column-gap: 20px
+
+
+    @media (max-width: 992px)
+      flex-direction: column-reverse
+      row-gap: 30px
+
+    .textBlock
+      flex: 1
+
+      @media (max-width: 992px)
+        text-align: center
+
+      .tag
+        display: inline-block
+        color: #377dff
+        font-size: 12px
+        border-radius: 20px
+        background: rgba(55, 125, 255, 0.1)
+        padding: 7px 15px
+        letter-spacing: .6px
+        line-height: 21px
+        margin-bottom: 10px
+
+      .title
+        color: #19184A
+        font-size: 40px
+        font-weight: 700
+        margin-bottom: 20px
+
+      .desc
+        color: rgba(25, 24, 74, 0.5)
+        font-size: 16px
+        line-height: 1.5
+
+    .videoBlock
+      flex: 1
+
+      @media (max-width: 992px)
+        width: 100%
+
+      .videoElement
+        border-radius: 16px
+        border-bottom: 3px solid #637cf7
+        overflow: hidden
+        padding-top: 56.25%
+        position: relative
+        width: 100%
+

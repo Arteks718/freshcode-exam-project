@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './HomeHeroSection.module.sass';
-import ReactPlayer from 'react-player';
-import { compareAsc, format } from 'date-fns';
+import HOW_IT_WORKS_CONSTANTS from '../howItWorksConstants';
 
 const HomeHeroSection = () => {
   return (
@@ -13,33 +12,18 @@ const HomeHeroSection = () => {
           <p className={styles.desc}>
             Atom helps you come up with a great name for your business by
             combining the power of sourcing with sophisticated technology and
-            Agency-level validation services. fhfgh
+            Agency-level validation services.
           </p>
         </div>
-        {/* <div className={styles.videoBlock}>
-          <ReactPlayer
-            className={styles.video}
-            width={"100%"}
-            height={"100%"}
-            url="https://iframe.mediadelivery.net/embed/239474/327efcdd-b1a2-4891-b274-974787ae8362"
-            controls={true}
-          />
-        </div> */}
         <div className={styles.videoBlock}>
           <div className={styles.videoElement}>
             <iframe
-              src="https://iframe.mediadelivery.net/embed/239474/327efcdd-b1a2-4891-b274-974787ae8362"
-              loading="lazy"
-              style={{
-                border: 'none',
-                position: 'absolute',
-                top: 0,
-                height: '100%',
-                width: '100%',
-              }}
+              src={HOW_IT_WORKS_CONSTANTS.homeHeroSection.videoLink}
+              title="heroVideo"
+              loading="eager"
               allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
               allowfullscreen="true"
-            ></iframe>
+            />
           </div>
         </div>
       </div>

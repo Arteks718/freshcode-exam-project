@@ -1,6 +1,7 @@
 const HOW_IT_WORKS_CONSTANTS = {
   homeHeroSection: {
-    videoLink: "https://iframe.mediadelivery.net/embed/239474/327efcdd-b1a2-4891-b274-974787ae8362",
+    videoLink:
+      'https://iframe.mediadelivery.net/embed/239474/327efcdd-b1a2-4891-b274-974787ae8362',
   },
   services: [
     {
@@ -27,6 +28,12 @@ const HOW_IT_WORKS_CONSTANTS = {
       buttonText: 'Learn More',
       buttonLink: '',
     },
+  ],
+  steps: [
+    'Fill out your Naming Brief and begin receiving name ideas in minutes',
+    'Rate the submissions and provide feedback to creatives. Creatives submit even more names based on your feedback.',
+    'Our team helps you test your favorite names with your target audience. We also assist with Trademark screening.',
+    'Pick a Winner. The winner gets paid for their submission.',
   ],
 };
 

@@ -1,4 +1,5 @@
 @mixin paddingPage
+  font-family: "Product Sans", sans-serif
   padding-left: 50px
   padding-right: 50px
 
@@ -13,3 +14,21 @@
   @media (max-width: 576px)
     padding-left: 12px
     padding-right: 12px
+
+@mixin graySection
+  padding-top: 80px
+  padding-bottom: 80px
+  background: linear-gradient(271.19deg, rgba(48, 125, 246, .05) 0%, rgba(20, 187, 191, .05) 100%), #FFFFFF
+
+@mixin grayContainer
+  max-width: 1480px
+  margin: 0 auto
+
+  @media (max-width: 1200px)
+    max-width: 960px
+
+  @media (max-width: 992px)
+    max-width: 720px
+
+  @media (max-width: 768px)
+    max-width: 540px

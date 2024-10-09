@@ -1,0 +1,32 @@
+@use '../HowItWorks.module.sass' as c
+
+.stepsSection
+  @include c.paddingPage
+  @include c.graySection
+
+  .stepsContainer
+    @include c.grayContainer
+    
+    .titleContainer
+      text-align: center
+      margin-bottom: 75px
+
+      img
+        width: 70px
+        margin-bottom: 20px
+
+      h3
+        font-size: 1.75rem
+        line-height: 1.3
+        font-weight: 700
+
+    .stepsList
+      display: flex
+      gap: 24px
+
+      & :last-child
+        img
+          display: none
+
+      @media (max-width: 992px)
+        flex-direction: column

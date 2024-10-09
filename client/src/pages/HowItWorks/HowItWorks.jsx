@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import ServicesSection from '../../components/HowItWorks/ServicesSection/ServicesSection';
 import HomeHero from '../../components/HowItWorks/HomeHeroSection/HomeHeroSection';
+import StepsSection from '../../components/HowItWorks/StepsSection/StepsSection';
 import { connect } from 'react-redux';
 
 const HowItWorks = (props) => {
@@ -12,6 +13,7 @@ const HowItWorks = (props) => {
       <Header />
       <HomeHero />
       <ServicesSection />
+      <StepsSection />
       <Footer />
     </>
   );

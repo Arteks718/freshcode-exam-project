@@ -1,0 +1,62 @@
+@use '../HowItWorks.module.sass' as c
+  
+.servicesSection
+  @include c.paddingPage
+
+  padding: 80px 0
+  background: linear-gradient(271.19deg, rgba(48, 125, 246, .05) 0%, rgba(20, 187, 191, .05) 100%), #FFFFFF
+  font-family: "Product Sans", sans-serif
+
+  .servicesContainer
+    max-width: 1480px
+    margin: 0 auto 40px auto
+
+    @media (max-width: 1200px)
+      max-width: 960px
+
+    @media (max-width: 992px)
+      max-width: 720px
+
+    @media (max-width: 768px)
+      max-width: 540px
+
+    .titleContainer
+      text-align: center
+      color: #19184A
+
+      .tag
+        display: inline-block
+        color: #377dff
+        font-size: 0.6875rem
+        border-radius: 50px
+        font-weight: 400
+        background: rgba(55, 125, 255, 0.1)
+        padding: 7px 15px
+        margin-bottom: 15px
+        line-height: 1.5
+
+      .title
+        font-size: 32px
+        font-weight: 700
+
+      .desc
+        margin-top: 10px
+        font-size: 16px
+        line-height: 1.5
+    
+    .servicesList
+      display: flex
+      column-gap: 24px
+      justify-content: center
+      margin: 40px 0 15px 0
+
+      @media (max-width: 992px)
+        display: grid
+        grid-template-columns: 1fr 1fr
+        row-gap: 24px
+
+      @media (max-width: 768px)
+        gap: 15px
+
+      @media (max-width: 576px)
+        grid-template-columns: 1fr

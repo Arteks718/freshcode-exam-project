@@ -21,7 +21,7 @@ const HomeHeroSection = () => {
               src={HOW_IT_WORKS_CONSTANTS.homeHeroSection.videoLink}
               title="heroVideo"
               loading="eager"
-              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+              allow="accelerometer; gyroscope; encrypted-media; picture-in-picture;"
               allowfullscreen="true"
             />
           </div>

@@ -10,8 +10,11 @@ import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Header from '../../components/Header/Header';
 
 const StartContestPage = props => {
-  if (props.userStore.data.role !== CONSTANTS.CUSTOMER) {
-    props.history.replace('/');
+  const { history, choseBundle } = props;
+  const { role } = props.userStore.data
+
+  if (role !== CONSTANTS.CUSTOMER) {
+    history.replace('/');
   }
 
   const setBundle = bundleStr => {
@@ -21,8 +24,8 @@ const StartContestPage = props => {
     for (let i = 0; i < array.length; i++) {
       bundleList[array[i]] = i === array.length - 1 ? 'payment' : array[i + 1];
     }
-    props.choseBundle(bundleList);
-    props.history.push(`/startContest/${bundleList.first}Contest`);
+    choseBundle(bundleList);
+    history.push(`/startContest/${bundleList.first}Contest`);
   };
 
   return (

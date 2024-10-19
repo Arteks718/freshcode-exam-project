@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Form, Formik } from 'formik';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -37,11 +37,13 @@ const ContestForm = (props) => {
     handleSubmit,
     formRef,
     isEditContest,
+    dataForContest: { isFetching, error, data },
   } = props;
-  const { isFetching, error } = props.dataForContest;
-  const { industry } = props.dataForContest.data;
 
-  const getPreference = () => {
+  console.log("before all");
+
+  const getPreference = useCallback(() => {
+    console.log('getPreference called');
     switch (contestType) {
       case CONSTANTS.NAME_CONTEST: {
         getData({
@@ -58,12 +60,16 @@ const ContestForm = (props) => {
         getData({ characteristic1: 'brandStyle' });
         break;
       }
+      default:
+        console.error('Invalid contest type');
     }
-  };
-
+  }, [contestType, getData]);
+  
   useEffect(() => {
+    console.log('useEffect triggered');
     getPreference();
-  }, []);
+  }, [getPreference]);
+  
 
   if (error) {
     return <TryAgain getData={getPreference} />;
@@ -72,13 +78,15 @@ const ContestForm = (props) => {
     return <Spinner />;
   }
 
+  if (!data.industry) return <p>Loading industries...</p>;
+
   return (
     <>
       <div className={styles.formContainer}>
         <Formik
           initialValues={{
             title: '',
-            industry: '',
+            industry: data?.industry || '',
             focusOfWork: '',
             targetCustomer: '',
             file: '',
@@ -114,7 +122,7 @@ const ContestForm = (props) => {
                   warning: styles.warning,
                 }}
                 header="Describe industry associated with your venture"
-                optionsArray={industry}
+                optionsArray={data?.industry || []}
               />
             </div>
             <div className={styles.inputContainer}>

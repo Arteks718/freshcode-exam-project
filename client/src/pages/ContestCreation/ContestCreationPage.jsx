@@ -10,17 +10,18 @@ import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 
 const ContestCreationPage = (props) => {
+  const contestType = props.bundleStore.bundle.first
   const formRef = useRef();
-  const contestData = props.contestCreationStore.contests[props.contestType]
-    ? props.contestCreationStore.contests[props.contestType]
-    : { contestType: props.contestType };
+  const contestData = props.contestCreationStore.contests[contestType]
+    ? props.contestCreationStore.contests[contestType]
+    : { contestType };
 
   const handleSubmit = (values) => {
-    props.saveContest({ type: props.contestType, info: values });
+    props.saveContest({ type: contestType, info: values });
     const route =
-      props.bundleStore.bundle[props.contestType] === 'payment'
+      props.bundleStore.bundle[contestType] === 'payment'
         ? '/payment'
-        : `${props.bundleStore.bundle[props.contestType]}Contest`;
+        : `${props.bundleStore.bundle[contestType]}Contest`;
     props.history.push(route);
   };
 
@@ -48,7 +49,7 @@ const ContestCreationPage = (props) => {
       <div className={styles.container}>
         <div className={styles.formContainer}>
           <ContestForm
-            contestType={props.contestType}
+            contestType={contestType}
             handleSubmit={handleSubmit}
             formRef={formRef}
             defaultData={contestData}

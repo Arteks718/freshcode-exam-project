@@ -10,19 +10,24 @@ import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 
 const ContestCreationPage = (props) => {
-  const contestType = props.bundleStore.bundle.first
+  const { bundleStore, contestCreationStore, history, saveContest, title } =
+    props;
+
+  !bundleStore?.bundle && history.replace('/startContest');
+
+  const contestType = bundleStore?.bundle?.first;
   const formRef = useRef();
-  const contestData = props.contestCreationStore.contests[contestType]
-    ? props.contestCreationStore.contests[contestType]
+  const contestData = contestCreationStore.contests[contestType]
+    ? contestCreationStore.contests[contestType]
     : { contestType };
 
   const handleSubmit = (values) => {
-    props.saveContest({ type: contestType, info: values });
+    saveContest({ type: contestType, info: values });
     const route =
-      props.bundleStore.bundle[contestType] === 'payment'
+      bundleStore.bundle[contestType] === 'payment'
         ? '/payment'
-        : `${props.bundleStore.bundle[contestType]}Contest`;
-    props.history.push(route);
+        : `${bundleStore.bundle[contestType]}Contest`;
+    history.push(route);
   };
 
   const submitForm = () => {
@@ -31,14 +36,12 @@ const ContestCreationPage = (props) => {
     }
   };
 
-  !props.bundleStore.bundle && props.history.replace('/startContest');
-
   return (
     <div>
       <Header />
       <div className={styles.startContestHeader}>
         <div className={styles.startContestInfo}>
-          <h2>{props.title}</h2>
+          <h2>{title}</h2>
           <span>
             Tell us a bit more about your business as well as your preferences
             so that creatives get a better idea about what you are looking for

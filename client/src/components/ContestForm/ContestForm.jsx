@@ -63,10 +63,16 @@ const ContestForm = (props) => {
   }, [contestType, getData]);
   
   useEffect(() => {
-    console.log('useEffect triggered');
     getPreference();
-  }, [getPreference]);
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
   
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, [getPreference]);  
 
   if (error) {
     return <TryAgain getData={getPreference} />;

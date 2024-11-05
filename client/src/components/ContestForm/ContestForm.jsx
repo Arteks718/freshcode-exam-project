@@ -12,7 +12,7 @@ import FieldFileInput from '../InputComponents/FieldFileInput/FieldFileInput';
 import FormTextArea from '../InputComponents/FormTextArea/FormTextArea';
 import TryAgain from '../TryAgain/TryAgain';
 import Schems from '../../utils/validators/validationSchems';
-import OptionalSelects from '../OptionalSelects/OptionalSelects';
+import OptionalSelects from './OptionalSelects/OptionalSelects';
 
 const variableOptions = {
   [CONSTANTS.NAME_CONTEST]: {
@@ -40,10 +40,7 @@ const ContestForm = (props) => {
     dataForContest: { isFetching, error, data },
   } = props;
 
-  console.log("before all");
-
   const getPreference = useCallback(() => {
-    console.log('getPreference called');
     switch (contestType) {
       case CONSTANTS.NAME_CONTEST: {
         getData({
@@ -100,11 +97,12 @@ const ContestForm = (props) => {
         >
           <Form>
             <div className={styles.inputContainer}>
-              <span className={styles.inputHeader}>Title of contest</span>
+              <label className={styles.labelTitle}>Title of contest</label>
               <FormInput
                 name="title"
                 type="text"
                 label="Title"
+                header="ghfh"
                 classes={{
                   container: styles.componentInputContainer,
                   input: styles.input,
@@ -113,22 +111,21 @@ const ContestForm = (props) => {
               />
             </div>
             <div className={styles.inputContainer}>
+              <label className={styles.labelTitle}>Describe industry associated with your venture</label>
               <SelectInput
                 name="industry"
                 classes={{
                   inputContainer: styles.selectInputContainer,
-                  inputHeader: styles.selectHeader,
                   selectInput: styles.select,
                   warning: styles.warning,
                 }}
-                header="Describe industry associated with your venture"
                 optionsArray={data?.industry || []}
               />
             </div>
             <div className={styles.inputContainer}>
-              <span className={styles.inputHeader}>
+              <label className={styles.labelTitle}>
                 What does your company / business do?
-              </span>
+              </label>
               <FormTextArea
                 name="focusOfWork"
                 type="text"
@@ -141,9 +138,9 @@ const ContestForm = (props) => {
               />
             </div>
             <div className={styles.inputContainer}>
-              <span className={styles.inputHeader}>
+              <label className={styles.labelTitle}>
                 Tell us about your customers
-              </span>
+              </label>
               <FormTextArea
                 name="targetCustomer"
                 type="text"

@@ -30,12 +30,6 @@
   &:hover
     background-color: #6b8ab1
 
-.componentInputContainer
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: flex-start
-
 .warning
   font-size: 18px
   display: flex
@@ -109,10 +103,12 @@
   @media (max-width: 700px)
     justify-content: center
 
-  .selectInputContainer
+  .inputContainer
     margin: 15px 0 0 0
     display: flex
     flex-direction: column
+    justify-content: center
+    align-items: flex-start
     width: 100%
 
     .select
@@ -137,10 +133,6 @@
 
       &:focus
         border: 2px solid #28d2d0
-
-.inputContainer
-  margin: 15px 0 0 0
-  width: 100%
 
 
 .fileUploadContainer

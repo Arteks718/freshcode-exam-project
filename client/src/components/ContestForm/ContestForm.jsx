@@ -40,6 +40,12 @@ const ContestForm = (props) => {
     dataForContest: { isFetching, error, data },
   } = props;
 
+  const inputClasses = {
+    inputHeader: styles.labelTitle,
+    inputContainer: styles.inputContainer,
+    warning: styles.warning,
+  };
+
   const getPreference = useCallback(() => {
     switch (contestType) {
       case CONSTANTS.NAME_CONTEST: {
@@ -61,18 +67,18 @@ const ContestForm = (props) => {
         console.error('Invalid contest type');
     }
   }, [contestType, getData]);
-  
+
   useEffect(() => {
     getPreference();
     const unloadCallback = (event) => {
       event.preventDefault();
-      event.returnValue = "";
-      return "";
+      event.returnValue = '';
+      return '';
     };
-  
-    window.addEventListener("beforeunload", unloadCallback);
-    return () => window.removeEventListener("beforeunload", unloadCallback);
-  }, [getPreference]);  
+
+    window.addEventListener('beforeunload', unloadCallback);
+    return () => window.removeEventListener('beforeunload', unloadCallback);
+  }, [getPreference]);
 
   if (error) {
     return <TryAgain getData={getPreference} />;
@@ -93,6 +99,7 @@ const ContestForm = (props) => {
             focusOfWork: '',
             targetCustomer: '',
             file: '',
+            domain: '1',
             ...variableOptions[contestType],
             ...initialValues,
           }}
@@ -101,81 +108,72 @@ const ContestForm = (props) => {
           innerRef={formRef}
           enableReinitialize
         >
-          <Form>
-            <div className={styles.inputContainer}>
-              <label className={styles.labelTitle}>Title of contest</label>
+          {({ values }) => (
+            <Form>
               <FormInput
                 name="title"
                 type="text"
                 label="Title"
-                header="ghfh"
+                header="Title of contest"
                 classes={{
-                  container: styles.componentInputContainer,
+                  ...inputClasses,
                   input: styles.input,
-                  warning: styles.warning,
                 }}
               />
-            </div>
-            <div className={styles.inputContainer}>
-              <label className={styles.labelTitle}>Describe industry associated with your venture</label>
               <SelectInput
                 name="industry"
+                header="Describe industry associated with your venture"
                 classes={{
-                  inputContainer: styles.selectInputContainer,
-                  selectInput: styles.select,
-                  warning: styles.warning,
+                  ...inputClasses,
+                  input: styles.select,
                 }}
                 optionsArray={data?.industry || []}
               />
-            </div>
-            <div className={styles.inputContainer}>
-              <label className={styles.labelTitle}>
-                What does your company / business do?
-              </label>
               <FormTextArea
                 name="focusOfWork"
                 type="text"
+                header="What does your company / business do?"
                 label="e.g. We`re an online lifestyle brand that provides stylish and high quality apparel to the expert eco-conscious shopper"
                 classes={{
-                  container: styles.componentInputContainer,
-                  inputStyle: styles.textArea,
-                  warning: styles.warning,
+                  ...inputClasses,
+                  input: styles.textArea,
                 }}
               />
-            </div>
-            <div className={styles.inputContainer}>
-              <label className={styles.labelTitle}>
-                Tell us about your customers
-              </label>
               <FormTextArea
                 name="targetCustomer"
                 type="text"
+                header="Tell us about your customers"
                 label="customers"
                 classes={{
-                  container: styles.componentInputContainer,
-                  inputStyle: styles.textArea,
-                  warning: styles.warning,
+                  ...inputClasses,
+                  input: styles.textArea,
                 }}
               />
-            </div>
-            <OptionalSelects {...props} />
-            <FieldFileInput
-              name="file"
-              classes={{
-                fileUploadContainer: styles.fileUploadContainer,
-                labelClass: styles.label,
-                fileNameClass: styles.fileName,
-                fileInput: styles.fileInput,
-                warning: styles.warning,
-              }}
-              type="file"
-            />
-            {isEditContest ? (
-              <button type="submit" className={styles.changeData}>
-                Set Data
-              </button>
-            ) : null}
-          </Form>
+              <OptionalSelects
+                {...props}
+                formData={values}
+                classes={{
+                  inputClasses,
+                }}
+              />
+              <FieldFileInput
+                name="file"
+                classes={{
+                  fileUploadContainer: styles.fileUploadContainer,
+                  labelClass: styles.label,
+                  fileNameClass: styles.fileName,
+                  fileInput: styles.fileInput,
+                  warning: styles.warning,
+                }}
+                type="file"
+              />
+              {isEditContest ? (
+                <button type="submit" className={styles.changeData}>
+                  Set Data
+                </button>
+              ) : null}
+            </Form>
+          )}
         </Formik>
       </div>
     </>

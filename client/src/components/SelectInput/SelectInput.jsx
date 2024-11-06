@@ -41,7 +41,7 @@ const SelectInput = ({
   return (
     <div className={classes.inputContainer}>
       <span className={classes.inputHeader}>{header}</span>
-      <select {...field} className={classes.selectInput}>
+      <select {...field} className={classes.input}>
         {getOptionsArray()}
       </select>
     </div>

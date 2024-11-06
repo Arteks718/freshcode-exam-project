@@ -1,6 +1,7 @@
 const env = process.env.NODE_ENV || 'development';
 const serverIP = 'localhost';
 const serverPort = 5000;
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   CUSTOMER: 'customer',
   CREATOR: 'creator',
@@ -44,6 +45,24 @@ export default {
     'an App',
     'a Product',
     'a Startup',
+  ],
+  BUTTON_GROUP: [
+    {
+      answerId: 1,
+      answer: 'Yes',
+      description: 'But minor variations are allowed',
+      recommended: true
+    },
+    {
+      answerId: 2,
+      answer: 'Yes',
+      description: 'The Domain should exactly match the name'
+    },
+    {
+      answerId: 3,
+      answer: 'No',
+      description: 'I am only looking for a name, not a Domain'
+    }
   ],
   FooterItems: [
     {

@@ -2,26 +2,28 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, ErrorMessage } from 'formik';
 
-const FormTextArea = ({ label, classes, type, ...rest }) => (
+const FormTextArea = ({ label, classes, type, header, ...rest }) => (
   <Field {...rest}>
-    {props => {
+    {(props) => {
       const {
         field,
         meta: { touched, error },
       } = props;
-      const { container, inputStyle, notValid, warning } = classes;
+      const { inputContainer, input, notValid, warning } = classes;
       return (
-        <div className={container}>
+        <div className={inputContainer}>
+          <span className={classes.inputHeader}>{header}</span>
+
           <textarea
             {...field}
             placeholder={label}
-            className={classNames(inputStyle, {
+            className={classNames(input, {
               [notValid]: touched && error,
             })}
           />
           <ErrorMessage
             name={field.name}
-            component='span'
+            component="span"
             className={warning}
           />
         </div>

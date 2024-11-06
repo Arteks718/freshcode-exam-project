@@ -1,0 +1,47 @@
+.buttonGroup
+  display: flex
+  gap: 10px
+  margin-top: 15px
+
+  .button
+    padding: 20px 15px
+    border: 1px solid black
+    border-radius: 8px
+    display: block
+    opacity: 50%
+    position: relative
+    
+    .answer
+      display: block
+      font-size: 16px
+      font-weight: 500
+      color: #000
+      
+    .description
+      display: block
+      margin-top: 15px
+      color: #7c7c7c
+
+    .arrow
+      position: absolute
+      top: 10px
+      right: 10px
+
+    .recommendedMessage
+      position: absolute
+      top: -12px
+      left: 50%
+      transform: translate(-50%, 0)
+      padding: 10px
+      border: 0
+      border-radius: 10px
+      color: #468af7
+      background-color: #deeafe
+
+
+  .active
+    border: 2px solid #307df6
+    opacity: 100%
+    
+    .arrow
+      color: #307df6

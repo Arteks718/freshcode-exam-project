@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.1.8",
+    "@mui/x-date-pickers": "^7.22.2",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^1.2.0",
     "card-validator": "^8.1.1",

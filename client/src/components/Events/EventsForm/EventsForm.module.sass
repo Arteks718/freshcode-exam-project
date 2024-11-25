@@ -1,0 +1,67 @@
+.labelTitle
+  display: inline-block
+  font-size: 19px
+  color: #585859
+  font-weight: 700
+  margin-top: 12px
+  margin-bottom: 5px
+
+.input
+  width: 550px
+  height: 46px
+  box-sizing: border-box
+  box-shadow: none
+  display: flex
+  align-items: center
+  font-size: 18px
+  background-color: white
+  border: 2px solid #d0d0d0
+  border-radius: 4px
+  cursor: text
+  margin-bottom: 15px
+  outline: none
+  padding: 0 10px
+  color: #555
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+  @media(max-width: 700px)
+    width: 100%
+
+  &:focus
+    border: 2px solid #28d2d0
+
+.inputContainer
+    margin: 15px 0 0 0
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: flex-start
+
+.warning
+  font-size: 18px
+  display: flex
+  justify-content: center
+  align-items: center
+  border: 2px solid #b72522
+  border-radius: 4px
+  padding: 3px 20px
+  color: #333
+
+.datePickerContainer
+  width: 550px
+  display: flex
+  justify-content: space-between
+  column-gap: 30px
+
+.submitButton
+  font-size: 20px
+  padding: 8px 50px
+  cursor: pointer
+  background-color: #f3875d
+  text-align: center
+  line-height: 1.4
+  color: white
+  border: 1px solid transparent
+  border-radius: 4px
+  margin-top: 30px
+  @media(max-width: 480px)
+    padding: 8px 30px

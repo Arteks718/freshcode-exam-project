@@ -4,7 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import Error from '../Error/Error';
 import { checkAuth, clearAuth } from '../../store/slices/authSlice';
 import styles from './RegistrationForm.module.sass';
-import FormInput from '../FormInput/FormInput';
+import FormInput from '../InputComponents/FormInput/FormInput';
 import RoleInput from '../RoleInput/RoleInput';
 import AgreeTermOfServiceInput from '../AgreeTermOfServiceInput/AgreeTermOfServiceInput';
 import CONSTANTS from '../../constants';

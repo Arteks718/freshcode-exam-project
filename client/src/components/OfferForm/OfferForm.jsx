@@ -8,7 +8,7 @@ import {
 } from '../../store/slices/contestByIdSlice';
 import styles from './OfferForm.module.sass';
 import ImageUpload from '../InputComponents/ImageUpload/ImageUpload';
-import FormInput from '../FormInput/FormInput';
+import FormInput from '../InputComponents/FormInput/FormInput';
 import Schems from '../../utils/validators/validationSchems';
 import Error from '../Error/Error';
 

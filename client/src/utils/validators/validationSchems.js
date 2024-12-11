@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import valid from 'card-validator';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   LoginSchem: yup.object().shape({
     email: yup
@@ -224,5 +225,23 @@ export default {
         value => value && value.trim().length >= 1
       )
       .required('required'),
+  }),
+  EventsSchema: yup.object({
+    name: yup
+      .string()
+      .test(
+        'test-title',
+        'required',
+        value => value && value.trim().length >= 1
+      )
+      .required('title of contest required'),
+    finishDate: yup
+      .date()
+      .typeError("Invalid date")
+      .required('Finish Date is required'),
+    reminderDate: yup
+      .date()
+      .typeError("Invalid date")
+      .required('Reminder Date is required')
   }),
 };

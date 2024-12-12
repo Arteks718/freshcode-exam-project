@@ -1,12 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Form, Formik, useFormik } from 'formik';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import FormInput from '../../InputComponents/FormInput/FormInput';
 import styles from './EventsForm.module.sass';
 import validationSchems from '../../../utils/validators/validationSchems';
+import { addEvent } from '../../../store/slices/eventSlice';
 
-const EventsForm = () => {
+const EventsForm = (props) => {
+  const { addEventToLocalStorage } = props;
   const validationSchema = validationSchems.EventsSchema;
 
   return (
@@ -22,8 +25,10 @@ const EventsForm = () => {
         validateOnMount={false}
         validateOnBlur={true}
         validateOnChange={false}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={(values, { resetForm }) => {
+          // console.log({...values});
+          addEventToLocalStorage(values);
+          resetForm();
         }}
       >
         {({ values, setFieldValue, setFieldTouched }) => (
@@ -80,4 +85,9 @@ const EventsForm = () => {
   );
 };
 
-export default EventsForm;
+const mapStateToProps = (state) => state.eventStore;
+const mapDispatchToProps = (dispatch) => ({
+  addEventToLocalStorage: (event) => dispatch(addEvent(event)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventsForm);

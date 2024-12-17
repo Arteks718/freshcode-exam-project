@@ -85,9 +85,8 @@ const EventsForm = (props) => {
   );
 };
 
-const mapStateToProps = (state) => state.eventStore;
 const mapDispatchToProps = (dispatch) => ({
   addEventToLocalStorage: (event) => dispatch(addEvent(event)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsForm);
+export default connect(mapDispatchToProps)(EventsForm);

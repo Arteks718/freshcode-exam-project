@@ -1,47 +1,73 @@
 import React, { useState, useEffect } from 'react';
-import {
-  differenceInBusinessDays,
-  differenceInHours,
-  differenceInMinutes,
-  differenceInMonths,
-  differenceInSeconds,
-  differenceInYears,
-  intervalToDuration,
-  roundToNearestMinutes,
-  formatDuration,
-} from 'date-fns';
+import { intervalToDuration, formatDuration, isAfter } from 'date-fns';
 import styles from './EventItem.module.sass';
 
 const EventItem = (props) => {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const test = [{ name: 'h' }];
+  const { name, finishDate, reminderDate, startDate } = props.event;
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
     setTimeout(() => {
-      setCurrentTime(new Date());
+      setCurrentDate(new Date());
     }, 1000);
-  }, [currentTime]);
+  }, [currentDate]);
+
   const formatTime = (date) => {
-    return formatDuration({
-      years: differenceInYears(date, currentTime),
-      months: differenceInMonths(date, currentTime),
-      days: differenceInBusinessDays(date, currentTime),
-      hours: differenceInHours(date, currentTime) % 24,
-      minutes: differenceInMinutes(date, currentTime) % 60,
-      seconds: differenceInSeconds(date, currentTime) % 60,
-    })
+    const duration = formatDuration(
+      intervalToDuration({ start: currentDate, end: date })
+    )
       .replace(
         /\b(years?|months?|days?|hours?|minutes?|seconds?)\b/g,
         (match) => match[0]
       )
       .replace(/(\d)\s+([a-zA-Z])/g, '$1$2');
+
+    return isAfter(currentDate, finishDate) ? 'Finished' : duration;
+  };
+  const progressPercentage = () => {
+    const totalDuration =
+      new Date(finishDate).getTime() - new Date(startDate).getTime();
+    const elapsedDuration =
+      new Date(currentDate).getTime() - new Date(startDate).getTime();
+
+    if (elapsedDuration < 0) return 0;
+    if (elapsedDuration > totalDuration) return 100;
+
+    return (elapsedDuration / totalDuration) * 100;
+  };
+  const remainingReminder = () => {
+    const totalDuration =
+      new Date(finishDate).getTime() - new Date(startDate).getTime();
+    const elapsedDuration =
+      new Date(reminderDate).getTime() - new Date(startDate).getTime();
+    const isReminder = isAfter(reminderDate, currentDate) ? 'block' : 'none';
+
+    if (elapsedDuration < 0) return { isReminder, percentage: 0 };
+    if (elapsedDuration > totalDuration) return { isReminder, percentage: 100 };
+
+    return {
+      isReminder,
+      percentage: (elapsedDuration / totalDuration) * 100,
+    };
   };
 
-  const { name, finishDate, reminderDate, startDate } = props.event;
   return (
     <div className={styles.item}>
-      <h3>{name}</h3>
-      <p className={styles.time}>{formatTime(finishDate)}</p>
+      <div
+        className={styles.progressBar}
+        style={{ width: `${progressPercentage()}%` }}
+      ></div>
+      <div
+        className={styles.reminderBar}
+        style={{
+          left: `${remainingReminder().percentage}%`,
+          display: remainingReminder().isReminder,
+        }}
+      ></div>
+      <div className={styles.info}>
+        <h3>{name}</h3>
+        <p className={styles.time}>{formatTime(finishDate)}</p>
+      </div>
     </div>
   );
 };

@@ -26,7 +26,6 @@ const EventsForm = (props) => {
         validateOnBlur={true}
         validateOnChange={false}
         onSubmit={(values, { resetForm }) => {
-          // console.log({...values});
           addEventToLocalStorage(values);
           resetForm();
         }}
@@ -85,8 +84,9 @@ const EventsForm = (props) => {
   );
 };
 
+const mapStateToProps = (state) => state.eventStore;
 const mapDispatchToProps = (dispatch) => ({
   addEventToLocalStorage: (event) => dispatch(addEvent(event)),
 })
 
-export default connect(mapDispatchToProps)(EventsForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EventsForm);

@@ -1,15 +1,18 @@
 import React from 'react';
-import _ from 'lodash';
+import _, { isBoolean } from 'lodash';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import styles from './EventsList.module.sass';
 import EventItem from './EventItem/EventItem';
 
 const EventsList = (props) => {
   const { events, deleteEvent } = props;
+  console.log(isBoolean(events));
   const sortedEvents = _(events)
-    .sortBy(event => new Date(event.finishDate).getTime())
-    .partition(event => new Date(event.finishDate).getTime() >= new Date().getTime())
-    .flatMap(partition => partition)
+    .sortBy((event) => new Date(event.finishDate).getTime())
+    .partition(
+      (event) => new Date(event.finishDate).getTime() >= new Date().getTime()
+    )
+    .flatMap((partition) => partition)
     .value();
 
   return (
@@ -22,10 +25,13 @@ const EventsList = (props) => {
         </div>
       </div>
       <div className={styles.eventsList}>
-        {sortedEvents
-          .map(event => (
+        {events.length !== 0 ? (
+          sortedEvents.map((event) => (
             <EventItem event={event} deleteEvent={deleteEvent} />
-          ))}
+          ))
+        ) : (
+          <p>No events</p>
+        )}
       </div>
     </div>
   );

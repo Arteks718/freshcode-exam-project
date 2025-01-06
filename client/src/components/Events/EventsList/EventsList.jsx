@@ -5,7 +5,12 @@ import EventItem from './EventItem/EventItem';
 
 const EventsList = (props) => {
   const { events } = props;
-  console.log(events)
+  const sortedEvents = _(events)
+    .sortBy(event => new Date(event.finishDate).getTime())
+    .partition(event => new Date(event.finishDate).getTime() >= new Date().getTime())
+    .flatMap(partition => partition)
+    .value();
+    
   return (
     <div className={styles.container}>
       <div className={styles.titleBlock}>
@@ -16,7 +21,7 @@ const EventsList = (props) => {
         </div>
       </div>
       <div className={styles.eventsList}>
-        {_.sortBy(events, (event) => new Date(event.finishDate).getTime())
+        {sortedEvents
           .map(event => (
             <EventItem event={event} />
           ))}

@@ -7,10 +7,11 @@ const EventItem = (props) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setInterval(() => {
       setCurrentDate(new Date());
     }, 1000);
-  }, [currentDate]);
+    return () => clearInterval(timer);
+  }, []);
 
   const formatTime = (date) => {
     const duration = formatDuration(
@@ -24,6 +25,7 @@ const EventItem = (props) => {
 
     return isAfter(currentDate, finishDate) ? 'Finished' : duration;
   };
+
   const progressPercentage = () => {
     const totalDuration =
       new Date(finishDate).getTime() - new Date(startDate).getTime();
@@ -35,6 +37,7 @@ const EventItem = (props) => {
 
     return (elapsedDuration / totalDuration) * 100;
   };
+
   const remainingReminder = () => {
     const totalDuration =
       new Date(finishDate).getTime() - new Date(startDate).getTime();

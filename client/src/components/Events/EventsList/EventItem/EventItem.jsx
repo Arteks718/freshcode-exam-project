@@ -66,7 +66,9 @@ const EventItem = (props) => {
       <div
         className={styles.item}
         onMouseEnter={() => setIsHoverItem(true)}
-        onMouseLeave={() => setIsHoverItem(false)}
+        onMouseLeave={() => {
+          if (!isShownDelete) setIsHoverItem(false);
+        }}
       >
         <div
           className={styles.progressBar}
@@ -95,7 +97,10 @@ const EventItem = (props) => {
                 [styles.deleteButton]: true,
                 [styles.active]: isHoverItem,
               })}
-              onClick={() => setIsShownDelete(true)}
+              onClick={() => {
+                setIsShownDelete(true);
+                setIsHoverItem(true);
+              }}
             >
               <DeleteForeverOutlinedIcon />
             </button>
@@ -115,7 +120,10 @@ const EventItem = (props) => {
           </button>
           <button
             className={styles.reject}
-            onClick={() => setIsShownDelete(false)}
+            onClick={() => {
+              setIsShownDelete(false);
+              setIsHoverItem(false);
+            }}
           >
             <CloseOutlinedIcon />
           </button>

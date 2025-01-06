@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Formik, useFormik } from 'formik';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import { createTheme } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import FormInput from '../../InputComponents/FormInput/FormInput';
 import styles from './EventsForm.module.sass';
@@ -10,6 +11,10 @@ import validationSchems from '../../../utils/validators/validationSchems';
 const EventsForm = (props) => {
   const { addEvent } = props;
   const validationSchema = validationSchems.EventsSchema;
+  const dateTimePickerTheme = {
+    bgcolor: '#fff',
+    width: '100%',
+  };
 
   return (
     <div>
@@ -49,7 +54,7 @@ const EventsForm = (props) => {
                   <span className={styles.labelTitle}>Finish Date</span>
                   <DateTimePicker
                     name="finishDate"
-                    className={styles.datePicker}
+                    sx={dateTimePickerTheme}
                     value={values.finishDate}
                     disablePast
                     onChange={(value) => {
@@ -62,7 +67,7 @@ const EventsForm = (props) => {
                   <span className={styles.labelTitle}>Reminder Date</span>
                   <DateTimePicker
                     name="reminderDate"
-                    className={styles.datePicker}
+                    sx={dateTimePickerTheme}
                     value={values.reminderDate}
                     disablePast
                     maxDateTime={values.finishDate}
@@ -74,9 +79,12 @@ const EventsForm = (props) => {
                 </div>
               </div>
             </LocalizationProvider>
-            <button type="submit" className={styles.submitButton}>
-              Add
-            </button>
+            <div className={styles.buttons}>
+              <button className={styles.clearButton}>Clear</button>
+              <button type="submit" className={styles.addButton}>
+                Add
+              </button>
+            </div>
           </Form>
         )}
       </Formik>

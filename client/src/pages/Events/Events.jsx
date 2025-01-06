@@ -12,20 +12,21 @@ const Events = (props) => {
   return (
     <>
       <Header />
-      <div className={styles.container}>
-        <EventsForm addEvent={addEvent} />
-        <EventsList events={events} deleteEvent={deleteEvent} />
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <EventsForm addEvent={addEvent} />
+          <EventsList events={events} deleteEvent={deleteEvent} />
+        </div>
       </div>
       <Footer />
     </>
   );
 };
 
-
-const mapStateToProps = state => state.eventStore;
+const mapStateToProps = (state) => state.eventStore;
 const mapDispatchToProps = (dispatch) => ({
   addEvent: (event) => dispatch(addEvent(event)),
   deleteEvent: (id) => dispatch(deleteEvent(id)),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);

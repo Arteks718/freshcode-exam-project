@@ -7,8 +7,8 @@
   margin-bottom: 10px
 
 .input
-  width: 550px
-  height: 46px
+  width: 100%
+  padding: 16.5px 14px
   box-sizing: border-box
   box-shadow: none
   display: flex
@@ -19,7 +19,6 @@
   border-radius: 4px
   cursor: text
   outline: none
-  padding: 0 10px
   color: #555
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
   @media(max-width: 700px)
@@ -29,11 +28,11 @@
     border: 2px solid #28d2d0
 
 .inputContainer
-  margin: 15px 0 0 0
   display: flex
   flex-direction: column
   justify-content: center
   align-items: flex-start
+  flex: 1
 
 
 .warning
@@ -47,21 +46,49 @@
   color: #333
 
 .datePickerContainer
-  width: 550px
+  width: 100%
   display: flex
-  justify-content: space-between
+  justify-content: flex-start
   column-gap: 30px
+  margin-top: 15px
 
-.submitButton
-  font-size: 20px
-  padding: 8px 50px
-  cursor: pointer
-  background-color: #f3875d
-  text-align: center
-  line-height: 1.4
-  color: white
-  border: 1px solid transparent
-  border-radius: 4px
+  @media screen and (max-width: 480px)
+    flex-direction: column
+    row-gap: 20px
+
+  .datePicker
+    background-color: #fff
+
+.buttons
+  display: flex
   margin-top: 30px
-  @media(max-width: 480px)
-    padding: 8px 30px
+  column-gap: 30px
+  justify-content: flex-end
+  align-items: center
+
+  button
+    font-size: 20px
+    font-weight: 700
+    text-align: center
+    line-height: 1.4
+    color: white
+    border: 1px solid transparent
+    border-radius: 4px
+    transition: all 0.1s ease-in-out
+    
+    &.addButton
+      background-color: #f3875d
+      font-size: 24px
+      height: 60px
+      width: 120px
+
+      &:hover
+        font-size: 28px
+      
+    &.clearButton
+      background-color: #888
+      height: 50px
+      width: 100px
+
+      &:hover
+        font-size: 24px

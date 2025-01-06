@@ -3,7 +3,7 @@
   padding: 20px
   border: 2px solid #d0d0d0
   border-radius: 5px
-  max-width: 800px
+  background-color: #fff
 
   .titleBlock
     display: flex
@@ -12,6 +12,11 @@
     align-items: center
     border-bottom: 1px solid #d0d0d0
 
+    @media screen and (max-width: 480px)
+      flex-direction: column
+      align-items: flex-start
+      row-gap: 10px
+
     h2
       font-size: 24px
       font-weight: 500
@@ -19,11 +24,13 @@
     .remainingBlock
       display: flex
       align-items: center
+      align-self: flex-end
 
       .remainingText
         font-size: 16px
         font-weight: 500
         margin-right: 10px
+
   .eventsList
     display: flex
     margin-top: 15px

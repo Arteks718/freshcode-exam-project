@@ -46,7 +46,6 @@
         padding: 0
         border-left: 1px solid #d0d0d0
         padding: 0 5px
-        // visibility: hidden
         transition: all 0.1s linear
 
         &.active
@@ -61,7 +60,6 @@
           margin: 0
           padding: 0
 
-
       .time
         font-size: 14px
         font-weight: 500
@@ -70,7 +68,6 @@
 
         &.margin
           margin-right: 40px
-
 
 .warning
   position: absolute
@@ -84,7 +81,11 @@
   border-radius: 5px
   transition: all 0.05s linear
   visibility: hidden
+  z-index: 1
 
+  @media screen and (max-width: 991px)
+    top: 10px
+    right: 30px
 
   &.visible
     opacity: 1
@@ -110,5 +111,3 @@
     &.reject
       background-color: #f3875d
       border-radius: 25%
-
-

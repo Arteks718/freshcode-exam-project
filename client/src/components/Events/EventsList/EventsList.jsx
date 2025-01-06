@@ -5,7 +5,7 @@ import styles from './EventsList.module.sass';
 import EventItem from './EventItem/EventItem';
 
 const EventsList = (props) => {
-  const { events } = props;
+  const { events, deleteEvent } = props;
   const sortedEvents = _(events)
     .sortBy(event => new Date(event.finishDate).getTime())
     .partition(event => new Date(event.finishDate).getTime() >= new Date().getTime())
@@ -24,7 +24,7 @@ const EventsList = (props) => {
       <div className={styles.eventsList}>
         {sortedEvents
           .map(event => (
-            <EventItem event={event} />
+            <EventItem event={event} deleteEvent={deleteEvent} />
           ))}
       </div>
     </div>

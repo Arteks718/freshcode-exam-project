@@ -6,16 +6,16 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import FormInput from '../../InputComponents/FormInput/FormInput';
 import styles from './EventsForm.module.sass';
 import validationSchems from '../../../utils/validators/validationSchems';
-import { addEvent } from '../../../store/slices/eventSlice';
 
 const EventsForm = (props) => {
-  const { addEventToLocalStorage } = props;
+  const { addEvent } = props;
   const validationSchema = validationSchems.EventsSchema;
 
   return (
     <div>
       <Formik
         initialValues={{
+          id: new Date().getTime().toString(),
           name: '',
           startDate: new Date(),
           finishDate: null,
@@ -26,7 +26,7 @@ const EventsForm = (props) => {
         validateOnBlur={true}
         validateOnChange={false}
         onSubmit={(values, { resetForm }) => {
-          addEventToLocalStorage(values);
+          addEvent(values);
           resetForm();
         }}
       >
@@ -84,9 +84,4 @@ const EventsForm = (props) => {
   );
 };
 
-const mapStateToProps = (state) => state.eventStore;
-const mapDispatchToProps = (dispatch) => ({
-  addEventToLocalStorage: (event) => dispatch(addEvent(event)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EventsForm);
+export default EventsForm;

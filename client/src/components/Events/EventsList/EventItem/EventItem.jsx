@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import classNames from 'classnames';
 import { intervalToDuration, formatDuration, isAfter } from 'date-fns';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import styles from './EventItem.module.sass';
 
 const EventItem = (props) => {
-  const { name, finishDate, reminderDate, startDate } = props.event;
+  const { deleteEvent } = props;
+  const { name, finishDate, reminderDate, startDate, id } = props.event;
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [isHoverItem, setIsHoverItem] = useState(false);
+  const [isShownDelete, setIsShownDelete] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -55,21 +62,64 @@ const EventItem = (props) => {
   };
 
   return (
-    <div className={styles.item}>
+    <div className={styles.container}>
       <div
-        className={styles.progressBar}
-        style={{ width: `${progressPercentage()}%` }}
-      ></div>
+        className={styles.item}
+        onMouseEnter={() => setIsHoverItem(true)}
+        onMouseLeave={() => setIsHoverItem(false)}
+      >
+        <div
+          className={styles.progressBar}
+          style={{ width: `${progressPercentage()}%` }}
+        ></div>
+        <div
+          className={styles.reminderBar}
+          style={{
+            left: `${remainingReminder().percentage}%`,
+            display: remainingReminder().isReminder,
+          }}
+        ></div>
+        <div className={styles.eventInfo}>
+          <h3>{name}</h3>
+          <div className={styles.info}>
+            <p
+              className={classNames({
+                [styles.time]: true,
+                [styles.margin]: isHoverItem,
+              })}
+            >
+              {formatTime(finishDate)}
+            </p>
+            <button
+              className={classNames({
+                [styles.deleteButton]: true,
+                [styles.active]: isHoverItem,
+              })}
+              onClick={() => setIsShownDelete(true)}
+            >
+              <DeleteForeverOutlinedIcon />
+            </button>
+          </div>
+        </div>
+      </div>
       <div
-        className={styles.reminderBar}
-        style={{
-          left: `${remainingReminder().percentage}%`,
-          display: remainingReminder().isReminder,
-        }}
-      ></div>
-      <div className={styles.info}>
-        <h3>{name}</h3>
-        <p className={styles.time}>{formatTime(finishDate)}</p>
+        className={classNames({
+          [styles.warning]: true,
+          [styles.visible]: isShownDelete,
+        })}
+      >
+        <p>Are you sure?</p>
+        <div className={styles.buttons}>
+          <button className={styles.accept} onClick={() => deleteEvent(id)}>
+            <CheckOutlinedIcon />
+          </button>
+          <button
+            className={styles.reject}
+            onClick={() => setIsShownDelete(false)}
+          >
+            <CloseOutlinedIcon />
+          </button>
+        </div>
       </div>
     </div>
   );

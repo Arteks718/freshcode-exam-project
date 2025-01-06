@@ -13,6 +13,10 @@ const reducers = {
   addEvent: (state, { payload }) => {
     state.events.push({ ...payload });
     localStorage.setItem(EVENT_SLICE_NAME, JSON.stringify(state.events));
+  },
+  deleteEvent: (state, { payload }) => {
+    state.events = state.events.filter((event) => event.id !== payload);
+    localStorage.setItem(EVENT_SLICE_NAME, JSON.stringify(state.events));
   }
 }
 
@@ -24,6 +28,6 @@ const eventSlice = createSlice({
 
 const { actions, reducer } = eventSlice;
 
-export const { getEvents, addEvent } = actions;
+export const { getEvents, addEvent, deleteEvent } = actions;
 
 export default reducer;

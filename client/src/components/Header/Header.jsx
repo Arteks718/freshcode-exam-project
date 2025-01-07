@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
 import { clearUserStore } from '../../store/slices/userSlice';
@@ -75,11 +77,12 @@ const Header = (props) => {
               </li>
             </ul>
           </div>
-          <img
-            src={`${CONSTANTS.STATIC_IMAGES_PATH}email.png`}
-            className={styles.emailIcon}
-            alt="email"
-          />
+          <MailOutlineIcon className={styles.icon} alt="email" />
+          {data.role === CONSTANTS.CUSTOMER && (
+            <a href="/events">
+              <AccessTimeIcon className={styles.icon} alt="event" />
+            </a>
+          )}
         </>
       );
     }

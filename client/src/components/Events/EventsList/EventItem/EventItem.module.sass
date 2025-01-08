@@ -1,3 +1,8 @@
+$reminder-color: #f5d76e
+$progress-color: #cde5cb
+$time-color: #8d8d8d
+$delete-border-color: #d0d0d0
+
 .container
   position: relative
 
@@ -13,15 +18,17 @@
     left: 0
     top: 0
     height: 100%
-    background: #cde5cb
-    width: 20%
+    background-color: $progress-color
+
+    &.reminded
+      background-color: $reminder-color
 
   .reminderBar
     position: absolute
     width: 2px
     height: 100%
     top: 0
-    background: #f5d76e
+    background-color: $reminder-color
 
   .eventInfo
     position: relative
@@ -44,7 +51,7 @@
         margin: 0
         margin-bottom: -4px
         padding: 0
-        border-left: 1px solid #d0d0d0
+        border-left: 1px solid $delete-border-color
         padding: 0 5px
         transition: all 0.1s linear
 
@@ -63,7 +70,7 @@
       .time
         font-size: 14px
         font-weight: 500
-        color: #8d8d8d
+        color: $time-color
         transition: all 0.1s linear
 
         &.margin
@@ -74,7 +81,7 @@
   top: -8px
   right: -95px
   background: #fff
-  border: 2px solid #d0d0d0
+  border: 2px solid $delete-border-color
   padding: 7px
   font-size: 12px
   font-weight: 500

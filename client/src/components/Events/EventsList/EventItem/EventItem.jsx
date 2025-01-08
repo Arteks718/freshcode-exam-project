@@ -1,68 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import classNames from 'classnames';
-import { intervalToDuration, formatDuration, isAfter } from 'date-fns';
+import { isAfter } from 'date-fns';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import styles from './EventItem.module.sass';
+import useCurrentDate from '../../../../hooks/useCurrentDate.jsx';
+import { formatTimeRemaining, calculateProgress } from '../../../../utils/dateUtils.js';
 
 const EventItem = (props) => {
   const { deleteEvent } = props;
   const { name, finishDate, reminderDate, startDate, id } = props.event;
-  const [currentDate, setCurrentDate] = useState(new Date());
+
   const [isHoverItem, setIsHoverItem] = useState(false);
   const [isShownDelete, setIsShownDelete] = useState(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentDate(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  const currentDate = useCurrentDate();
 
-  const formatTime = (date) => {
-    const duration = formatDuration(
-      intervalToDuration({ start: currentDate, end: date })
-    )
-      .replace(
-        /\b(years?|months?|days?|hours?|minutes?|seconds?)\b/g,
-        (match) => match[0]
-      )
-      .replace(/(\d)\s+([a-zA-Z])/g, '$1$2');
+  const formattedTime = useMemo(() => {
+    return isAfter(currentDate, finishDate)
+      ? 'Finished'
+      : formatTimeRemaining(currentDate, finishDate);
+  }, [currentDate, finishDate]);
 
-    return isAfter(currentDate, finishDate) ? 'Finished' : duration;
-  };
+  const progressPercentage = useMemo(() => {
+    return calculateProgress(startDate, currentDate, finishDate);
+  }, [startDate, currentDate, finishDate]);
 
-  const progressPercentage = () => {
-    const totalDuration =
-      new Date(finishDate).getTime() - new Date(startDate).getTime();
-    const elapsedDuration =
-      new Date(currentDate).getTime() - new Date(startDate).getTime();
-
-    if (elapsedDuration < 0) return 0;
-    if (elapsedDuration > totalDuration) return 100;
-
-    return (elapsedDuration / totalDuration) * 100;
-  };
-
-  const remainingReminder = () => {
-    const totalDuration =
-      new Date(finishDate).getTime() - new Date(startDate).getTime();
-    const elapsedDuration =
-      new Date(reminderDate).getTime() - new Date(startDate).getTime();
-    const isReminder = isAfter(reminderDate, currentDate) ? 'block' : 'none';
-
-    if (elapsedDuration < 0) return { isReminder, percentage: 0 };
-    if (elapsedDuration > totalDuration) return { isReminder, percentage: 100 };
-
-    return {
-      isReminder,
-      percentage: (elapsedDuration / totalDuration) * 100,
-    };
-  };
+  const reminderProgressPercentage = useMemo(() => {
+    return calculateProgress(startDate, reminderDate, finishDate);
+  }, [startDate, reminderDate, finishDate])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} key={id}>
       <div
         className={styles.item}
         onMouseEnter={() => setIsHoverItem(true)}
@@ -72,13 +42,13 @@ const EventItem = (props) => {
       >
         <div
           className={styles.progressBar}
-          style={{ width: `${progressPercentage()}%` }}
+          style={{ width: `${progressPercentage}%` }}
         ></div>
         <div
           className={styles.reminderBar}
           style={{
-            left: `${remainingReminder().percentage}%`,
-            display: remainingReminder().isReminder,
+            left: `${reminderProgressPercentage}%`,
+            display: isAfter(reminderDate, currentDate) ? 'block' : 'none',
           }}
         ></div>
         <div className={styles.eventInfo}>
@@ -90,7 +60,7 @@ const EventItem = (props) => {
                 [styles.margin]: isHoverItem,
               })}
             >
-              {formatTime(finishDate)}
+              {formattedTime}
             </p>
             <button
               className={classNames({

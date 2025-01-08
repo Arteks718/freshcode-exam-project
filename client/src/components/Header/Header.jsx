@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
-import { clearUserStore } from '../../store/slices/userSlice';
-import { getUser } from '../../store/slices/userSlice';
+import { clearUserStore, getUser } from '../../store/slices/userSlice';
+import { checkTime } from '../../store/slices/eventSlice';
+import EventNotification from '../Events/EventNotification/EventNotification';
 
 const Header = (props) => {
-  const { clearUserStore, data, getUser, history, isFetching } = props;
+  const { clearUserStore, data, getUser, checkTime, history, isFetching } = props;
 
   useEffect(() => {
     if (!data) {
@@ -78,11 +78,7 @@ const Header = (props) => {
             </ul>
           </div>
           <MailOutlineIcon className={styles.icon} alt="email" />
-          {data.role === CONSTANTS.CUSTOMER && (
-            <a href="/events">
-              <AccessTimeIcon className={styles.icon} alt="event" />
-            </a>
-          )}
+          <EventNotification role={data.role} style={{icon: styles.icon}} checkTime={checkTime} />
         </>
       );
     }
@@ -290,6 +286,7 @@ const mapStateToProps = (state) => state.userStore;
 const mapDispatchToProps = (dispatch) => ({
   getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),
+  checkTime: (time) => dispatch(checkTime(time)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

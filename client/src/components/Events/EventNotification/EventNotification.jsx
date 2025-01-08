@@ -12,16 +12,34 @@ const EventNotification = (props) => {
       checkTime(new Date().getTime());
     }, 1000);
     return () => clearInterval(timer);
-  }, [])
+  }, []);
   return (
     <>
       {role === CONSTANTS.CUSTOMER && (
         <div className={styles.notificationBlock}>
           <a href="/events">
             <AccessTimeIcon className={style.icon} alt="event" />
+            {finishedCount > 0 && (
+              <span
+                className={classNames([
+                  styles.notificationCount,
+                  styles.finished,
+                ])}
+              >
+                {finishedCount}
+              </span>
+            )}
+            {reminderCount > 0 && (
+              <span
+                className={classNames([
+                  styles.notificationCount,
+                  styles.reminder,
+                ])}
+              >
+                {reminderCount}
+              </span>
+            )}
           </a>
-          <span className={classNames([styles.notificationCount, styles.finished])}>{finishedCount}</span>
-          <span className={classNames([styles.notificationCount, styles.reminder])}>{reminderCount}</span>
         </div>
       )}
     </>

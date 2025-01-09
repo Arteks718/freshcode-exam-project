@@ -1,19 +1,12 @@
-import React from 'react';
-import _, { isBoolean } from 'lodash';
+import React, { useMemo } from 'react';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import styles from './EventsList.module.sass';
 import EventItem from './EventItem/EventItem';
+import { sortEvents } from '../../../utils/formatUtils';
 
 const EventsList = (props) => {
   const { events, deleteEvent } = props;
-  console.log(isBoolean(events));
-  const sortedEvents = _(events)
-    .sortBy((event) => new Date(event.finishDate).getTime())
-    .partition(
-      (event) => new Date(event.finishDate).getTime() >= new Date().getTime()
-    )
-    .flatMap((partition) => partition)
-    .value();
+  const sortedEvents = useMemo(() => { return sortEvents(events) }, [events]);
 
   return (
     <div className={styles.container}>
@@ -38,3 +31,4 @@ const EventsList = (props) => {
 };
 
 export default EventsList;
+

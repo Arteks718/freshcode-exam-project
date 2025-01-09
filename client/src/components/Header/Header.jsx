@@ -9,7 +9,7 @@ import { checkTime } from '../../store/slices/eventSlice';
 import EventNotification from '../Events/EventNotification/EventNotification';
 
 const Header = (props) => {
-  const { clearUserStore, data, getUser, checkTime, history, isFetching } = props;
+  const { clearUserStore, data, getUser, checkTime, finishedCount, reminderCount, history, isFetching } = props;
 
   useEffect(() => {
     if (!data) {
@@ -78,7 +78,12 @@ const Header = (props) => {
             </ul>
           </div>
           <MailOutlineIcon className={styles.icon} alt="email" />
-          <EventNotification role={data.role} style={{icon: styles.icon}} checkTime={checkTime} />
+          <EventNotification 
+            role={data.role} 
+            style={{icon: styles.icon}} 
+            checkTime={checkTime}
+            counts={{finishedCount, reminderCount}}
+          />
         </>
       );
     }
@@ -282,7 +287,10 @@ const Header = (props) => {
   );
 };
 
-const mapStateToProps = (state) => state.userStore;
+const mapStateToProps = (state) => ({ 
+  ...state.userStore, 
+  ...((({ isFetching, error, ...rest }) => rest)(state.eventStore)) 
+});
 const mapDispatchToProps = (dispatch) => ({
   getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),

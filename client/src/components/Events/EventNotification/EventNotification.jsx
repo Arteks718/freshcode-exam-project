@@ -4,15 +4,17 @@ import { connect } from 'react-redux';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import styles from './EventNotification.module.sass';
 import CONSTANTS from '../../../constants';
+import useCurrentDate from '../../../hooks/useCurrentDate';
 
 const EventNotification = (props) => {
-  const { role, style, checkTime, finishedCount, reminderCount } = props;
+  const { role, style, checkTime } = props;
+  const { finishedCount, reminderCount } = props.counts;
+  const currentDate = useCurrentDate();
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      checkTime(new Date().getTime());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+    checkTime(currentDate.getTime());
+  }, [currentDate, checkTime]);
+
   return (
     <>
       {role === CONSTANTS.CUSTOMER && (
@@ -46,6 +48,4 @@ const EventNotification = (props) => {
   );
 };
 
-const mapStateToProps = (state) => state.eventStore;
-
-export default connect(mapStateToProps)(EventNotification);
+export default EventNotification;

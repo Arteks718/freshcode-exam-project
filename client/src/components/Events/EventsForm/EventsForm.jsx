@@ -1,8 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Form, Formik, useFormik } from 'formik';
+import { Formik, Form } from 'formik';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
-import { createTheme } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import FormInput from '../../InputComponents/FormInput/FormInput';
 import styles from './EventsForm.module.sass';
@@ -20,7 +18,7 @@ const EventsForm = (props) => {
     <div>
       <Formik
         initialValues={{
-          id: new Date().getTime().toString(),
+          id: '',
           name: '',
           startDate: new Date(),
           finishDate: null,
@@ -31,62 +29,75 @@ const EventsForm = (props) => {
         validateOnBlur={true}
         validateOnChange={false}
         onSubmit={(values, { resetForm }) => {
-          addEvent(values);
+          addEvent({
+            ...values,
+            id: new Date().getTime().toString(),
+          });
           resetForm();
         }}
       >
-        {({ values, setFieldValue, setFieldTouched }) => (
-          <Form>
-            <FormInput
-              name={'name'}
-              label={'Name of task'}
-              header={'Name of task'}
-              classes={{
-                inputHeader: styles.labelTitle,
-                inputContainer: styles.inputContainer,
-                input: styles.input,
-                warning: styles.warning,
-              }}
-            />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <div className={styles.datePickerContainer}>
-                <div className={styles.inputContainer}>
-                  <span className={styles.labelTitle}>Finish Date</span>
-                  <DateTimePicker
-                    name="finishDate"
-                    sx={dateTimePickerTheme}
-                    value={values.finishDate}
-                    disablePast
-                    onChange={(value) => {
-                      setFieldValue('finishDate', value);
-                      setFieldTouched('finishDate', true, true);
-                    }}
-                  />
+        {({ values, setFieldValue, setFieldTouched, resetForm }) => {
+          const handleChangeFinishDate = (value) => {
+            setFieldValue('finishDate', value);
+            setFieldTouched('finishDate', true, true);
+          };
+          const handleChangeReminderDate = (value) => {
+            setFieldValue('reminderDate', value);
+            setFieldTouched('reminderDate', true, true);
+          };
+          return (
+            <Form>
+              <FormInput
+                name={'name'}
+                label={'Name of task'}
+                header={'Name of task'}
+                classes={{
+                  inputHeader: styles.labelTitle,
+                  inputContainer: styles.inputContainer,
+                  input: styles.input,
+                  warning: styles.warning,
+                }}
+              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <div className={styles.datePickerContainer}>
+                  <div className={styles.inputContainer}>
+                    <span className={styles.labelTitle}>Finish Date</span>
+                    <DateTimePicker
+                      name="finishDate"
+                      sx={dateTimePickerTheme}
+                      value={values.finishDate}
+                      disablePast
+                      onChange={(value) => handleChangeFinishDate(value)}
+                    />
+                  </div>
+                  <div className={styles.inputContainer}>
+                    <span className={styles.labelTitle}>Reminder Date</span>
+                    <DateTimePicker
+                      name="reminderDate"
+                      sx={dateTimePickerTheme}
+                      value={values.reminderDate}
+                      disablePast
+                      maxDateTime={values.finishDate}
+                      onChange={(value) => handleChangeReminderDate(value)}
+                    />
+                  </div>
                 </div>
-                <div className={styles.inputContainer}>
-                  <span className={styles.labelTitle}>Reminder Date</span>
-                  <DateTimePicker
-                    name="reminderDate"
-                    sx={dateTimePickerTheme}
-                    value={values.reminderDate}
-                    disablePast
-                    maxDateTime={values.finishDate}
-                    onChange={(value) => {
-                      setFieldValue('reminderDate', value);
-                      setFieldTouched('reminderDate', true, true);
-                    }}
-                  />
-                </div>
+              </LocalizationProvider>
+              <div className={styles.buttons}>
+                <button
+                  className={styles.clearButton}
+                  type="button"
+                  onClick={() => resetForm()}
+                >
+                  Clear
+                </button>
+                <button type="submit" className={styles.addButton}>
+                  Add
+                </button>
               </div>
-            </LocalizationProvider>
-            <div className={styles.buttons}>
-              <button className={styles.clearButton}>Clear</button>
-              <button type="submit" className={styles.addButton}>
-                Add
-              </button>
-            </div>
-          </Form>
-        )}
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );

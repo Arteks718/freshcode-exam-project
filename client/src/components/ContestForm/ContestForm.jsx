@@ -95,7 +95,7 @@ const ContestForm = (props) => {
         <Formik
           initialValues={{
             title: '',
-            industry: data?.industry || '',
+            industry: data?.industry[0] || '',
             focusOfWork: '',
             targetCustomer: '',
             file: '',

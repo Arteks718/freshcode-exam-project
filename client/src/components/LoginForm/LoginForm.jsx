@@ -24,9 +24,9 @@ const LoginForm = (props) => {
   };
 
   const formInputClasses = {
-    container: styles.inputContainer,
+    inputContainer: styles.inputContainer,
     input: styles.input,
-    warning: styles.fieldWarning,
+    warning: styles.warning,
     notValid: styles.notValid,
     valid: styles.valid,
   };

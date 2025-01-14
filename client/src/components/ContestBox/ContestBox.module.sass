@@ -1,3 +1,6 @@
+$checkColor: #8aca6b
+$primaryColor: #4e618d
+  
 .contestBoxContainer
   display: flex
   align-items: center
@@ -5,8 +8,14 @@
   background-color: #f9fafb
   padding: 30px 20px 10px 20px
   margin-bottom: 15px
+  color: $primaryColor
+
   @media(max-width: 400px)
     flex-direction: column
+
+  svg
+    margin-right: 5px
+    color: $primaryColor
 
   .mainContestInfo
     flex: 1 1
@@ -27,9 +36,7 @@
         justify-content: flex-start
 
         span
-          color: #465a89
           font-size: 15px
-          margin-left: 8px
 
       .guaranteedContainer
         display: flex
@@ -37,15 +44,8 @@
         align-items: center
         margin-right: 20px
 
-        div
-          display: flex
-          justify-content: center
-          align-items: center
-          height: 14px
-          width: 14px
-          border-radius: 7px
-          background-color: #8aca6b
-          margin-right: 5px
+        svg
+          color: $checkColor
 
         span
           color: #6e7072
@@ -56,7 +56,6 @@
 
       span
         font-size: 14px
-        color: #4e618d
 
     .titleAndIdContainer
       width: 100%
@@ -69,7 +68,6 @@
         font-size: 14px
 
       .title
-        color: #556da5
         font-size: 18px
         font-weight: 500
         margin-right: 20px
@@ -78,52 +76,42 @@
     display: flex
     padding: 10px
     background-color: white
-    border-left: 1px solid #eee
-    border-right: 1px solid #eee
-    border-bottom: 1px solid #eee
+    border: 1px solid #eee
     box-shadow: 2px 2px rgba(0, 0, 0, 0.2)
     @media(max-width: 400px)
       margin-top: 10px
       align-self: flex-start
 
-    .timeContainer
+    span
+      font-size: 15px
+      color: $primaryColor
+      margin-top: 3px
+
+    .entriesContainer, .timeContainer 
+      span:last-child
+        color: #8c8e92
+
+    & > div
       display: flex
       flex-direction: column
       justify-content: center
       align-items: center
       padding: 0 20px
-      border-left: 1px solid #46568a
+
+    .timeContainer
+      border-left: 1px solid $primaryColor
 
       .timeContest
         font-size: 18px
-        color: #46568a
-
-      span
-        font-size: 15px
-        color: #8c8e92
-        margin-top: 3px
 
     .entriesContainer
-      display: flex
-      flex-direction: column
-      justify-content: center
-      align-items: center
-      padding: 0 20px
-      border-right: 1px solid #46568a
-
-      span
-        font-size: 15px
-        color: #8c8e92
-        margin-top: 3px
+      border-right: 1px solid $primaryColor
 
       .entriesCounter
         display: flex
         align-items: center
         justify-content: space-around
 
-        img
-          margin-right: 5px
-
         span
           font-size: 18px
-          color: #46568a
+          color: $primaryColor

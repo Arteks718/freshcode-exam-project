@@ -1,5 +1,13 @@
 import React from 'react';
 import moment from 'moment';
+import { IoDiamondOutline, IoCheckmarkCircle } from 'react-icons/io5';
+import { FaUser } from 'react-icons/fa';
+import {
+  formatDistanceToNow,
+  parseISO,
+  differenceInDays,
+  differenceInHours,
+} from 'date-fns';
 import styles from './ContestBox.module.sass';
 import CONSTANTS from '../../constants';
 
@@ -18,18 +26,25 @@ const ContestBox = (props) => {
   } = props.data;
 
   const getTimeStr = () => {
-    const diff = moment.duration(moment().diff(moment(createdAt)));
-    let str = '';
-    if (diff._data.days !== 0) str = `${diff._data.days}d `;
-    if (diff._data.hours !== 0) str += `${diff._data.hours}h`;
-    if (str.length === 0) str = 'less than one hour';
-    return str;
+    const now = new Date();
+    const createdDate = parseISO(createdAt);
+    const days = differenceInDays(now, createdDate);
+    const hours = differenceInHours(now, createdDate) % 24;
+
+    if (days !== 0) return `${days}d ${hours}h`;
+    if (hours !== 0) return `${hours}h`;
+    return 'less than one hour';
   };
 
   const getPreferenceContest = () => {
-    if (contestType === CONSTANTS.NAME_CONTEST) return typeOfName;
-    if (contestType === CONSTANTS.LOGO_CONTEST) return brandStyle;
-    return typeOfTagline;
+    switch (contestType) {
+      case CONSTANTS.NAME_CONTEST:
+        return typeOfName;
+      case CONSTANTS.LOGO_CONTEST:
+        return brandStyle;
+      default:
+        return typeOfTagline;
+    }
   };
 
   const ucFirstLetter = (string) =>
@@ -58,19 +73,11 @@ const ContestBox = (props) => {
         </div>
         <div className={styles.prizeContainer}>
           <div className={styles.guaranteedContainer}>
-            <div>
-              <img
-                src={`${CONSTANTS.STATIC_IMAGES_PATH}smallCheck.png`}
-                alt="check"
-              />
-            </div>
+            <IoCheckmarkCircle />
             <span>Guaranteed prize</span>
           </div>
           <div className={styles.prize}>
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}diamond.png`}
-              alt="diamond"
-            />
+            <IoDiamondOutline />
             <span>{`$${prize}`}</span>
           </div>
         </div>
@@ -78,10 +85,7 @@ const ContestBox = (props) => {
       <div className={styles.entryAndTimeContainer}>
         <div className={styles.entriesContainer}>
           <div className={styles.entriesCounter}>
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}entrieImage.png`}
-              alt="logo"
-            />
+            <FaUser />
             <span>{count}</span>
           </div>
           <span>Entries</span>

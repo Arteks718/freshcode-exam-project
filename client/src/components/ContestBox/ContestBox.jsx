@@ -3,9 +3,22 @@ import moment from 'moment';
 import styles from './ContestBox.module.sass';
 import CONSTANTS from '../../constants';
 
-const ContestBox = props => {
+const ContestBox = (props) => {
+  const { history, goToExtended } = props;
+  const {
+    id,
+    title,
+    contestType,
+    typeOfName,
+    brandStyle,
+    typeOfTagline,
+    prize,
+    count,
+    createdAt,
+  } = props.data;
+
   const getTimeStr = () => {
-    const diff = moment.duration(moment().diff(moment(props.data.createdAt)));
+    const diff = moment.duration(moment().diff(moment(createdAt)));
     let str = '';
     if (diff._data.days !== 0) str = `${diff._data.days}d `;
     if (diff._data.hours !== 0) str += `${diff._data.hours}h`;
@@ -14,20 +27,18 @@ const ContestBox = props => {
   };
 
   const getPreferenceContest = () => {
-    const { data } = props;
-    if (data.contestType === CONSTANTS.NAME_CONTEST) return data.typeOfName;
-    if (data.contestType === CONSTANTS.LOGO_CONTEST) return data.brandStyle;
-    return data.typeOfTagline;
+    if (contestType === CONSTANTS.NAME_CONTEST) return typeOfName;
+    if (contestType === CONSTANTS.LOGO_CONTEST) return brandStyle;
+    return typeOfTagline;
   };
 
-  const ucFirstLetter = string =>
+  const ucFirstLetter = (string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 
-  const { id, title, contestType, prize, count, goToExtended } = props.data;
   return (
     <div
       className={styles.contestBoxContainer}
-      onClick={() => props.goToExtended(id)}
+      onClick={() => goToExtended(history, id)}
     >
       <div className={styles.mainContestInfo}>
         <div className={styles.titleAndIdContainer}>
@@ -50,7 +61,7 @@ const ContestBox = props => {
             <div>
               <img
                 src={`${CONSTANTS.STATIC_IMAGES_PATH}smallCheck.png`}
-                alt='check'
+                alt="check"
               />
             </div>
             <span>Guaranteed prize</span>
@@ -58,7 +69,7 @@ const ContestBox = props => {
           <div className={styles.prize}>
             <img
               src={`${CONSTANTS.STATIC_IMAGES_PATH}diamond.png`}
-              alt='diamond'
+              alt="diamond"
             />
             <span>{`$${prize}`}</span>
           </div>
@@ -69,7 +80,7 @@ const ContestBox = props => {
           <div className={styles.entriesCounter}>
             <img
               src={`${CONSTANTS.STATIC_IMAGES_PATH}entrieImage.png`}
-              alt='logo'
+              alt="logo"
             />
             <span>{count}</span>
           </div>

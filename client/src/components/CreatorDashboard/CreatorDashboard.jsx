@@ -15,6 +15,7 @@ import ContestBox from '../ContestBox/ContestBox';
 import styles from './CreatorDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
 import CONSTANTS from '../../constants';
+import { goToExtended } from '../../utils/contestUtils';
 
 const types = [
   '',
@@ -155,10 +156,6 @@ const CreatorDashboard = (props) => {
     return obj;
   };
 
-  const goToExtended = (contestId) => {
-    history.push(`/contest/${contestId}`);
-  };
-
   const setContestList = () => {
     const array = [];
     for (let i = 0; i < contests.length; i++) {
@@ -166,6 +163,7 @@ const CreatorDashboard = (props) => {
         <ContestBox
           data={contests[i]}
           key={contests[i].id}
+          history={history}
           goToExtended={goToExtended}
         />
       );

@@ -11,6 +11,7 @@ import ContestsContainer from '../ContestsContainer/ContestsContainer';
 import ContestBox from '../ContestBox/ContestBox';
 import styles from './CustomerDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
+import { goToExtended } from '../../utils/contestUtils';
 
 const CustomerDashboard = (props) => {
   const {
@@ -36,10 +37,6 @@ const CustomerDashboard = (props) => {
     });
   };
 
-  const goToExtended = (contest_id) => {
-    history.push(`/contest/${contest_id}`);
-  };
-
   const setContestList = () => {
     const array = [];
     const { contests } = props;
@@ -48,6 +45,7 @@ const CustomerDashboard = (props) => {
         <ContestBox
           data={contests[i]}
           key={contests[i].id}
+          history={history}
           goToExtended={goToExtended}
         />
       );

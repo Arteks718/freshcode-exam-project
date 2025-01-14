@@ -52,7 +52,7 @@ const extraReducers = builder => {
   builder.addCase(getContests.pending, pendingReducer);
   builder.addCase(getContests.fulfilled, (state, { payload }) => {
     state.isFetching = false;
-    state.contests = [...state.contests, ...payload.contests];
+    state.contests = [...payload.contests];
     state.haveMore = payload.haveMore;
   });
   builder.addCase(getContests.rejected, (state, { payload }) => {

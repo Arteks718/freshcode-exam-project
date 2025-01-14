@@ -30,7 +30,7 @@ const types = [
 
 const CreatorDashboard = (props) => {
   const {
-    getContests,
+    getCreatorContests,
     getDataForContest,
     contests,
     clearContestsList,
@@ -44,14 +44,27 @@ const CreatorDashboard = (props) => {
     dataForContest,
   } = props;
 
-  const parseParamsToUrl = (creatorFilter) => {
-    const obj = { ...creatorFilter };
+  const getContests = useCallback(
+    (offset, filter) =>
+      getCreatorContests({
+        limit: 8,
+        offset,
+        ...filter,
+      }),
+    [getCreatorContests]
+  );
 
-    Object.keys(obj).forEach((el) => {
-      if (!obj[el]) delete obj[el];
-    });
-    history.push(`/Dashboard?${queryString.stringify(obj)}`);
-  };
+  const parseParamsToUrl = useCallback(
+    (creatorFilter) => {
+      const obj = { ...creatorFilter };
+
+      Object.keys(obj).forEach((el) => {
+        if (!obj[el]) delete obj[el];
+      });
+      history.push(`/Dashboard?${queryString.stringify(obj)}`);
+    },
+    [history]
+  );
 
   const parseUrlForParams = useCallback(
     (search) => {
@@ -67,11 +80,8 @@ const CreatorDashboard = (props) => {
         newFilter(filter);
       }
       clearContestsList();
-      getContests({
-        limit: 8,
-        offset: 0,
-        ...filter,
-      });
+      getContests(0, filter);
+      console.log('parseUrlForParams', new Date().getTime());
     },
     [creatorFilter, newFilter, clearContestsList, getContests]
   );
@@ -87,15 +97,12 @@ const CreatorDashboard = (props) => {
   };
 
   const renderSelectType = () => {
-    const array = [];
-    types.forEach(
-      (el, i) =>
-        !i ||
-        array.push(
-          <option key={i - 1} value={el}>
-            {el}
-          </option>
-        )
+    const array = types.map((el, i) =>
+      i !== 0 ? (
+        <option key={i - 1} value={el}>
+          {el}
+        </option>
+      ) : null
     );
     return (
       <select
@@ -114,21 +121,19 @@ const CreatorDashboard = (props) => {
   };
 
   const renderIndustryType = () => {
-    const array = [];
-    const { industry } = dataForContest.data;
-
-    array.push(
+    const { data, isFetching } = dataForContest;
+    const array = [
       <option key={0} value={null}>
         Choose industry
-      </option>
-    );
-    industry?.forEach((industry, i) =>
-      array.push(
-        <option key={i + 1} value={industry}>
-          {industry}
-        </option>
-      )
-    );
+      </option>,
+      ...(!isFetching
+        ? data.industry.map((industry, i) => (
+            <option key={i + 1} value={industry}>
+              {industry}
+            </option>
+          ))
+        : []),
+    ];
     return (
       <select
         onChange={({ target }) =>
@@ -172,20 +177,12 @@ const CreatorDashboard = (props) => {
   };
 
   const loadMore = (startFrom) => {
-    getContests({
-      limit: 8,
-      offset: startFrom,
-      ...getPredicateOfRequest(),
-    });
+    getContests(startFrom, getPredicateOfRequest());
   };
 
   const tryLoadAgain = () => {
     clearContestsList();
-    getContests({
-      limit: 8,
-      offset: 0,
-      ...getPredicateOfRequest(),
-    });
+    getContests(0, getPredicateOfRequest());
   };
 
   useEffect(() => {
@@ -234,12 +231,10 @@ const CreatorDashboard = (props) => {
               className={styles.input}
             />
           </div>
-          {!dataForContest.isFetching && (
-            <div className={styles.inputContainer}>
-              <span>By industry</span>
-              {renderIndustryType()}
-            </div>
-          )}
+          <div className={styles.inputContainer}>
+            <span>By industry</span>
+            {renderIndustryType()}
+          </div>
           <div className={styles.inputContainer}>
             <span>By amount award</span>
             <select
@@ -282,7 +277,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getContests: (data) =>
+  getCreatorContests: (data) =>
     dispatch(getContests({ requestData: data, role: CONSTANTS.CREATOR })),
   clearContestsList: () => dispatch(clearContestsList()),
   newFilter: (filter) => dispatch(setNewCreatorFilter(filter)),

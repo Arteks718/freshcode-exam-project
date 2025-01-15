@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { isEqual, formatISO, format } from 'date-fns';
 import className from 'classnames';
 import {
   getDialogMessages,
@@ -29,26 +29,34 @@ const Dialog = (props) => {
   useEffect(() => {
     getDialog({ interlocutorId: props.interlocutor.id });
     scrollToBottom();
-    return clearMessageList
+    return clearMessageList;
   }, [interlocutor.id]);
 
   useEffect(() => {
-    if (messagesEnd.current) 
-      scrollToBottom();
+    if (messagesEnd.current) scrollToBottom();
   }, [messagesEnd, messages]);
 
   const renderMainDialog = () => {
     const messagesArray = [];
-    let currentTime = moment();
+    let currentTime = new Date();
+    console.log(currentTime.toLocaleDateString());
+
+    // TODO Refactor this function
     messages.forEach((message, i) => {
-      if (!currentTime.isSame(message.createdAt, 'date')) {
+      const isEqualDates = !isEqual(
+        formatISO(currentTime, { representation: 'date' }),
+        formatISO(message.createdAt, { representation: 'date' })
+      );
+
+      if (isEqualDates) {
         messagesArray.push(
           <div key={message.createdAt} className={styles.date}>
-            {moment(message.createdAt).format('MMMM DD, YYYY')}
+            {format(message.createdAt, 'MMMM dd, yyyy')}
           </div>
         );
-        currentTime = moment(message.createdAt);
+        currentTime = new Date(message.createdAt);
       }
+
       messagesArray.push(
         <div
           key={i}
@@ -58,7 +66,7 @@ const Dialog = (props) => {
         >
           <span>{message.body}</span>
           <span className={styles.messageTime}>
-            {moment(message.createdAt).format('HH:mm')}
+            {format(message.createdAt, 'HH:mm')}
           </span>
           <div ref={messagesEnd} />
         </div>
@@ -92,7 +100,6 @@ const Dialog = (props) => {
     </>
   );
 };
-
 
 const mapStateToProps = (state) => state.chatStore;
 

@@ -1,15 +1,9 @@
 import React from 'react';
-import moment from 'moment';
 import { IoDiamondOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
-import {
-  formatDistanceToNow,
-  parseISO,
-  differenceInDays,
-  differenceInHours,
-} from 'date-fns';
 import styles from './ContestBox.module.sass';
 import CONSTANTS from '../../constants';
+import { getTimeStr } from '../../utils/dateUtils';
 
 const ContestBox = (props) => {
   const { history, goToExtended } = props;
@@ -25,16 +19,6 @@ const ContestBox = (props) => {
     createdAt,
   } = props.data;
 
-  const getTimeStr = () => {
-    const now = new Date();
-    const createdDate = parseISO(createdAt);
-    const days = differenceInDays(now, createdDate);
-    const hours = differenceInHours(now, createdDate) % 24;
-
-    if (days !== 0) return `${days}d ${hours}h`;
-    if (hours !== 0) return `${hours}h`;
-    return 'less than one hour';
-  };
 
   const getPreferenceContest = () => {
     switch (contestType) {
@@ -91,7 +75,7 @@ const ContestBox = (props) => {
           <span>Entries</span>
         </div>
         <div className={styles.timeContainer}>
-          <span className={styles.timeContest}>{getTimeStr()}</span>
+          <span className={styles.timeContest}>{getTimeStr(createdAt)}</span>
           <span>Going</span>
         </div>
       </div>

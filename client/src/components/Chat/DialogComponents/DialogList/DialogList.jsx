@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { isSameDay, isSameWeek, isSameYear, format } from 'date-fns';
 import CONSTANTS from '../../../../constants';
 import {
   goToExpandedDialog,
@@ -34,11 +34,13 @@ const DialogList = (props) => {
     chatPreview.blackList[chatPreview.participants.indexOf(userId)];
 
   const getTimeStr = (time) => {
-    const currentTime = moment();
-    if (currentTime.isSame(time, 'day')) return moment(time).format('HH:mm');
-    if (currentTime.isSame(time, 'week')) return moment(time).format('dddd');
-    if (currentTime.isSame(time, 'year')) return moment(time).format('MM DD');
-    return moment(time).format('MMMM DD, YYYY');
+    const currentTime = new Date();
+    // TODO Refactor to switch case
+
+    if (isSameDay(currentTime, time)) return format(time, 'HH:mm');
+    if (isSameWeek(currentTime, time)) return format(time, 'dddd');
+    if (isSameYear(currentTime, time)) return format(time, 'MM DD');
+    return format(time, 'MMMM DD, YYYY');
   };
 
   const renderPreview = (filterFunc) => {

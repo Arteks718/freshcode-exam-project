@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { MdOutlineAccessTime } from "react-icons/md";
 import styles from './EventsList.module.sass';
 import EventItem from './EventItem/EventItem';
 import { sortEvents } from '../../../utils/formatUtils';
@@ -14,7 +14,7 @@ const EventsList = (props) => {
         <h2>Live upcoming checks</h2>
         <div className={styles.remainingBlock}>
           <p className={styles.remainingText}>Remaining time</p>
-          <AccessTimeIcon />
+          <MdOutlineAccessTime size="24" />
         </div>
       </div>
       <div className={styles.eventsList}>

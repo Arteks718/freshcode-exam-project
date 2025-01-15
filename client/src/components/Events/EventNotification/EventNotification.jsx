@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { MdOutlineAccessTime } from "react-icons/md";
 import styles from './EventNotification.module.sass';
 import useCurrentDate from '../../../hooks/useCurrentDate';
 
@@ -17,7 +17,7 @@ const EventNotification = (props) => {
     <>
       <div className={styles.notificationBlock}>
         <a href="/events">
-          <AccessTimeIcon className={style.icon} alt="event" />
+          <MdOutlineAccessTime className={style.icon} alt="event" />
           {finishedCount > 0 && (
             <span
               className={classNames([

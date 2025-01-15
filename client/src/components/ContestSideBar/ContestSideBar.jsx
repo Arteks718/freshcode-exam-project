@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { IoCheckmarkCircle } from 'react-icons/io5';
+import { GrDiamond } from "react-icons/gr";
+import { FaRegClock } from "react-icons/fa6";
 import styles from './ContestSideBar.module.sass';
 import CONSTANTS from '../../constants';
 import { getTimeStr } from '../../utils/dateUtils';
@@ -13,29 +16,18 @@ const ContestSideBar = (props) => {
       <div className={styles.contestInfo}>
         <div className={styles.awardAndTimeContainer}>
           <div className={styles.prizeContainer}>
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}big-diamond.png`}
-              alt="diamond"
-            />
+            <GrDiamond />
             <span>{`$ ${prize}`}</span>
           </div>
           <div className={styles.timeContainer}>
             <div className={styles.timeDesc}>
-              <img
-                src={`${CONSTANTS.STATIC_IMAGES_PATH}clock.png`}
-                alt="clock"
-              />
+              <FaRegClock />
               <span>Going</span>
             </div>
             <span className={styles.time}>{getTimeStr(createdAt, true)}</span>
           </div>
           <div className={styles.guaranteedPrize}>
-            <div>
-              <img
-                src={`${CONSTANTS.STATIC_IMAGES_PATH}smallCheck.png`}
-                alt="check"
-              />
-            </div>
+            <IoCheckmarkCircle />
             <span>Guaranteed prize</span>
           </div>
         </div>

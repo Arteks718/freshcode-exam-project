@@ -1,12 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import classNames from 'classnames';
 import { isAfter } from 'date-fns';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { FaCheck, FaTrashAlt } from 'react-icons/fa';
+import { IoCloseSharp } from 'react-icons/io5';
 import styles from './EventItem.module.sass';
 import useCurrentDate from '../../../../hooks/useCurrentDate.jsx';
-import { formatTimeRemaining, calculateProgress } from '../../../../utils/dateUtils.js';
+import {
+  formatTimeRemaining,
+  calculateProgress,
+} from '../../../../utils/dateUtils.js';
 
 const EventItem = (props) => {
   const { deleteEvent } = props;
@@ -29,7 +31,7 @@ const EventItem = (props) => {
 
   const reminderProgressPercentage = useMemo(() => {
     return calculateProgress(startDate, reminderDate, finishDate);
-  }, [startDate, reminderDate, finishDate])
+  }, [startDate, reminderDate, finishDate]);
 
   return (
     <div className={styles.container} key={id}>
@@ -72,7 +74,7 @@ const EventItem = (props) => {
                 setIsHoverItem(true);
               }}
             >
-              <DeleteForeverOutlinedIcon />
+              <FaTrashAlt size="16px" />
             </button>
           </div>
         </div>
@@ -86,7 +88,7 @@ const EventItem = (props) => {
         <p>Are you sure?</p>
         <div className={styles.buttons}>
           <button className={styles.accept} onClick={() => deleteEvent(id)}>
-            <CheckOutlinedIcon />
+            <FaCheck size="14px" />
           </button>
           <button
             className={styles.reject}
@@ -95,7 +97,7 @@ const EventItem = (props) => {
               setIsHoverItem(false);
             }}
           >
-            <CloseOutlinedIcon />
+            <IoCloseSharp size="18px" />
           </button>
         </div>
       </div>

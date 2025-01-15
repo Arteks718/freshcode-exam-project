@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import { FaPhoneAlt } from 'react-icons/fa';
+import { FiMail } from 'react-icons/fi';
+import { IoMdArrowDropdown } from 'react-icons/io';
 import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
 import { clearUserStore, getUser } from '../../store/slices/userSlice';
@@ -50,10 +52,7 @@ const Header = (props) => {
               alt="user"
             />
             <span>{`Hi, ${data.displayName}`}</span>
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-              alt="menu"
-            />
+            <IoMdArrowDropdown color="#718888" alt="menu" />
             <ul>
               <li>
                 <Link to="/dashboard" style={{ textDecoration: 'none' }}>
@@ -86,7 +85,7 @@ const Header = (props) => {
               </li>
             </ul>
           </div>
-          <MailOutlineIcon className={styles.icon} alt="email" />
+          <FiMail className={styles.icon} alt="email" />
           {data.role === CONSTANTS.CUSTOMER && (
             <EventNotification
               style={{ icon: styles.icon }}
@@ -128,7 +127,7 @@ const Header = (props) => {
       </div>
       <div className={styles.loginSignnUpHeaders}>
         <div className={styles.numberContainer}>
-          <img src={`${CONSTANTS.STATIC_IMAGES_PATH}phone.png`} alt="phone" />
+          <FaPhoneAlt alt="phone" />
           <a href="tel:8773553585">
             <span>(877)&nbsp;355-3585</span>
           </a>
@@ -150,10 +149,7 @@ const Header = (props) => {
             <ul>
               <li>
                 <span>NAME IDEAS</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <IoMdArrowDropdown color="#718888" alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">Beauty</a>
@@ -183,10 +179,7 @@ const Header = (props) => {
               </li>
               <li>
                 <span>CONTESTS</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <IoMdArrowDropdown color="#718888" alt="menu" />
                 <ul>
                   <li>
                     <Link to="/how-it-works" style={{ textDecoration: 'none' }}>
@@ -215,10 +208,7 @@ const Header = (props) => {
               </li>
               <li>
                 <span>Our Work</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <IoMdArrowDropdown color="#718888" alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">NAMES</a>
@@ -236,10 +226,7 @@ const Header = (props) => {
               </li>
               <li>
                 <span>Names For Sale</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <IoMdArrowDropdown color="#718888" alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">POPULAR NAMES</a>
@@ -263,10 +250,7 @@ const Header = (props) => {
               </li>
               <li>
                 <span>Blog</span>
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
-                  alt="menu"
-                />
+                <IoMdArrowDropdown color="#718888" alt="menu" />
                 <ul>
                   <li>
                     <a href="http://www.google.com">ULTIMATE NAMING GUIDE</a>

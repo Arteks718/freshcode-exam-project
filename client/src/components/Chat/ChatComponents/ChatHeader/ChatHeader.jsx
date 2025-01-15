@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { FaArrowLeft } from 'react-icons/fa';
 import {
   backToDialogList,
   changeChatFavorite,
@@ -38,10 +39,7 @@ const ChatHeader = (props) => {
         className={styles.buttonContainer}
         onClick={() => backToDialogList()}
       >
-        <img
-          src={`${CONSTANTS.STATIC_IMAGES_PATH}arrow-left-thick.png`}
-          alt="back"
-        />
+        <FaArrowLeft color="white" size="28" alt="back" />
       </div>
       <div className={styles.infoContainer}>
         <div>

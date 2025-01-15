@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
 import { confirmAlert } from 'react-confirm-alert';
+import { MdOutlineStar, MdOutlineStarBorder } from 'react-icons/md';
 import { goToExpandedDialog } from '../../store/slices/chatSlice';
 import {
   changeMark,
@@ -133,22 +134,13 @@ const OfferBox = (props) => {
               initialRating={rating}
               fractions={2}
               fullSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
+                <MdOutlineStar size="20" color="#556da5" alt="star" />
               }
               placeholderSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
+                <MdOutlineStar size="20" color="#556da5" alt="star" />
               }
               emptySymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`}
-                  alt="star-outline"
-                />
+                <MdOutlineStarBorder size="20" color="#556da5" alt="star" />
               }
               readonly
             />
@@ -174,22 +166,13 @@ const OfferBox = (props) => {
             <Rating
               fractions={2}
               fullSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
+                <MdOutlineStar size="20" color="#556da5" alt="star" />
               }
               placeholderSymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`}
-                  alt="star"
-                />
+                <MdOutlineStar size="20" color="#556da5" alt="star" />
               }
               emptySymbol={
-                <img
-                  src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`}
-                  alt="star"
-                />
+                <MdOutlineStarBorder size="20" color="#556da5" alt="star" />
               }
               onClick={changeMark}
               placeholderRating={data.mark}

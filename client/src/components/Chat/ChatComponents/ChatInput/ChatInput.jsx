@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
+import { IoIosSend } from "react-icons/io";
 import { sendMessage } from '../../../../store/slices/chatSlice';
 import styles from './ChatInput.module.sass';
 import CONSTANTS from '../../../../constants';
@@ -36,10 +37,7 @@ const ChatInput = (props) => {
             }}
           />
           <button type="submit">
-            <img
-              src={`${CONSTANTS.STATIC_IMAGES_PATH}send.png`}
-              alt="send Message"
-            />
+            <IoIosSend />
           </button>
         </Form>
       </Formik>

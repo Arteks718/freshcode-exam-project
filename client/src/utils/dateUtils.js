@@ -37,7 +37,7 @@ export const getTimeStr = (createdAt, long = false) => {
   const hours = differenceInHours(now, createdDate) % 24;
 
   const daysStr = long ? `${days} days` : `${days}d`;
-  const hoursStr = long ? `${hours} hours` : `${hours}h`;
+  const hoursStr = long ? ` ${hours} hours` : `${hours}h`;
 
   let str = '';
   if (days !== 0) str = daysStr;

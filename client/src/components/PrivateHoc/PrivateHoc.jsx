@@ -1,43 +1,25 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { getUser } from '../../store/slices/userSlice';
 import Spinner from '../Spinner/Spinner';
-import CONSTANTS from '../../constants';
+import useUser from '../../hooks/useUser';
 
 const PrivateHoc = (Component) => {
   const Hoc = (props) => {
-    const { data, getUser, history, match, isFetching, error } = props;
-    const token = localStorage.hasOwnProperty(CONSTANTS.ACCESS_TOKEN);
+    const { history, match } = props;
+    const { data, isFetching, isLoading } = useUser();
 
-    useEffect(() => {
-      if (!token) {
-        return <Redirect to="/login" />;
-      }
+    if (isLoading && isFetching) {
+      return <Spinner />;
+    }
 
-      if (!data) {
-        getUser();
-      }
-    }, [getUser, data, token]);
+    if (!isFetching && !data) {
+      return <Redirect to="/login" />;
+    }
 
-    return (
-      <>
-        {isFetching ? (
-          <Spinner />
-        ) : (
-          <Component history={history} match={match} {...props} />
-        )}
-      </>
-    );
+    return !isFetching && <Component history={history} match={match} {...props} />;
   };
 
-  const mapStateToProps = (state) => state.userStore;
-
-  const mapDispatchToProps = (dispatch) => ({
-    getUser: () => dispatch(getUser()),
-  });
-
-  return connect(mapStateToProps, mapDispatchToProps)(Hoc);
+  return Hoc;
 };
 
 export default PrivateHoc;

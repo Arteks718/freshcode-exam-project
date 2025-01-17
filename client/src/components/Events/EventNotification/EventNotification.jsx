@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { MdOutlineAccessTime } from "react-icons/md";
 import styles from './EventNotification.module.sass';
 import useCurrentDate from '../../../hooks/useCurrentDate';
+import { Link } from 'react-router-dom';
 
 const EventNotification = (props) => {
   const { style, checkTime } = props;
@@ -16,7 +17,7 @@ const EventNotification = (props) => {
   return (
     <>
       <div className={styles.notificationBlock}>
-        <a href="/events">
+        <Link to="/events">
           <MdOutlineAccessTime className={style.icon} alt="event" />
           {finishedCount > 0 && (
             <span
@@ -38,7 +39,7 @@ const EventNotification = (props) => {
               {reminderCount}
             </span>
           )}
-        </a>
+        </Link>
       </div>
     </>
   );

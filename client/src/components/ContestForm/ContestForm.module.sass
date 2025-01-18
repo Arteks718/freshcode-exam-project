@@ -138,20 +138,11 @@
 .fileUploadContainer
   display: flex
   align-items: center
-  justify-content: center
-  height: 80px
   box-sizing: border-box
-  width: 350px
+  width: min-content
   margin: 10px 0 10px 0
   padding: 10px 15px
   background-color: #eee
-  @media(max-width: 700px)
-    width: auto
-  @media(max-width: 600px)
-    display: flex
-    flex-direction: column
-    align-items: center
-    height: 120px
 
   .label
     text-align: center
@@ -162,13 +153,33 @@
     font-size: 16px
     cursor: pointer
 
+  .fileBlock
+    display: flex
+    column-gap: 30px
+    background-color: #fff
+    width: 100%
+    justify-content: space-between
+    align-items: center
+    padding: 12px
+
+    svg
+      font-size: 24px
+      cursor: pointer
+      transition: opacity .1s linear
+
+      &:hover
+        opacity: 0.8
+
   .fileName
-    width: 100px
+    width: 250px
     display: inline-block
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
-    padding: 12px
+    @media(max-width: 700px)
+      width: auto
+    @media(max-width: 480px)
+      width: 200px
 
   .fileInput
     display: none

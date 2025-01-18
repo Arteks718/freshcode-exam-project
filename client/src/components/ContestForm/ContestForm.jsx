@@ -161,6 +161,7 @@ const ContestForm = (props) => {
                 classes={{
                   fileUploadContainer: styles.fileUploadContainer,
                   labelClass: styles.label,
+                  fileBlockClass: styles.fileBlock,
                   fileNameClass: styles.fileName,
                   fileInput: styles.fileInput,
                   warning: styles.warning,

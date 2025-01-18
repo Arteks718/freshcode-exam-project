@@ -1,39 +1,46 @@
 import React from 'react';
-import { Field } from 'formik';
+import { useField } from 'formik';
+import { IoCloseSharp } from 'react-icons/io5';
 
-const FieldFileInput = ({ classes, ...rest }) => {
-  const { fileUploadContainer, labelClass, fileNameClass, fileInput } = classes;
+const FieldFileInput = (props) => {
+  const { name } = props;
+  const { fileUploadContainer, labelClass, fileNameClass, fileInput, fileBlockClass } =
+    props.classes;
+
+  const [{ value, ...field }, meta, helpers] = useField(name);
+
+  const onChange = (e) => {
+    helpers.setValue(e.target.files[0]);
+  };
+
+  const removeFile = () => {
+    helpers.setValue(null);
+  };
 
   return (
-    <Field name={rest.name}>
-      {props => {
-        const { field } = props;
-
-        const getFileName = () => {
-          if (props.field.value) {
-            return props.field.value.name;
-          }
-          return '';
-        };
-
-        return (
-          <div className={fileUploadContainer}>
-            <label htmlFor='fileInput' className={labelClass}>
-              Choose file
-            </label>
-            <span id='fileNameContainer' className={fileNameClass}>
-              {getFileName()}
-            </span>
-            <input
-              {...field}
-              className={fileInput}
-              id='fileInput'
-              type='file'
-            />
-          </div>
-        );
-      }}
-    </Field>
+    <div className={fileUploadContainer}>
+      {!value?.name ? (
+        <div>
+          <label htmlFor="fileInput" className={labelClass}>
+            Choose file
+          </label>
+          <input
+            {...field}
+            className={fileInput}
+            id="fileInput"
+            type="file"
+            onChange={onChange}
+          />
+        </div>
+      ) : (
+        <div className={fileBlockClass}>
+          <span id="fileNameContainer" className={fileNameClass}>
+            {value?.name}
+          </span>
+          <IoCloseSharp onClick={removeFile}/>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import CONTANTS from '../constants';
 import history from '../browserHistory';
+import resetUser from '../utils/resetUser';
 
 const instance = axios.create({
   baseURL: CONTANTS.BASE_URL,
@@ -26,14 +27,10 @@ instance.interceptors.response.use(
   },
   (err) => {
     if (
-      // TODO replace to array of paths
       err.response.status === 408 &&
-      history.location.pathname !== '/login' &&
-      history.location.pathname !== '/registration' &&
-      history.location.pathname !== '/how-it-works' &&
-      history.location.pathname !== '/'
+      !CONTANTS.PUBLIC_LOCATIONS.includes(window.location.pathname)
     ) {
-      history.replace('/login');
+      resetUser(history);
     }
     return Promise.reject(err);
   }

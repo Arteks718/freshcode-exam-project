@@ -1,19 +1,17 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import useUser from '../../hooks/useUser';
 
 const PrivateHoc = (Component) => {
   const Hoc = (props) => {
     const { history, match } = props;
-    const { data, isFetching, isLoading } = useUser();
+    const { isFetching, isLoading, token } = useUser();
 
     if (isLoading && isFetching) {
       return <Spinner />;
     }
-
-    if (!isFetching && !data) {
-      return <Redirect to="/login" />;
+    if (isFetching && !token) {
+      return history.replace('/login')
     }
 
     return !isFetching && <Component history={history} match={match} {...props} />;

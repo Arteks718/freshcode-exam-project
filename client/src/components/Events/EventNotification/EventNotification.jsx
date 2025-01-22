@@ -1,18 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { MdOutlineAccessTime } from "react-icons/md";
+import { MdOutlineAccessTime } from 'react-icons/md';
 import styles from './EventNotification.module.sass';
 import useCurrentDate from '../../../hooks/useCurrentDate';
 import { Link } from 'react-router-dom';
+import CONSTANTS from '../../../constants';
 
 const EventNotification = (props) => {
-  const { style, checkTime } = props;
+  const { style, checkTime, role, events } = props;
   const { finishedCount, reminderCount } = props.counts;
   const currentDate = useCurrentDate();
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
-    checkTime(currentDate.getTime());
-  }, [currentDate, checkTime]);
+    checkTime(currentDate)
+  }, [])
+
+  useEffect(() => {
+    if (role === CONSTANTS.CUSTOMER) {
+      const nextEventTime = events.reduce((nextTime, event) => {
+        const reminderTime = new Date(event.reminderDate).getTime();
+        const finishTime = new Date(event.finishDate).getTime();
+        const currentTime = currentDate.getTime();
+
+        if (reminderTime > currentTime && (nextTime === null || reminderTime < nextTime)) {
+          return reminderTime;
+        }
+        if (finishTime > currentTime && (nextTime === null || finishTime < nextTime)) {
+          return finishTime;
+        }
+        return nextTime;
+      }, null);
+
+      if (nextEventTime !== null) {
+        const delay = nextEventTime - currentDate.getTime();
+        timeoutRef.current = setTimeout(() => {
+          checkTime(currentDate.getTime());
+        }, delay);
+      }
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [currentDate, checkTime, role, events]);
+
+  if (role !== CONSTANTS.CUSTOMER) {
+    return null;
+  }
 
   return (
     <>

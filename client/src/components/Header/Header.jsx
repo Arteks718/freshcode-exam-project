@@ -20,6 +20,7 @@ const Header = (props) => {
     reminderCount,
     history,
     isFetching,
+    events
   } = props;
 
   useEffect(() => {
@@ -86,13 +87,13 @@ const Header = (props) => {
             </ul>
           </div>
           <FiMail className={styles.icon} alt="email" />
-          {data.role === CONSTANTS.CUSTOMER && (
-            <EventNotification
-              style={{ icon: styles.icon }}
-              checkTime={checkTime}
-              counts={{ finishedCount, reminderCount }}
-            />
-          )}
+          <EventNotification
+            style={{ icon: styles.icon }}
+            checkTime={checkTime}
+            counts={{ finishedCount, reminderCount }}
+            role={data.role}
+            events={events}
+          />
         </>
       );
     }

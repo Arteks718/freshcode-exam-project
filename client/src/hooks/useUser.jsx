@@ -13,7 +13,6 @@ const useUser = () => {
       dispatch(getUser());
     }
     setIsLoading(false);
-    console.log('test2')
   }, [data, dispatch, token]);
   return { data, isFetching, isLoading, error, token };
 };

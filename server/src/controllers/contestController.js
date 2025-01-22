@@ -188,6 +188,13 @@ const resolveOffer = async (
     'Someone of yours offers was rejected', contestId);
   controller.getNotificationController().emitChangeOfferStatus(creatorId,
     'Someone of your offers WIN', contestId);
+
+  updatedOffers.sort((a, b) => {
+    if (a.status === CONSTANTS.OFFER_STATUS_WON) return -1;
+    if (b.status === CONSTANTS.OFFER_STATUS_WON) return 1;
+    return 0;
+  });
+  
   return updatedOffers[ 0 ].dataValues;
 };
 

@@ -34,6 +34,7 @@ const ContestPage = (props) => {
     changeContestViewMode,
     userStore,
     chatStore,
+    setOfferStatus,
   } = props;
 
   const getDataForContest = () => {
@@ -50,19 +51,17 @@ const ContestPage = (props) => {
   }, []);
 
   const setOffersList = () => {
-    const array = [];
-    for (let i = 0; i < contestByIdStore.offers.length; i++) {
-      array.push(
-        <OfferBox
-          data={contestByIdStore.offers[i]}
-          key={contestByIdStore.offers[i].id}
-          needButtons={needButtons}
-          setOfferStatus={setOfferStatus}
-          contestType={contestByIdStore.contestData.contestType}
-          date={new Date()}
-        />
-      );
-    }
+    const array = contestByIdStore.offers.map(offer => (
+      <OfferBox
+        data={offer}
+        key={offer.id}
+        needButtons={needButtons}
+        setOfferStatus={handleSetOfferStatus}
+        contestType={contestByIdStore.contestData.contestType}
+        date={new Date()}
+      />
+    ));
+
     return array.length !== 0 ? (
       array
     ) : (
@@ -83,7 +82,7 @@ const ContestPage = (props) => {
     );
   };
 
-  const setOfferStatus = (creatorId, offerId, command) => {
+  const handleSetOfferStatus = (creatorId, offerId, command) => {
     clearSetOfferStatusError();
     const { id, orderId, priority } = contestByIdStore.contestData;
     const obj = {
@@ -179,11 +178,7 @@ const ContestPage = (props) => {
               </span>
             </div>
             {isBrief ? (
-              <Brief
-                contestData={contestData}
-                role={role}
-                goChat={goChat}
-              />
+              <Brief contestData={contestData} role={role} goChat={goChat} />
             ) : (
               <div className={styles.offersContainer}>
                 {role === CONSTANTS.CREATOR &&

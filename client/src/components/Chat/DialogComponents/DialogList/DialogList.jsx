@@ -35,24 +35,22 @@ const DialogList = (props) => {
 
   const getTimeStr = (time) => {
     const currentTime = new Date();
-    // TODO Refactor to switch case
 
-    if (isSameDay(currentTime, time)) return format(time, 'HH:mm');
-    if (isSameWeek(currentTime, time)) return format(time, 'dddd');
-    if (isSameYear(currentTime, time)) return format(time, 'MM DD');
-    return format(time, 'MMMM DD, YYYY');
+    switch (true) {
+      case isSameDay(currentTime, time):
+        return format(time, 'HH:mm');
+      case isSameWeek(currentTime, time):
+        return format(time, 'dddd');
+      case isSameYear(currentTime, time):
+        return format(time, 'MM dd');
+      default:
+        return format(time, 'MMMM dd, YYYY');
+    }
   };
 
   const renderPreview = (filterFunc) => {
     const arrayList = [];
-    const {
-      userId,
-      preview,
-      goToExpandedDialog,
-      chatMode,
-      removeChat,
-      interlocutor,
-    } = props;
+    const { userId, preview, goToExpandedDialog, chatMode, removeChat } = props;
     preview.forEach((chatPreview, index) => {
       const dialogNode = (
         <DialogBox

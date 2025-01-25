@@ -1,19 +1,23 @@
 import React, { useRef, useCallback } from 'react';
 import classNames from 'classnames';
 import { useField } from 'formik';
+import CONSTANTS from '../../../constants';
 
 const ImageUpload = (props) => {
   const [{ value, ...field }, , helpers] = useField(props.name);
   const { uploadContainer, inputContainer, imgStyle } = props.classes;
   const imagePreviewRef = useRef(null);
 
+  const imageTypes = CONSTANTS.UPLOAD_IMAGE_TYPES.join('|');
+  const imageTypeRegex = new RegExp(`image/(${imageTypes})`);
+  const acceptedImageTypes = CONSTANTS.UPLOAD_IMAGE_TYPES.map(img => `.${img}`).join(', ');
+
   const onChange = useCallback((e) => {
     const file = e.target.files[0];
-    const imageType = /image.*/;
 
-    if (!file.type.match(imageType)) {
+    if (!file.type.match(imageTypeRegex)) {
       e.target.value = '';
-      return
+      return;
     } else {
       helpers.setValue(file);
       const reader = new FileReader();
@@ -27,17 +31,17 @@ const ImageUpload = (props) => {
       };
       reader.readAsDataURL(file);
     }
-  }, [helpers]);
+  }, [helpers, imageTypeRegex]);
 
   return (
     <div className={uploadContainer}>
       <div className={inputContainer}>
-        <span>Support only images (*.png, *.gif, *.jpg, *.jpeg)</span>
+        <span>Support only images ({acceptedImageTypes})</span>
         <input
           {...field}
           id="fileInput"
           type="file"
-          accept=".jpg, .png, .jpeg"
+          accept={acceptedImageTypes}
           onChange={onChange}
         />
         <label htmlFor="fileInput">Choose file</label>

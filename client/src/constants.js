@@ -35,6 +35,7 @@ export default {
     REGISTER: 'REGISTER',
     LOGIN: 'LOGIN',
   },
+  UPLOAD_IMAGE_TYPES: ['png', 'gif', 'jpg', 'jpeg'],
   HEADER_ANIMATION_TEXT: [
     'a Company',
     'a Brand',

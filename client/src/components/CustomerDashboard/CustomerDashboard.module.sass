@@ -1,3 +1,9 @@
+@keyframes spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+  
 .mainContainer
   width: 1200px
   margin: 0 auto
@@ -32,7 +38,14 @@
     width: 100%
     margin-top: 15px
 
+    .emptyNotification
+      margin-top: 30px
+      font-size: 24px
+      font-weight: 500
+      color: #4e618d
+
   .filterContainer
+    position: relative
     min-width: 250px
     height: 350px
     padding-top: 30px
@@ -78,3 +91,18 @@
       @media(max-width: 1000px)
         height: 20px
         margin: 0 5px
+
+    .refreshButton
+      position: absolute
+      bottom: 20px
+      right: 20px
+      font-size: 28px
+      color: #4e618d
+      cursor: pointer
+      transition: scale .1s linear
+
+      &.loading
+        animation: spin .75s linear infinite none
+
+      &:hover
+        scale: 1.1

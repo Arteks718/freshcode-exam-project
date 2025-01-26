@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { IoMdRefresh } from 'react-icons/io';
 import {
   getContests,
   clearContestsList,
@@ -23,11 +24,12 @@ const CustomerDashboard = (props) => {
     history,
     clearContestsList,
     newFilter,
+    contests,
   } = props;
 
   useEffect(() => {
     getContests({ limit: 8, contestStatus: customerFilter });
-  }, [customerFilter]);
+  }, [customerFilter, getContests]);
 
   const loadMore = (startFrom) => {
     getContests({
@@ -38,18 +40,14 @@ const CustomerDashboard = (props) => {
   };
 
   const setContestList = () => {
-    const array = [];
-    const { contests } = props;
-    for (let i = 0; i < contests.length; i++) {
-      array.push(
-        <ContestBox
-          data={contests[i]}
-          key={contests[i].id}
-          history={history}
-          goToExtended={goToExtended}
-        />
-      );
-    }
+    const array = contests.map((contest) => (
+      <ContestBox
+        data={contest}
+        key={contest.id}
+        history={history}
+        goToExtended={goToExtended}
+      />
+    ));
     return array;
   };
 
@@ -58,11 +56,17 @@ const CustomerDashboard = (props) => {
     getContests({ limit: 8, contestStatus: customerFilter });
   };
 
+  const updateFilter = (status) => {
+    if (status !== customerFilter) {
+      newFilter(status);
+    }
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.filterContainer}>
         <div
-          onClick={() => newFilter(CONSTANTS.CONTEST_STATUS_ACTIVE)}
+          onClick={() => updateFilter(CONSTANTS.CONTEST_STATUS_ACTIVE)}
           className={classNames({
             [styles.activeFilter]:
               CONSTANTS.CONTEST_STATUS_ACTIVE === customerFilter,
@@ -72,7 +76,7 @@ const CustomerDashboard = (props) => {
           Active Contests
         </div>
         <div
-          onClick={() => newFilter(CONSTANTS.CONTEST_STATUS_FINISHED)}
+          onClick={() => updateFilter(CONSTANTS.CONTEST_STATUS_FINISHED)}
           className={classNames({
             [styles.activeFilter]:
               CONSTANTS.CONTEST_STATUS_FINISHED === customerFilter,
@@ -83,7 +87,7 @@ const CustomerDashboard = (props) => {
           Completed contests
         </div>
         <div
-          onClick={() => newFilter(CONSTANTS.CONTEST_STATUS_PENDING)}
+          onClick={() => updateFilter(CONSTANTS.CONTEST_STATUS_PENDING)}
           className={classNames({
             [styles.activeFilter]:
               CONSTANTS.CONTEST_STATUS_PENDING === customerFilter,
@@ -93,6 +97,13 @@ const CustomerDashboard = (props) => {
         >
           Inactive contests
         </div>
+        <IoMdRefresh
+          className={classNames([
+            styles.refreshButton,
+            isFetching && styles.loading,
+          ])}
+          onClick={tryToGetContest}
+        />
       </div>
       <div className={styles.contestsContainer}>
         {error ? (
@@ -105,6 +116,11 @@ const CustomerDashboard = (props) => {
             haveMore={haveMore}
           >
             {setContestList()}
+            {!contests.length && !isFetching && (
+              <div className={styles.emptyNotification}>
+                This contests list is empty
+              </div>
+            )}
           </ContestsContainer>
         )}
       </div>

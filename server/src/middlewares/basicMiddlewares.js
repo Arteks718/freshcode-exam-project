@@ -1,4 +1,4 @@
-const bd = require('../models');
+const bd = require('../db/models');
 const NotFound = require('../errors/UserNotFoundError');
 const RightsError = require('../errors/RightsError');
 const ServerError = require('../errors/ServerError');

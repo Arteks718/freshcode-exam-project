@@ -3,7 +3,7 @@ const http = require('http');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('./dbMongo/mongoose');
+require('./db/dbMongo/mongoose');
 const router = require('./router');
 const controller = require('./socketInit');
 const handlerError = require('./handlerError/handler');

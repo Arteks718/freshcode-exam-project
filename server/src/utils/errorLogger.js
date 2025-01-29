@@ -1,5 +1,6 @@
 const winston = require('winston');
 const { combine, printf, errors } = winston.format;
+const CONSTANTS = require('../constants.js')
 
 const customFormat = printf(({ message, stack, code }) => {
   return JSON.stringify({
@@ -14,7 +15,7 @@ const errorLogger = winston.createLogger({
   format: combine(errors({ stack: true }), customFormat),
   transports: [
     new winston.transports.File({
-      filename: 'combined.log',
+      filename: `logs/${CONSTANTS.LOGGER_ERRORS_FILE_NAME}`,
     }),
   ],
 });

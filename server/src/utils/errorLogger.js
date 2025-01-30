@@ -15,7 +15,7 @@ const errorLogger = winston.createLogger({
   format: combine(errors({ stack: true }), customFormat),
   transports: [
     new winston.transports.File({
-      filename: `logs/${CONSTANTS.LOGGER_ERRORS_FILE_NAME}`,
+      filename: `${CONSTANTS.LOGS.DIR}/${CONSTANTS.LOGS.ERRORS_FILE_NAME}`,
     }),
   ],
 });

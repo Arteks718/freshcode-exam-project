@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 require('./db/dbMongo/mongoose');
+require('./utils/scheduleLogger')
 const router = require('./router');
 const controller = require('./socketInit');
 const handlerError = require('./handlerError/handler');
@@ -18,5 +19,8 @@ app.use(router);
 app.use(handlerError);
 
 const server = http.createServer(app);
-server.listen(PORT, () =>  console.log(`Example app listening on port ${PORT}!`));
+server.listen(PORT, () =>
+  console.log(`Example app listening on port ${PORT}!`)
+);
 controller.createConnection(server);
+

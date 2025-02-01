@@ -35,6 +35,10 @@ db[ 'Users' ].hasMany(db[ 'Contests' ],
   { foreignKey: 'userId', targetKey: 'id' });
 db[ 'Users' ].hasMany(db[ 'Ratings' ],
   { foreignKey: 'userId', targetKey: 'id' });
+db[ 'Users' ].hasMany(db[ 'Catalogs' ],
+  { foreignKey: 'userId', targetKey: 'id' });
+db[ 'Users' ].hasMany(db[ 'Messages' ],
+  { foreignKey: 'userId', targetKey: 'id' });
 
 db[ 'Offers' ].belongsTo(db[ 'Users' ],
   { foreignKey: 'userId', sourceKey: 'id' });
@@ -47,6 +51,26 @@ db[ 'Ratings' ].belongsTo(db[ 'Users' ],
   { foreignKey: 'userId', targetKey: 'id' });
 db[ 'Ratings' ].belongsTo(db[ 'Offers' ],
   { foreignKey: 'offerId', targetKey: 'id' });
+
+db[ 'Catalogs' ].belongsTo(db[ 'Users' ],
+  { foreignKey: 'userId', sourceKey: 'id' });
+db[ 'Catalogs' ].hasMany(db[ 'Chats' ],
+  { foreignKey: 'catalogId', targetKey: 'id' });
+
+db[ 'Conversations' ].hasMany(db[ 'Messages' ],
+  { foreignKey: 'conversationId', targetKey: 'id' });
+db[ 'Conversations' ].hasMany(db[ 'Chats' ],
+  { foreignKey: 'conversationId', targetKey: 'id' });
+
+db[ 'Chats' ].belongsTo(db[ 'Catalogs' ],
+  { foreignKey: 'catalogId', sourceKey: 'id' });
+db[ 'Chats' ].belongsTo(db[ 'Conversations' ],
+  { foreignKey: 'conversationId', sourceKey: 'id' });
+
+db[ 'Messages' ].belongsTo(db[ 'Users' ],
+  { foreignKey: 'userId', sourceKey: 'id' });
+db[ 'Messages' ].belongsTo(db[ 'Conversations' ],
+  { foreignKey: 'conversationId', sourceKey: 'id' });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

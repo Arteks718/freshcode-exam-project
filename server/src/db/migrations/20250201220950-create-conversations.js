@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       },
-      upgradeAt: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW

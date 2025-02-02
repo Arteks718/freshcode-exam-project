@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     },
-    upgradeAt: {
+    updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW

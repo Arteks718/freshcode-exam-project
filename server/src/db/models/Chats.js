@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     conversationId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'Conversations',
         key: 'id',
@@ -11,10 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     catalogId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'Catalogs',
         key: 'id',
       },
     },
+  }, {
+    timestamps: false
   });
 };

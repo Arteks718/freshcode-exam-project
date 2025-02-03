@@ -5,7 +5,8 @@ FROM node:$VERSION
 ARG NODE_ENV="development"
 
 RUN mkdir /server \
-    && mkdir -p /public/images
+    && mkdir -p /public/images \
+    && mkdir -p /logs
 
 RUN mkdir -p /var/www/html/images 
 

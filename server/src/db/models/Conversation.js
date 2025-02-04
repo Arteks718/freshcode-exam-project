@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: [false, false]
     },
-    favourityList: {
+    favoriteList: {
       type: DataTypes.ARRAY(DataTypes.BOOLEAN),
       allowNull: false,
       defaultValue: [false, false]

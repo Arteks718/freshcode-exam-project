@@ -38,7 +38,7 @@ db[ 'Users' ].hasMany(db[ 'Ratings' ],
 db[ 'Users' ].hasMany(db[ 'Catalogs' ],
   { foreignKey: 'userId', targetKey: 'id' });
 db[ 'Users' ].hasMany(db[ 'Messages' ],
-  { foreignKey: 'userId', targetKey: 'id' });
+  { foreignKey: 'sender', targetKey: 'id' });
 
 db[ 'Offers' ].belongsTo(db[ 'Users' ],
   { foreignKey: 'userId', sourceKey: 'id' });
@@ -68,7 +68,7 @@ db[ 'Chats' ].belongsTo(db[ 'Conversations' ],
   { foreignKey: 'conversationId', sourceKey: 'id' });
 
 db[ 'Messages' ].belongsTo(db[ 'Users' ],
-  { foreignKey: 'userId', sourceKey: 'id' });
+  { foreignKey: 'sender', sourceKey: 'id' });
 db[ 'Messages' ].belongsTo(db[ 'Conversations' ],
   { foreignKey: 'conversationId', sourceKey: 'id' });
 

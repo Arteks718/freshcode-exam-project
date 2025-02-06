@@ -19,12 +19,13 @@ const DialogBox = props => {
     favoriteList,
     participants,
     blackList,
-    _id,
+    id,
     text,
-    createAt,
+    createdAt,
   } = chatPreview;
   const isFavorite = favoriteList[participants.indexOf(userId)];
   const isBlocked = blackList[participants.indexOf(userId)];
+
   return (
     <div
       className={styles.previewChatBox}
@@ -33,7 +34,7 @@ const DialogBox = props => {
           interlocutor,
           conversationData: {
             participants,
-            _id,
+            id,
             blackList,
             favoriteList,
           },
@@ -56,13 +57,14 @@ const DialogBox = props => {
           <span className={styles.interlocutorMessage}>{text}</span>
         </div>
         <div className={styles.buttonsContainer}>
-          <span className={styles.time}>{getTimeStr(createAt)}</span>
+          <span className={styles.time}>{getTimeStr(createdAt)}</span>
           <i
             onClick={event =>
               changeFavorite(
                 {
                   participants,
                   favoriteFlag: !isFavorite,
+                  currentFavoriteList: favoriteList
                 },
                 event
               )
@@ -78,6 +80,7 @@ const DialogBox = props => {
                 {
                   participants,
                   blackListFlag: !isBlocked,
+                  currentBlackList: blackList
                 },
                 event
               )
@@ -88,7 +91,7 @@ const DialogBox = props => {
             })}
           />
           <i
-            onClick={event => catalogOperation(event, _id)}
+            onClick={event => catalogOperation(event, id)}
             className={classNames({
               'far fa-plus-square':
                 chatMode !== CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,

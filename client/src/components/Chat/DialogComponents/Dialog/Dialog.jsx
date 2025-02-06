@@ -23,34 +23,31 @@ const Dialog = (props) => {
   const messagesEnd = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEnd.current.scrollIntoView({ behavior: 'auto' });
+    if (messagesEnd.current) {
+      messagesEnd.current.scrollIntoView({ behavior: 'auto' });
+    }
   };
 
   useEffect(() => {
-    getDialog({ interlocutorId: props.interlocutor.id });
+    getDialog({ interlocutorId: interlocutor.id });
     scrollToBottom();
-    return clearMessageList;
-  }, [interlocutor.id]);
+    return clearMessageList
+  }, [interlocutor.id, getDialog, clearMessageList]);
 
   useEffect(() => {
-    if (messagesEnd.current) scrollToBottom();
-  }, [messagesEnd, messages]);
-
+    scrollToBottom();
+  }, [messages]);
   const renderMainDialog = () => {
     const messagesArray = [];
     let currentTime = new Date();
-    console.log(currentTime.toLocaleDateString());
 
-    // TODO Refactor this function
     messages.forEach((message, i) => {
-      const isEqualDates = !isEqual(
-        formatISO(currentTime, { representation: 'date' }),
-        formatISO(message.createdAt, { representation: 'date' })
-      );
+      const messageDate = formatISO(message.createdAt, { representation: 'date' });
+      const currentDate = formatISO(currentTime, { representation: 'date' });
 
-      if (isEqualDates) {
+      if (!isEqual(currentDate, messageDate)) {
         messagesArray.push(
-          <div key={message.createdAt} className={styles.date}>
+          <div key={`date-${message.createdAt}`} className={styles.date}>
             {format(message.createdAt, 'MMMM dd, yyyy')}
           </div>
         );
@@ -59,7 +56,7 @@ const Dialog = (props) => {
 
       messagesArray.push(
         <div
-          key={i}
+          key={`message-${i}`}
           className={className(
             userId === message.sender ? styles.ownMessage : styles.message
           )}
@@ -72,6 +69,7 @@ const Dialog = (props) => {
         </div>
       );
     });
+
     return <div className={styles.messageList}>{messagesArray}</div>;
   };
 
@@ -103,9 +101,9 @@ const Dialog = (props) => {
 
 const mapStateToProps = (state) => state.chatStore;
 
-const mapDispatchToProps = (dispatch) => ({
-  getDialog: (data) => dispatch(getDialogMessages(data)),
-  clearMessageList: () => dispatch(clearMessageList()),
-});
+const mapDispatchToProps = {
+  getDialog: getDialogMessages,
+  clearMessageList,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dialog);

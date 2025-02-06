@@ -40,9 +40,9 @@ const DialogList = (props) => {
       case isSameDay(currentTime, time):
         return format(time, 'HH:mm');
       case isSameWeek(currentTime, time):
-        return format(time, 'dddd');
+        return format(time, 'E');
       case isSameYear(currentTime, time):
-        return format(time, 'MM dd');
+        return format(time, 'MMM dd');
       default:
         return format(time, 'MMMM dd, YYYY');
     }

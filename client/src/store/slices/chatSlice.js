@@ -90,7 +90,7 @@ const sendMessageExtraReducers = createExtraReducers({
       if (isEqual(preview.participants, payload.message.participants)) {
         preview.text = payload.message.body;
         preview.sender = payload.message.sender;
-        preview.createAt = payload.message.createdAt;
+        preview.createdAt = payload.message.createdAt;
         isNew = false;
       }
     });
@@ -98,7 +98,7 @@ const sendMessageExtraReducers = createExtraReducers({
       messagesPreview.push(payload.preview);
     }
     const chatData = {
-      _id: payload.preview._id,
+      id: payload.preview.id,
       participants: payload.preview.participants,
       favoriteList: payload.preview.favoriteList,
       blackList: payload.preview.blackList,
@@ -194,7 +194,7 @@ const addChatToCatalogExtraReducers = createExtraReducers({
   fulfilledReducer: (state, { payload }) => {
     const { catalogList } = state;
     for (let i = 0; i < catalogList.length; i++) {
-      if (catalogList[i]._id === payload._id) {
+      if (catalogList[i].id === payload.id) {
         catalogList[i].chats = payload.chats;
         break;
       }
@@ -244,7 +244,7 @@ const deleteCatalogExtraReducers = createExtraReducers({
     const { catalogList } = state;
     const newCatalogList = remove(
       catalogList,
-      catalog => payload.catalogId !== catalog._id
+      catalog => payload.catalogId !== catalog.id
     );
     state.catalogList = [...newCatalogList];
   },
@@ -266,14 +266,12 @@ const removeChatFromCatalogExtraReducers = createExtraReducers({
   thunk: removeChatFromCatalog,
   fulfilledReducer: (state, { payload }) => {
     const { catalogList } = state;
-    for (let i = 0; i < catalogList.length; i++) {
-      if (catalogList[i]._id === payload._id) {
-        catalogList[i].chats = payload.chats;
-        break;
-      }
-    }
+    const updatedCatalogList = catalogList.map(catalog => 
+      catalog.id === payload.id ? { ...catalog, chats: payload.chats } : catalog
+    );
+    
     state.currentCatalog = payload;
-    state.catalogList = [...catalogList];
+    state.catalogList = [...updatedCatalogList];
   },
   rejectedReducer: (state, { payload }) => {
     state.error = payload;
@@ -294,7 +292,7 @@ const changeCatalogNameExtraReducers = createExtraReducers({
   fulfilledReducer: (state, { payload }) => {
     const { catalogList } = state;
     for (let i = 0; i < catalogList.length; i++) {
-      if (catalogList[i]._id === payload._id) {
+      if (catalogList[i].id === payload.id) {
         catalogList[i].catalogName = payload.catalogName;
         break;
       }
@@ -328,7 +326,7 @@ const reducers = {
       if (isEqual(preview.participants, message.participants)) {
         preview.text = message.body;
         preview.sender = message.sender;
-        preview.createAt = message.createdAt;
+        preview.createdAt = message.createdAt;
         isNew = false;
       }
     });

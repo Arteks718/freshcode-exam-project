@@ -8,25 +8,25 @@ import {
 } from '../../../../store/slices/chatSlice';
 
 const CatalogList = (props) => {
+  const { catalogList, changeShowModeCatalog, deleteCatalog } = props;
   const goToCatalog = (event, catalog) => {
-    props.changeShowModeCatalog(catalog);
+    changeShowModeCatalog(catalog);
     event.stopPropagation();
   };
 
-  const deleteCatalog = (event, catalogId) => {
-    props.deleteCatalog({ catalogId });
+  const deleteCatalogFromList = (event, catalogId) => {
+    deleteCatalog({ catalogId });
     event.stopPropagation();
   };
 
   const getListCatalog = () => {
-    const { catalogList } = props;
     const elementList = [];
     catalogList.forEach((catalog) => {
       elementList.push(
         <Catalog
           catalog={catalog}
-          key={catalog._id}
-          deleteCatalog={deleteCatalog}
+          key={catalog.id}
+          deleteCatalog={deleteCatalogFromList}
           goToCatalog={goToCatalog}
         />
       );

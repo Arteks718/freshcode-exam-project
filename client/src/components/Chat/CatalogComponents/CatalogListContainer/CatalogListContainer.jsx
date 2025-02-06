@@ -8,46 +8,40 @@ import CatalogList from '../CatalogList/CatalogList';
 import DialogList from '../../DialogComponents/DialogList/DialogList';
 
 const CatalogListContainer = (props) => {
-  const { getCatalogList, isShowChatsInCatalog, id, chatStore } = props;
+  const { getCatalogList, removeChatFromCatalog, id } = props;
+  const { isShowChatsInCatalog, messagesPreview, currentCatalog, catalogList } = props.chatStore;
+
   useEffect(() => {
-    getCatalogList()
-  }, [])
+    getCatalogList();
+  }, [getCatalogList]);
 
   const handleRemoveChatFromCatalog = (event, chatId) => {
-    const { _id } = chatStore.currentCatalog;
-    removeChatFromCatalog({ chatId, catalogId: _id });
+    const { id } = currentCatalog;
+    removeChatFromCatalog({ chatId, catalogId: id });
     event.stopPropagation();
   };
 
   const getDialogsPreview = () => {
-    const { messagesPreview, currentCatalog } = chatStore;
     const { chats } = currentCatalog;
-    const dialogsInCatalog = [];
-    for (let i = 0; i < messagesPreview.length; i++) {
-      for (let j = 0; j < chats.length; j++) {
-        if (chats[j] === messagesPreview[i]._id) {
-          dialogsInCatalog.push(messagesPreview[i]);
-        }
-      }
-    }
+    const dialogsInCatalog = messagesPreview.filter((message) =>
+      chats.some((chat) => chat.conversationId === message.id)
+    );
     return dialogsInCatalog;
   };
-
-
   return (
     <>
-        {isShowChatsInCatalog ? (
-          <DialogList
-            userId={id}
-            preview={getDialogsPreview()}
-            removeChat={handleRemoveChatFromCatalog}
-          />
-        ) : (
-          <CatalogList catalogList={chatStore.catalogList} />
-        )}
-      </>
-  )
-}
+      {isShowChatsInCatalog ? (
+        <DialogList
+          userId={id}
+          preview={getDialogsPreview()}
+          removeChat={handleRemoveChatFromCatalog}
+        />
+      ) : (
+        <CatalogList catalogList={catalogList} />
+      )}
+    </>
+  );
+};
 
 const mapStateToProps = (state) => {
   const { chatStore, userStore } = state;
@@ -59,7 +53,4 @@ const mapDispatchToProps = (dispatch) => ({
   removeChatFromCatalog: (data) => dispatch(removeChatFromCatalog(data)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CatalogListContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CatalogListContainer);

@@ -1,0 +1,33 @@
+#Messages
+CREATE TABLE "Messages"(
+    "id" SERIAL PRIMARY KEY NOT NULL,
+    "sender" INTEGER NOT NULL REFERENCES "Users"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+    "body" TEXT NOT NULL,
+    "coversationId" INTEGER NOT NULL REFERENCES "Conversations"("id") ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+#Conversations
+CREATE TABLE "Conversations"(
+    "id" SERIAL PRIMARY KEY  NOT NULL,
+    "participants" INTEGER[] NOT NULL,
+    "blackList" BOOLEAN[] NOT NULL,
+    "favorityList" BOOLEAN[] NOT NULL,
+    "createdAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+#Catalogs
+CREATE TABLE "Catalogs"(
+    "id" SERIAL PRIMARY KEY NOT NULL,
+    "userId" INTEGER NOT NULL REFERENCES "Users"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+    "catalogName" varchar(255) NOT NULL,
+    "createdAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+#Chats
+CREATE TABLE "Chats"(
+    "conversationId" INTEGER NOT NULL REFERENCES "Conversations"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+    "catalogId" INTEGER NOT NULL REFERENCES "Catalogs"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY ("conversationId", "catalogId")
+);

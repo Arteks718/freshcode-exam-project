@@ -2,6 +2,7 @@ const express = require('express');
 const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const hashPass = require('../middlewares/hashPassMiddle');
 const userController = require('../controllers/userController');
+const offerController = require('../controllers/offerController')
 const contestController = require('../controllers/contestController');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
@@ -177,5 +178,17 @@ router.post(
   checkToken.checkToken,
   chatController.getCatalogs,
 );
+
+router.get(
+  '/getOffers',
+  checkToken.checkAuth,
+  offerController.getAllOffers
+)
+
+router.put(
+  '/updateOffer',
+  checkToken.checkToken,
+  offerController.updateOffer
+)
 
 module.exports = router;

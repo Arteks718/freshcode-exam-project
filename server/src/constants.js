@@ -28,4 +28,12 @@ module.exports = {
   NOTIFICATION_CHANGE_OFFER_STATUS: 'changeOfferStatus',
   NEW_MESSAGE: 'newMessage',
   CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',
+  LOGS: {
+    ERRORS_FILE_NAME: 'errors.log',
+    SCHEDULE_TIME: {
+      hour: 12,
+      minute: 0,
+    },
+    DIR: "logs"
+  }
 };

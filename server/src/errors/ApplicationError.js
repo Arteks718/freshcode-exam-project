@@ -1,3 +1,5 @@
+const errorLogger = require("../utils/errorLogger");
+
 class ApplicationError extends Error{
 
   constructor (message, status) {
@@ -6,6 +8,8 @@ class ApplicationError extends Error{
     this.name = this.constructor.name;
     this.message = message || 'Something went wrong. Please try again';
     this.code = status || 500;
+
+    errorLogger.error(this)
   }
 }
 

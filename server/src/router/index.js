@@ -181,7 +181,7 @@ router.post(
 
 router.get(
   '/getOffers',
-  checkToken.checkAuth,
+  checkToken.checkToken,
   offerController.getAllOffers
 )
 

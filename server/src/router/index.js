@@ -82,14 +82,14 @@ router.post(
   checkToken.checkToken,
   upload.uploadLogoFiles,
   basicMiddlewares.canSendOffer,
-  contestController.setNewOffer,
+  offerController.setNewOffer,
 );
 
 router.post(
   '/setOfferStatus',
   checkToken.checkToken,
   basicMiddlewares.onlyForCustomerWhoCreateContest,
-  contestController.setOfferStatus,
+  offerController.setOfferStatus,
 );
 
 router.post(

@@ -11,14 +11,18 @@ module.exports.getAllOffers = async (req, res, next) => {
         {
           model: db.Contests,
           where: {
-            status: 'active',
+            status: CONSTANTS.CONTEST_STATUS_ACTIVE
           },
+          attributes: ['contestType', 'typeOfName', 'industry', 'styleName', 'typeOfTagline', 'brandStyle']
         },
         {
           model: db.Users,
           attributes: ['rating'],
         },
       ],
+      where: {
+        status: CONSTANTS.OFFER_STATUS_REVIEW
+      },
       order: [['id', 'DESC']],
     });
 
@@ -29,11 +33,11 @@ module.exports.getAllOffers = async (req, res, next) => {
 };
 
 module.exports.updateOffer = async (req, res, next) => {
-  const { body: status, offerId } = req;
+  const { status, offerId } = req.body;
   try {
-    const updatedOffer = db.Offers.update(
+    const [updatedCount, updatedOffer] = await db.Offers.update(
       {
-        status,
+        status
       },
       {
         where: {
@@ -43,8 +47,7 @@ module.exports.updateOffer = async (req, res, next) => {
         returning: true,
       }
     );
-
-    res.send(updatedOffer);
+    res.send(updatedOffer[0]);
   } catch (e) {
     next(e);
   }
@@ -54,6 +57,7 @@ module.exports.setNewOffer = async (req, res, next) => {
   const {
     body: { contestId, contestType, customerId, offerData },
     tokenData: { userId },
+    tokenData,
     file
   } = req;
 

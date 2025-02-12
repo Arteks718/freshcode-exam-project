@@ -4,25 +4,28 @@ import styles from './OffersItem.module.sass';
 import CONSTANTS from '../../../constants';
 
 const OffersItem = (props) => {
-  const { text, id } = props.data;
   const {
-    industry,
-    brandStyle,
-    contestType,
-    typeOfName,
-    typeOfTagline,
-    originalFileName,
-    fileName,
-  } = props.data.Contest;
+    updateOffer,
+    data: {
+      text,
+      id,
+      Contest: {
+        industry,
+        brandStyle,
+        contestType,
+        typeOfName,
+        typeOfTagline,
+        originalFileName,
+        fileName,
+      },
+    },
+  } = props;
 
   const { rating } = props.data.User;
 
   const type =
     contestType + ' / ' + (typeOfName ?? brandStyle ?? typeOfTagline);
-  // id, contestType / brandStyle, industry
-  // content: text / file, creative rating
-  //
-  // Buttons Approved / Reject
+
   return (
     <div className={styles.item}>
       <div>
@@ -64,8 +67,22 @@ const OffersItem = (props) => {
         </div>
       </div>
       <div className={styles.btnsContainer}>
-        <button className={styles.approveBtn}>Approve</button>
-        <button className={styles.rejectBtn}>Reject</button>
+        <button
+          className={styles.approveBtn}
+          onClick={() =>
+            updateOffer({ status: CONSTANTS.OFFER_STATUS_APPROVED, offerId: id })
+          }
+        >
+          Approve
+        </button>
+        <button
+          className={styles.rejectBtn}
+          onClick={() =>
+            updateOffer({ status: CONSTANTS.OFFER_STATUS_DECLINED, offerId: id })
+          }
+        >
+          Reject
+        </button>
       </div>
     </div>
   );

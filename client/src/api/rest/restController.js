@@ -23,6 +23,7 @@ export const addChatToCatalog = data => http.post('addNewChatToCatalog', data);
 export const createCatalog = data => http.post('createCatalog', data);
 export const deleteCatalog = data => http.post('deleteCatalog', data);
 export const getOffers = () => http.get('getOffers')
+export const updateOffer = data => http.put('updateOffer', data)
 export const removeChatFromCatalog = data =>
   http.post('removeChatFromCatalog', data);
 export const changeCatalogName = data => http.post('updateNameCatalog', data);

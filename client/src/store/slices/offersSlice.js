@@ -22,6 +22,14 @@ export const getOffers = decorateAsyncThunk({
   },
 });
 
+export const updateOffer = decorateAsyncThunk({
+  key: `${OFFERS_SLICE_NAME}/updateOffer`,
+  thunk: async (payload) => {
+    const { data } = await restController.updateOffer(payload);
+    return data
+   }
+})
+
 const getOffersExtraReducers = createExtraReducers({
   thunk: getOffers,
   pendingReducer: (state) => {
@@ -37,8 +45,23 @@ const getOffersExtraReducers = createExtraReducers({
   rejectedReducer,
 });
 
+const updateOfferExtraReducers = createExtraReducers({
+  thunk: updateOffer,
+  pendingReducer: (state) => {
+    state.isFetcing = true;
+    state.error = null;
+  },
+  fulfilledReducer: (state, { payload }) => {
+    state.isFetching = false;
+    state.offers = state.offers.filter(offer => offer.id !== payload.id);
+    state.error = null;
+  },
+  rejectedReducer
+})
+
 const extraReducers = (builder) => {
   getOffersExtraReducers(builder);
+  updateOfferExtraReducers(builder)
 };
 
 const offersSlice = createSlice({

@@ -1,0 +1,54 @@
+@mixin btn($bgColor, $hoverColor)
+  width: 100px
+  text-align: center
+  border: 0
+  padding: 10px
+  border-radius: 8px
+  background-color: $bgColor
+  color: white
+
+  &:hover
+    background-color: $hoverColor
+    
+
+.item
+  padding: 20px
+  display: grid
+  grid-template-columns: 200px 1fr auto
+  column-gap: 30px
+  background-color: #f9fafb
+  color: #4e618d
+
+  .contestInfo
+    margin-bottom: 10px
+    .industryName
+      font-weight: 500
+      font-size: 18px
+      margin-right: 20px
+
+    .offerId
+      color: #6e7072
+      font-size: 14px
+
+  .contestType
+    text-transform: capitalize
+
+  .creativeRating
+    display: flex
+    column-gap: 15px
+    align-items: center
+    margin-bottom: 10px
+
+  .btnsContainer
+    margin: 5px 0
+    align-self: stretch
+    display: flex
+    align-items: center
+    justify-content: right
+    column-gap: 15px
+
+    .approveBtn
+      @include btn(#8aca6b, rgba(138, 202, 107, 0.7))
+
+    .rejectBtn
+      @include btn(#CD5C5C, rgba(205, 92, 92, 0.7))

@@ -2,7 +2,21 @@ const db = require("../db/models")
 
 module.exports.getAllOffers = async (req, res, next) => {
   try {
-    const offers = await db.Offers.findAll()
+    const offers = await db.Offers.findAll({
+      include: [
+        {
+          model: db.Contests,
+          where: {
+            status: 'active',
+          },
+        },
+        {
+          model: db.Users,
+          attributes: ['rating']
+        }
+      ],
+      order: [['id', 'DESC']],
+    });
     
     res.send(offers)
   } catch (e) {

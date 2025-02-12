@@ -31,7 +31,7 @@ const getOffersExtraReducers = createExtraReducers({
   },
   fulfilledReducer: (state, { payload }) => {
     state.isFetching = false;
-    state.offers = payload;
+    state.offers = [ ...payload];
     state.error = null;
   },
   rejectedReducer,

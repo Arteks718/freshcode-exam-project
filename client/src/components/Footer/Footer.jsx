@@ -15,7 +15,7 @@ const Footer = () => {
   );
 
   const topFooterRender = () => {
-    return CONSTANTS.FooterItems.map((item) => topFooterItemsRender(item));
+    return CONSTANTS.FOOTER_ITEMS.map((item) => topFooterItemsRender(item));
   };
 
   return (

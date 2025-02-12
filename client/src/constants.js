@@ -5,12 +5,15 @@ const serverPort = 5000;
 export default {
   CUSTOMER: 'customer',
   CREATOR: 'creator',
+  MODERATOR: 'moderator',
   CONTEST_STATUS_ACTIVE: 'active',
   CONTEST_STATUS_FINISHED: 'finished',
   CONTEST_STATUS_PENDING: 'pending',
   NAME_CONTEST: 'name',
   LOGO_CONTEST: 'logo',
   TAGLINE_CONTEST: 'tagline',
+  OFFER_STATUS_APPROVED: 'approved',
+  OFFER_STATUS_DECLINED: 'declined',
   OFFER_STATUS_REJECTED: 'rejected',
   OFFER_STATUS_WON: 'won',
   OFFER_STATUS_PENDING: 'pending',
@@ -65,7 +68,7 @@ export default {
       description: 'I am only looking for a name, not a Domain'
     }
   ],
-  FooterItems: [
+  FOOTER_ITEMS: [
     {
       title: 'SQUADHELP',
       items: ['About', 'Contact', 'How It Works?', 'Testimonials', 'Our Work'],

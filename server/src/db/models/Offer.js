@@ -1,5 +1,3 @@
-
-
 module.exports = (sequelize, DataTypes) => {
   const Offer = sequelize.define('Offers', {
     id: {
@@ -30,9 +28,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     status: {
-      type: DataTypes.ENUM('pending', 'approved', 'rejected', 'won'),
+      type: DataTypes.ENUM('review', 'approved', 'declined', 'rejected', 'won'),
       allowNull: true,
-      defaultValue: 'pending',
+      defaultValue: 'review',
     },
   },
   {

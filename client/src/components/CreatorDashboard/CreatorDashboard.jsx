@@ -126,7 +126,7 @@ const CreatorDashboard = (props) => {
       <option key={0} value={null}>
         Choose industry
       </option>,
-      ...(!isFetching
+      ...(!isFetching && data?.industry
         ? data.industry.map((industry, i) => (
             <option key={i + 1} value={industry}>
               {industry}

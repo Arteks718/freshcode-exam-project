@@ -1,35 +1,49 @@
 const db = require('../db/models');
 const CONSTANTS = require('../constants');
 const ServerError = require('../errors/ServerError');
-const contestQueries = require('./queries/contestQueries')
+const contestQueries = require('./queries/contestQueries');
 const controller = require('../socketInit');
 
 module.exports.getAllOffers = async (req, res, next) => {
-  try {
-    const offers = await db.Offers.findAll({
-      include: [
-        {
-          model: db.Contests,
-          where: {
-            status: CONSTANTS.CONTEST_STATUS_ACTIVE
-          },
-          attributes: ['contestType', 'typeOfName', 'industry', 'styleName', 'typeOfTagline', 'brandStyle']
-        },
-        {
-          model: db.Users,
-          attributes: ['rating'],
-        },
-      ],
-      where: {
-        status: CONSTANTS.OFFER_STATUS_REVIEW
-      },
-      order: [['id', 'DESC']],
-    });
+  const limit = parseInt(req.query.limit, 10);
+  const offset = parseInt(req.query.offset, 10);
 
-    res.send(offers);
-  } catch (e) {
-    next(e);
-  }
+  await db.Offers.findAll({
+    include: [
+      {
+        model: db.Contests,
+        where: {
+          status: CONSTANTS.CONTEST_STATUS_ACTIVE,
+        },
+        attributes: [
+          'contestType',
+          'typeOfName',
+          'industry',
+          'styleName',
+          'typeOfTagline',
+          'brandStyle',
+        ],
+      },
+      {
+        model: db.Users,
+        attributes: ['rating'],
+      },
+    ],
+    where: {
+      status: CONSTANTS.OFFER_STATUS_REVIEW,
+    },
+    order: [['id', 'DESC']],
+    limit: limit + 1,
+    offset: offset || 0
+  })
+    .then((offers) => {
+      let haveMore = true;
+      if (offers.length < limit) {
+        haveMore = false;
+      }
+      res.send({ offers, haveMore });
+    })
+    .catch((err) => next(err));
 };
 
 module.exports.updateOffer = async (req, res, next) => {
@@ -37,7 +51,7 @@ module.exports.updateOffer = async (req, res, next) => {
   try {
     const [updatedCount, updatedOffer] = await db.Offers.update(
       {
-        status
+        status,
       },
       {
         where: {
@@ -58,7 +72,7 @@ module.exports.setNewOffer = async (req, res, next) => {
     body: { contestId, contestType, customerId, offerData },
     tokenData: { userId },
     tokenData,
-    file
+    file,
   } = req;
 
   const obj = {};
@@ -78,7 +92,7 @@ module.exports.setNewOffer = async (req, res, next) => {
     const User = Object.assign({}, tokenData, { id: userId });
     res.send(Object.assign({}, result, { User }));
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return next(new ServerError());
   }
 };

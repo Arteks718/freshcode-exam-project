@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import LightBox from 'react-18-image-lightbox';
+import { IoMdArrowDropdown } from 'react-icons/io';
 import { goToExpandedDialog } from '../../store/slices/chatSlice';
 import {
   getContestById,
@@ -50,17 +51,53 @@ const ContestPage = (props) => {
     };
   }, []);
 
+  const setStatsOffers = () => {
+    const { onReviewCount, rejectedCount } = contestByIdStore.contestData;
+    const array = [];
+    if (onReviewCount) {
+      array.push(
+        <div className={styles.statReview}>
+          <span>On review</span>
+          <span className={styles.statCount}>{onReviewCount}</span>
+        </div>
+      );
+    }
+    if (rejectedCount) {
+      array.push(
+        <div className={styles.statRejected}>
+          <span>Rejected by you</span>
+          <span className={styles.statCount}>{rejectedCount}</span>
+        </div>
+      );
+    }
+
+    return array.length !== 0 ? (
+      <div className={styles.statsContainer}>
+        <span className={styles.statsLabel}>
+          STATS <IoMdArrowDropdown />
+        </span>
+        <div className={styles.stats}>{array}</div>
+      </div>
+    ) : null;
+  };
+
   const setOffersList = () => {
-    const array = contestByIdStore.offers.map(offer => (
-      <OfferBox
-        data={offer}
-        key={offer.id}
-        needButtons={needButtons}
-        setOfferStatus={handleSetOfferStatus}
-        contestType={contestByIdStore.contestData.contestType}
-        date={new Date()}
-      />
-    ));
+    const array = contestByIdStore.offers
+      .filter(
+        (offer) =>
+          offer.status !== CONSTANTS.OFFER_STATUS_DECLINED &&
+          offer.status !== CONSTANTS.OFFER_STATUS_REVIEW
+      )
+      .map((offer) => (
+        <OfferBox
+          data={offer}
+          key={offer.id}
+          needButtons={needButtons}
+          setOfferStatus={handleSetOfferStatus}
+          contestType={contestByIdStore.contestData.contestType}
+          date={new Date()}
+        />
+      ));
 
     return array.length !== 0 ? (
       array
@@ -78,7 +115,7 @@ const ContestPage = (props) => {
     return (
       contestCreatorId === userId &&
       contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE &&
-      offerStatus === CONSTANTS.OFFER_STATUS_PENDING
+      offerStatus === CONSTANTS.OFFER_STATUS_APPROVED
     );
   };
 
@@ -189,6 +226,7 @@ const ContestPage = (props) => {
                       customerId={contestData.User.id}
                     />
                   )}
+                {setStatsOffers()}
                 {setOfferStatusError && (
                   <Error
                     data={setOfferStatusError.data}

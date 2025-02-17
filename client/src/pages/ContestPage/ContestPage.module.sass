@@ -37,6 +37,48 @@
   margin-top: 60px
   width: 250px
 
+.statsContainer
+  position: relative
+  align-self: flex-end
+  margin: 20px 15px 0 0
+  &:hover
+    .stats
+      display: flex
+
+  .statsLabel
+    color: #455a89
+    font-weight: 500
+    font-size: 14px
+
+  .stats
+    display: none
+    background-color: #fff
+    flex-direction: column
+    row-gap: 5px
+    padding: 8px
+    left: -15px
+    top: 20px
+    font-size: 12px
+    width: max-content
+    position: absolute
+    z-index: 1
+    box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
+
+    & > div
+      display: flex
+      justify-content: space-between
+    .statReview
+      color: #1ba3a0
+    .statRejected
+      color: red
+
+    .statCount
+      padding-left: 10px
+      color: #455a89
+      font-weight: 500
+    
+
+
 .mainInfoContainer
   display: flex
   flex-direction: row

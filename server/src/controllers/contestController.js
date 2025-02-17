@@ -84,6 +84,7 @@ module.exports.getContestById = async (req, res, next) => {
         },
       ],
     });
+
     contestInfo = contestInfo.get({ plain: true });
     contestInfo.Offers.forEach(offer => {
       if (offer.Rating) {
@@ -91,8 +92,25 @@ module.exports.getContestById = async (req, res, next) => {
       }
       delete offer.Rating;
     });
+
+    const onReviewOffersCount = await db.Offers.count({
+      where: {
+        contestId: req.headers.contestid,
+        status: CONSTANTS.OFFER_STATUS_REVIEW
+      }
+    })
+    const rejectedOffersCount = await db.Offers.count({
+      where: {
+        contestId: req.headers.contestid,
+        status: CONSTANTS.OFFER_STATUS_REJECTED
+      }
+    })
+    contestInfo.onReviewCount = onReviewOffersCount;
+    contestInfo.rejectedCount = rejectedOffersCount;
+
     res.send(contestInfo);
   } catch (e) {
+    console.log(e)
     next(new ServerError());
   }
 };

@@ -6,6 +6,7 @@ import CONSTANTS from '../../../constants';
 const OffersItem = (props) => {
   const {
     updateOffer,
+    openModal,
     data: {
       text,
       id,
@@ -18,10 +19,11 @@ const OffersItem = (props) => {
         originalFileName,
         fileName,
       },
+      User: {
+        rating
+      }
     },
   } = props;
-
-  const { rating } = props.data.User;
 
   const type =
     contestType + ' / ' + (typeOfName ?? brandStyle ?? typeOfTagline);
@@ -78,10 +80,10 @@ const OffersItem = (props) => {
         <button
           className={styles.rejectBtn}
           onClick={() =>
-            updateOffer({ status: CONSTANTS.OFFER_STATUS_DECLINED, offerId: id })
+            openModal(id)
           }
         >
-          Reject
+          Decline
         </button>
       </div>
     </div>

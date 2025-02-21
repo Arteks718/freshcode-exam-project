@@ -3,6 +3,7 @@ const CONSTANTS = require('../constants');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
 const controller = require('../socketInit');
+const { sendOfferMessage } = require('../utils/mailer');
 
 module.exports.getAllOffers = async (req, res, next) => {
   const limit = parseInt(req.query.limit, 10);
@@ -47,7 +48,7 @@ module.exports.getAllOffers = async (req, res, next) => {
 };
 
 module.exports.updateOffer = async (req, res, next) => {
-  const { status, offerId } = req.body;
+  const { status, offerId, message } = req.body;
   try {
     const [updatedCount, updatedOffer] = await db.Offers.update(
       {
@@ -61,6 +62,27 @@ module.exports.updateOffer = async (req, res, next) => {
         returning: true,
       }
     );
+    
+    const { User: { firstName, email }, Contest: { title } } = await db.Offers.findOne({
+      where: {
+        id: offerId
+      },
+      attributes: ['status', ],
+      include: [
+        {
+          model: db.Users,
+          attributes: ['firstName', 'email']
+        },
+        {
+          model: db.Contests,
+          attributes: ['title']
+        }
+      ],
+      raw: true,
+      nest: true
+    })
+
+    sendOfferMessage(email, firstName, status, message, title);
     res.send(updatedOffer[0]);
   } catch (e) {
     next(e);

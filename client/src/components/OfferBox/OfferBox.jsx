@@ -83,21 +83,39 @@ const OfferBox = (props) => {
 
   const offerStatus = () => {
     const { status } = props.data;
-    if (status === CONSTANTS.OFFER_STATUS_REJECTED) {
-      return (
-        <i
-          className={classNames('fas fa-times-circle reject', styles.reject)}
-        />
-      );
+
+    switch (status) {
+      case CONSTANTS.OFFER_STATUS_REJECTED:
+        return (
+          <i
+            className={classNames('fas fa-times-circle reject', styles.reject)}
+          />
+        );
+      case CONSTANTS.OFFER_STATUS_WON:
+        return (
+          <i
+            className={classNames(
+              'fas fa-check-circle resolve',
+              styles.resolve
+            )}
+          />
+        );
+      case CONSTANTS.OFFER_STATUS_REVIEW:
+        return (
+          <i className={classNames('fas fa-search review', styles.review)} />
+        );
+      case CONSTANTS.OFFER_STATUS_DECLINED:
+        return (
+          <i
+            className={classNames(
+              'fas fa-search-minus decline',
+              styles.decline
+            )}
+          />
+        );
+      default:
+        return null;
     }
-    if (status === CONSTANTS.OFFER_STATUS_WON) {
-      return (
-        <i
-          className={classNames('fas fa-check-circle resolve', styles.resolve)}
-        />
-      );
-    }
-    return null;
   };
 
   const goChat = () => {

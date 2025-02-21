@@ -1,3 +1,10 @@
+@mixin moderatedIcons($bgc)
+  background-color: $bgc
+  color: white
+  border-radius: 50%
+  padding: 10px
+  font-size: 32px
+  
 .offerContainer
   display: flex
   margin-top: 15px
@@ -23,6 +30,12 @@
 
   .resolve
     color: green
+  
+  .review
+    @include moderatedIcons(black)
+
+  .decline
+    @include moderatedIcons(red)
 
   .btnsContainer
     margin: 5px 0

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-
+import { toast } from 'react-toastify';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -35,11 +34,27 @@ const ModeratorDashboard = (props) => {
     getAllOffers({ limit: 10 });
   }, [getAllOffers]);
 
+  const sendOffer = (status, offerId, message = '') => {
+
+
+    if (status === CONSTANTS.OFFER_STATUS_DECLINED) {
+      toast(`Offer#${offerId} was declined!`);
+      return updateOffer({
+        status,
+        offerId,
+        message,
+      });
+    } else {
+      toast(`Offer#${offerId} was approved!`);
+      return updateOffer({ status, offerId });
+    }
+  };
+
   const offersList = () => {
     return offers.map((offer) => (
       <OffersItem
         data={offer}
-        updateOffer={updateOffer}
+        sendOffer={sendOffer}
         key={offer.id}
         openModal={() => handleOpen(offer.id)}
       />
@@ -69,11 +84,7 @@ const ModeratorDashboard = (props) => {
           <Formik
             initialValues={{ message: '' }}
             onSubmit={(values, { resetForm }) => {
-              updateOffer({
-                status: CONSTANTS.OFFER_STATUS_DECLINED,
-                offerId: currentOfferId,
-                message: values.message,
-              });
+              sendOffer(CONSTANTS.OFFER_STATUS_DECLINED, currentOfferId, values.message)
               resetForm();
               handleClose();
             }}

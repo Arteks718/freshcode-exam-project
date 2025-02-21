@@ -5,7 +5,7 @@ import CONSTANTS from '../../../constants';
 
 const OffersItem = (props) => {
   const {
-    updateOffer,
+    sendOffer,
     openModal,
     data: {
       text,
@@ -19,9 +19,7 @@ const OffersItem = (props) => {
         originalFileName,
         fileName,
       },
-      User: {
-        rating
-      }
+      User: { rating },
     },
   } = props;
 
@@ -71,18 +69,11 @@ const OffersItem = (props) => {
       <div className={styles.btnsContainer}>
         <button
           className={styles.approveBtn}
-          onClick={() =>
-            updateOffer({ status: CONSTANTS.OFFER_STATUS_APPROVED, offerId: id })
-          }
+          onClick={() => sendOffer(CONSTANTS.OFFER_STATUS_APPROVED, id)}
         >
           Approve
         </button>
-        <button
-          className={styles.rejectBtn}
-          onClick={() =>
-            openModal(id)
-          }
-        >
+        <button className={styles.rejectBtn} onClick={() => openModal(id)}>
           Decline
         </button>
       </div>

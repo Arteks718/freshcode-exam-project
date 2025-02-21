@@ -82,12 +82,15 @@ const ContestPage = (props) => {
   };
 
   const setOffersList = () => {
-    const array = contestByIdStore.offers
-      .filter(
-        (offer) =>
-          offer.status !== CONSTANTS.OFFER_STATUS_DECLINED &&
+    const { role } = userStore.data;
+    const roleFilter = (offer) =>
+      role === CONSTANTS.CUSTOMER
+        ? offer.status !== CONSTANTS.OFFER_STATUS_DECLINED &&
           offer.status !== CONSTANTS.OFFER_STATUS_REVIEW
-      )
+        : true;
+
+    const array = contestByIdStore.offers
+      .filter(roleFilter)
       .map((offer) => (
         <OfferBox
           data={offer}
@@ -226,7 +229,7 @@ const ContestPage = (props) => {
                       customerId={contestData.User.id}
                     />
                   )}
-                {setStatsOffers()}
+                {role === CONSTANTS.CUSTOMER && setStatsOffers()}
                 {setOfferStatusError && (
                   <Error
                     data={setOfferStatusError.data}

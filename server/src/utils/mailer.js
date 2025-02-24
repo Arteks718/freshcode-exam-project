@@ -19,7 +19,7 @@ const createOfferResponseMessage = (name, status, reason, contestName, companyLo
   if (status === CONSTANTS.OFFER_STATUS_APPROVED) {
     message += `<p>Your offer on contests ${contestName} has been <b>approved</b>! We appreciate your contribution.</p>`;
   } else if (status === CONSTANTS.OFFER_STATUS_DECLINED) {
-    message += `<p>We regret to inform you that your offer has been <b>rejected</b>.</p>`;
+    message += `<p>We regret to inform you that your offer has been <b>rejected</b> by moderator.</p>`;
     if (reason) {
       message += `<p><b>Reason:</b> ${reason}</p>`;
     }

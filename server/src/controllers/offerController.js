@@ -1,5 +1,6 @@
 const db = require('../db/models');
 const CONSTANTS = require('../constants');
+const userQueries = require('../controllers/queries/userQueries')
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
 const controller = require('../socketInit');
@@ -166,8 +167,8 @@ const resolveOffer = async (
   const updatedOffers = await contestQueries.updateOfferStatus(
     {
       status: db.sequelize.literal(` CASE
-            WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'
-            ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}'
+            WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'::"enum_Offers_status"
+            ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}'::"enum_Offers_status"
             END
     `),
     },

@@ -1,5 +1,5 @@
 const db = require('../db/models');
-const ServerError =require('../errors/ServerError');
+const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
 const UtilFunctions = require('../utils/functions');
 const CONSTANTS = require('../constants');
@@ -7,25 +7,29 @@ const CONSTANTS = require('../constants');
 module.exports.dataForContest = async (req, res, next) => {
   const response = {};
   try {
-    const { body: { characteristic1, characteristic2 } } = req;
+    const {
+      body: { characteristic1, characteristic2 },
+    } = req;
     console.log(req.body, characteristic1, characteristic2);
-    const types = [characteristic1, characteristic2, 'industry'].filter(Boolean);
+    const types = [characteristic1, characteristic2, 'industry'].filter(
+      Boolean
+    );
 
     const characteristics = await db.Selects.findAll({
       where: {
         type: {
-          [ db.Sequelize.Op.or ]: types,
+          [db.Sequelize.Op.or]: types,
         },
       },
     });
     if (!characteristics) {
       return next(new ServerError());
     }
-    characteristics.forEach(characteristic => {
-      if (!response[ characteristic.type ]) {
-        response[ characteristic.type ] = [];
+    characteristics.forEach((characteristic) => {
+      if (!response[characteristic.type]) {
+        response[characteristic.type] = [];
       }
-      response[ characteristic.type ].push(characteristic.describe);
+      response[characteristic.type].push(characteristic.describe);
     });
     res.send(response);
   } catch (err) {
@@ -39,6 +43,19 @@ module.exports.getContestById = async (req, res, next) => {
     let contestInfo = await db.Contests.findOne({
       where: { id: req.headers.contestid },
       order: [
+        [
+          db.Sequelize.literal(
+            `CASE "Offers"."status"
+            WHEN '${CONSTANTS.OFFER_STATUS_WON}' THEN 1
+            WHEN '${CONSTANTS.OFFER_STATUS_APPROVED}' THEN 2
+            WHEN '${CONSTANTS.OFFER_STATUS_REVIEW}' THEN 3
+            WHEN '${CONSTANTS.OFFER_STATUS_DECLINED}' THEN 4
+            WHEN '${CONSTANTS.OFFER_STATUS_REJECTED}' THEN 5
+            ELSE 6
+            END`
+          ),
+          'ASC',
+        ],
         [db.Offers, 'id', 'asc'],
       ],
       include: [
@@ -46,32 +63,23 @@ module.exports.getContestById = async (req, res, next) => {
           model: db.Users,
           required: true,
           attributes: {
-            exclude: [
-              'password',
-              'role',
-              'balance',
-              'accessToken',
-            ],
+            exclude: ['password', 'role', 'balance', 'accessToken'],
           },
         },
         {
           model: db.Offers,
           required: false,
-          where: req.tokenData.role === CONSTANTS.CREATOR
-            ? { userId: req.tokenData.userId }
-            : {},
+          where:
+            req.tokenData.role === CONSTANTS.CREATOR
+              ? { userId: req.tokenData.userId }
+              : {},
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
               model: db.Users,
               required: true,
               attributes: {
-                exclude: [
-                  'password',
-                  'role',
-                  'balance',
-                  'accessToken',
-                ],
+                exclude: ['password', 'role', 'balance', 'accessToken'],
               },
             },
             {
@@ -86,7 +94,7 @@ module.exports.getContestById = async (req, res, next) => {
     });
 
     contestInfo = contestInfo.get({ plain: true });
-    contestInfo.Offers.forEach(offer => {
+    contestInfo.Offers.forEach((offer) => {
       if (offer.Rating) {
         offer.mark = offer.Rating.mark;
       }
@@ -96,21 +104,21 @@ module.exports.getContestById = async (req, res, next) => {
     const onReviewOffersCount = await db.Offers.count({
       where: {
         contestId: req.headers.contestid,
-        status: CONSTANTS.OFFER_STATUS_REVIEW
-      }
-    })
+        status: CONSTANTS.OFFER_STATUS_REVIEW,
+      },
+    });
     const rejectedOffersCount = await db.Offers.count({
       where: {
         contestId: req.headers.contestid,
-        status: CONSTANTS.OFFER_STATUS_REJECTED
-      }
-    })
+        status: CONSTANTS.OFFER_STATUS_REJECTED,
+      },
+    });
     contestInfo.onReviewCount = onReviewOffersCount;
     contestInfo.rejectedCount = rejectedOffersCount;
 
     res.send(contestInfo);
   } catch (e) {
-    console.log(e)
+    console.log(e);
     next(new ServerError());
   }
 };
@@ -152,21 +160,27 @@ module.exports.getCustomersContests = (req, res, next) => {
       },
     ],
   })
-    .then(contests => {
+    .then((contests) => {
       contests.forEach(
-        contest => contest.dataValues.count = contest.dataValues.Offers.length);
+        (contest) =>
+          (contest.dataValues.count = contest.dataValues.Offers.length)
+      );
       let haveMore = true;
       if (contests.length === 0) {
         haveMore = false;
       }
       res.send({ contests, haveMore });
     })
-    .catch(err => next(new ServerError(err)));
+    .catch((err) => next(new ServerError(err)));
 };
 
 module.exports.getContests = (req, res, next) => {
-  const predicates = UtilFunctions.createWhereForAllContests(req.body.typeIndex,
-    req.body.contestId, req.body.industry, req.body.awardSort);
+  const predicates = UtilFunctions.createWhereForAllContests(
+    req.body.typeIndex,
+    req.body.contestId,
+    req.body.industry,
+    req.body.awardSort
+  );
   db.Contests.findAll({
     where: predicates.where,
     order: predicates.order,
@@ -181,16 +195,18 @@ module.exports.getContests = (req, res, next) => {
       },
     ],
   })
-    .then(contests => {
+    .then((contests) => {
       contests.forEach(
-        contest => contest.dataValues.count = contest.dataValues.Offers.length);
+        (contest) =>
+          (contest.dataValues.count = contest.dataValues.Offers.length)
+      );
       let haveMore = true;
       if (contests.length === 0) {
         haveMore = false;
       }
       res.send({ contests, haveMore });
     })
-    .catch(err => {
+    .catch((err) => {
       next(new ServerError());
     });
 };

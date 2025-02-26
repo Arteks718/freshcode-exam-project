@@ -10,15 +10,9 @@ const OffersItem = (props) => {
     data: {
       text,
       id,
-      Contest: {
-        industry,
-        brandStyle,
-        contestType,
-        typeOfName,
-        typeOfTagline,
-        originalFileName,
-        fileName,
-      },
+      originalFileName,
+      fileName,
+      Contest: { industry, brandStyle, contestType, typeOfName, typeOfTagline },
       User: { rating },
     },
   } = props;

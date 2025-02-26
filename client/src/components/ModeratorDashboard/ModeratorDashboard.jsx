@@ -62,7 +62,9 @@ const ModeratorDashboard = (props) => {
   };
 
   const loadMore = (startFrom) => {
-    getAllOffers({ limit: 10, offset: startFrom });
+    if(offers.length !== 0) {
+      getAllOffers({ limit: 10, offset: startFrom });
+    }
   };
 
   return (

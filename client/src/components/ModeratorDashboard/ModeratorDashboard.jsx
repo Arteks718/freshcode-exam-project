@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import { toast } from 'react-toastify';
@@ -34,9 +34,7 @@ const ModeratorDashboard = (props) => {
     getOffers({ limit: 10 });
   }, [getOffers]);
 
-  const sendOffer = (status, offerId, message = '') => {
-
-
+  const sendOffer = useCallback((status, offerId, message = '') => {
     if (status === CONSTANTS.OFFER_STATUS_DECLINED) {
       toast(`Offer#${offerId} was declined!`);
       return updateOffer({
@@ -48,9 +46,9 @@ const ModeratorDashboard = (props) => {
       toast(`Offer#${offerId} was approved!`);
       return updateOffer({ status, offerId });
     }
-  };
+  }, [updateOffer]);
 
-  const offersList = () => {
+  const offersList = useMemo(() => {
     return offers.map((offer) => (
       <OffersItem
         data={offer}
@@ -59,10 +57,10 @@ const ModeratorDashboard = (props) => {
         openModal={() => handleOpen(offer.id)}
       />
     ));
-  };
+  }, [offers, sendOffer]);
 
   const loadMore = (startFrom) => {
-    if(offers.length !== 0) {
+    if (offers.length !== 0) {
       getOffers({ limit: 10, offset: startFrom });
     }
   };
@@ -72,7 +70,7 @@ const ModeratorDashboard = (props) => {
       <div className={styles.mainContainer}>
         {!isFetching ? (
           <OffersContainer haveMore={haveMore} loadMore={loadMore}>
-            {offersList()}
+            {offersList}
           </OffersContainer>
         ) : (
           <SpinnerLoader />
@@ -86,7 +84,11 @@ const ModeratorDashboard = (props) => {
           <Formik
             initialValues={{ message: '' }}
             onSubmit={(values, { resetForm }) => {
-              sendOffer(CONSTANTS.OFFER_STATUS_DECLINED, currentOfferId, values.message)
+              sendOffer(
+                CONSTANTS.OFFER_STATUS_DECLINED,
+                currentOfferId,
+                values.message
+              );
               resetForm();
               handleClose();
             }}

@@ -45,8 +45,9 @@ const OffersItem = (props) => {
             readonly
           />
         </div>
+        {/* TODO Refactor */}
         <div>
-          Offer:
+          <span className={styles.offerSpan}>Offer</span>
           {text ?? (
             <a
               target="_blank"
@@ -55,7 +56,7 @@ const OffersItem = (props) => {
               download={originalFileName}
               rel="noreferrer"
             >
-              {originalFileName}
+              Open file
             </a>
           )}
         </div>

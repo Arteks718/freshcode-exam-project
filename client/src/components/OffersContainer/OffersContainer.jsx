@@ -1,14 +1,7 @@
-import { useEffect } from 'react';
 import styles from './OffersContainer.module.sass';
 
 const OffersContainer = (props) => {
   const { children, loadMore, haveMore } = props;
-
-  useEffect(() => {
-    if (children.length === 0) {
-      loadMore(children.length);
-    }
-  }, [children, loadMore]);
 
   return (
     <div className={styles.offerContainer}>

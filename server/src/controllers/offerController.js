@@ -1,90 +1,57 @@
 const db = require('../db/models');
 const CONSTANTS = require('../constants');
-const userQueries = require('../controllers/queries/userQueries')
-const ServerError = require('../errors/ServerError');
+const userQueries = require('./queries/userQueries');
 const contestQueries = require('./queries/contestQueries');
+const offerQueries = require('./queries/offerQueries');
+const ServerError = require('../errors/ServerError');
 const controller = require('../socketInit');
 const { sendOfferMessage } = require('../utils/mailer');
 
-module.exports.getAllOffers = async (req, res, next) => {
+module.exports.getOffers = async (req, res, next) => {
   const limit = parseInt(req.query.limit, 10);
   const offset = parseInt(req.query.offset, 10);
 
-  await db.Offers.findAll({
-    include: [
-      {
-        model: db.Contests,
-        where: {
-          status: CONSTANTS.CONTEST_STATUS_ACTIVE,
-        },
-        attributes: [
-          'contestType',
-          'typeOfName',
-          'industry',
-          'styleName',
-          'typeOfTagline',
-          'brandStyle',
-        ],
-      },
-      {
-        model: db.Users,
-        attributes: ['rating'],
-      },
-    ],
-    where: {
-      status: CONSTANTS.OFFER_STATUS_REVIEW,
-    },
-    order: [['id', 'DESC']],
-    limit: limit + 1,
-    offset: offset || 0
-  })
-    .then((offers) => {
-      let haveMore = true;
-      if (offers.length < limit) {
-        haveMore = false;
-      }
-      res.send({ offers, haveMore });
-    })
-    .catch((err) => next(err));
+  try {
+    const offers = await offerQueries.getModeratedOffers(limit, offset);
+    const haveMore = offers.length >= limit;
+    res.send({ offers, haveMore });
+  } catch (e) {
+    next(new ServerError('cannot get offers'));
+  }
 };
 
 module.exports.updateOffer = async (req, res, next) => {
   const { status, offerId, message } = req.body;
   try {
-    const [updatedCount, updatedOffer] = await db.Offers.update(
-      {
-        status,
-      },
-      {
-        where: {
-          id: offerId,
-        },
-        raw: true,
-        returning: true,
-      }
+    const [updatedOffer] = await offerQueries.updateOffer(
+      { status },
+      { id: offerId }
     );
-    
-    const { User: { firstName, email }, Contest: { title } } = await db.Offers.findOne({
+
+    const {
+      User: { firstName, email },
+      Contest: { title },
+    } = await db.Offers.findOne({
       where: {
-        id: offerId
+        id: offerId,
       },
-      attributes: ['status', ],
+      attributes: ['status'],
       include: [
         {
           model: db.Users,
-          attributes: ['firstName', 'email']
+          attributes: ['firstName', 'email'],
         },
         {
           model: db.Contests,
-          attributes: ['title']
-        }
+          attributes: ['title'],
+        },
       ],
       raw: true,
-      nest: true
-    })
+      nest: true,
+    });
 
     sendOfferMessage(email, firstName, status, message, title);
-    res.send(updatedOffer[0]);
+    res.send(updatedOffer);
   } catch (e) {
     next(e);
   }
@@ -98,30 +65,28 @@ module.exports.setNewOffer = async (req, res, next) => {
     file,
   } = req;
 
-  const obj = {};
-  if (contestType === CONSTANTS.LOGO_CONTEST) {
-    obj.fileName = file.filename;
-    obj.originalFileName = file.originalname;
-  } else {
-    obj.text = offerData;
-  }
-  obj.userId = userId;
-  obj.contestId = contestId;
+  const obj = {
+    userId,
+    contestId,
+    ...(contestType === CONSTANTS.LOGO_CONTEST
+      ? { fileName: file.filename, originalFileName: file.originalname }
+      : { text: offerData }),
+  };
+
   try {
-    const result = await contestQueries.createOffer(obj);
+    const result = await offerQueries.createOffer(obj);
     delete result.contestId;
     delete result.userId;
     controller.getNotificationController().emitEntryCreated(customerId);
-    const User = Object.assign({}, tokenData, { id: userId });
-    res.send(Object.assign({}, result, { User }));
+    const User = { ...tokenData, id: userId };
+    res.send({ ...result, User });
   } catch (e) {
-    console.log(e);
-    return next(new ServerError());
+    next(new ServerError('cannot create new offer'));
   }
 };
 
 const rejectOffer = async (offerId, creatorId, contestId) => {
-  const rejectedOffer = await contestQueries.updateOffer(
+  const [rejectedOffer] = await offerQueries.updateOffer(
     { status: CONSTANTS.OFFER_STATUS_REJECTED },
     { id: offerId }
   );
@@ -164,11 +129,14 @@ const resolveOffer = async (
     creatorId,
     transaction
   );
-  const updatedOffers = await contestQueries.updateOfferStatus(
+
+  const updatedOffers = await offerQueries.updateOffer(
     {
       status: db.sequelize.literal(` CASE
             WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'::"enum_Offers_status"
-            ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}'::"enum_Offers_status"
+            ELSE 
+            WHEN "status"!=${CONSTANTS.OFFER_STATUS_DECLINED} 
+            THEN '${CONSTANTS.OFFER_STATUS_REJECTED}'::"enum_Offers_status"
             END
     `),
     },
@@ -178,15 +146,15 @@ const resolveOffer = async (
     transaction
   );
   transaction.commit();
-  const arrayRoomsId = [];
-  updatedOffers.forEach((offer) => {
-    if (
-      offer.status === CONSTANTS.OFFER_STATUS_REJECTED &&
-      creatorId !== offer.userId
-    ) {
-      arrayRoomsId.push(offer.userId);
-    }
-  });
+
+  const arrayRoomsId = updatedOffers
+    .filter(
+      (offer) =>
+        offer.status === CONSTANTS.OFFER_STATUS_REJECTED &&
+        creatorId !== offer.userId
+    )
+    .map((offer) => offer.userId);
+
   controller
     .getNotificationController()
     .emitChangeOfferStatus(
@@ -204,7 +172,7 @@ const resolveOffer = async (
     return 0;
   });
 
-  return updatedOffers[0].dataValues;
+  return updatedOffers[0];
 };
 
 module.exports.setOfferStatus = async (req, res, next) => {
@@ -218,7 +186,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
       const offer = await rejectOffer(offerId, creatorId, contestId);
       res.send(offer);
     } catch (err) {
-      next(err);
+      next(ServerError('cannot reject offer'));
     }
   } else if (command === 'resolve') {
     try {
@@ -233,8 +201,8 @@ module.exports.setOfferStatus = async (req, res, next) => {
       );
       res.send(winningOffer);
     } catch (err) {
-      transaction.rollback();
-      next(err);
+      if (transaction) await transaction.rollback();
+      next(ServerError('cannot resolve offer'));
     }
   }
 };

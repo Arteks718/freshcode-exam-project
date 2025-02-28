@@ -182,7 +182,7 @@ router.post(
 router.get(
   '/getOffers',
   checkToken.checkToken,
-  offerController.getAllOffers
+  offerController.getOffers
 )
 
 router.put(

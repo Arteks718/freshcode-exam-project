@@ -16,7 +16,7 @@ import SpinnerLoader from '../Spinner/Spinner';
 import CONSTANTS from '../../constants';
 
 const ModeratorDashboard = (props) => {
-  const { getAllOffers, updateOffer, offers, haveMore, isFetching } = props;
+  const { getOffers, updateOffer, offers, haveMore, isFetching } = props;
   const [open, setOpen] = useState(false);
   const [currentOfferId, setCurrentOfferId] = useState(null);
 
@@ -31,8 +31,8 @@ const ModeratorDashboard = (props) => {
   };
 
   useEffect(() => {
-    getAllOffers({ limit: 10 });
-  }, [getAllOffers]);
+    getOffers({ limit: 10 });
+  }, [getOffers]);
 
   const sendOffer = (status, offerId, message = '') => {
 
@@ -63,7 +63,7 @@ const ModeratorDashboard = (props) => {
 
   const loadMore = (startFrom) => {
     if(offers.length !== 0) {
-      getAllOffers({ limit: 10, offset: startFrom });
+      getOffers({ limit: 10, offset: startFrom });
     }
   };
 
@@ -139,7 +139,7 @@ const ModeratorDashboard = (props) => {
 
 const mapStateToProps = (state) => state.offerStore;
 const mapDispatchToProps = (dispatch) => ({
-  getAllOffers: (data) => dispatch(getOffers(data)),
+  getOffers: (data) => dispatch(getOffers(data)),
   updateOffer: (offer) => dispatch(updateOffer(offer)),
 });
 

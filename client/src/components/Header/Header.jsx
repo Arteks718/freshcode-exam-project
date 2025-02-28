@@ -8,6 +8,7 @@ import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
 import { clearUserStore, getUser } from '../../store/slices/userSlice';
 import { checkTime } from '../../store/slices/eventSlice';
+import { clearOffersList } from '../../store/slices/offersSlice';
 import EventNotification from '../Events/EventNotification/EventNotification';
 
 const Header = (props) => {
@@ -32,6 +33,7 @@ const Header = (props) => {
   const logOut = () => {
     localStorage.clear();
     clearUserStore();
+    clearOffersList();
     history.replace('/login');
   };
 

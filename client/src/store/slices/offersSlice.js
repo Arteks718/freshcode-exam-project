@@ -65,13 +65,21 @@ const extraReducers = (builder) => {
   updateOfferExtraReducers(builder)
 };
 
+const reducers = {
+  clearOffersList: (state) => {
+    state.error = null;
+    state.offers = [];
+  },
+}
+
 const offersSlice = createSlice({
   name: OFFERS_SLICE_NAME,
   initialState,
-  reducers: {},
+  reducers,
   extraReducers,
 });
 
 const { actions, reducer } = offersSlice;
 
+export const { clearOffersList } = actions;
 export default reducer;

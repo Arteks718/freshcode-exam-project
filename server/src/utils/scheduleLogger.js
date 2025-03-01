@@ -43,11 +43,15 @@ const saveLogs = async () => {
   }
 };
 
-(() => {
+const scheduleLogger = async () => {
   const timeUntilNextTarget = calculateTimeUntilNextTarget(CONSTANTS.LOGS.SCHEDULE_TIME);
 
   setTimeout(async () => {
     await saveLogs();
     scheduleLogSaving();
   }, timeUntilNextTarget);
-})()
+}
+
+module.exports.start = () => {
+  scheduleLogger().catch((err) => new ServerError('Schedule logger error:', err))
+}

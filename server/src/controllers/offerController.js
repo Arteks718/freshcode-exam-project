@@ -132,12 +132,13 @@ const resolveOffer = async (
 
   const updatedOffers = await offerQueries.updateOffer(
     {
-      status: db.sequelize.literal(` CASE
-            WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'::"enum_Offers_status"
-            ELSE 
-            WHEN "status"!=${CONSTANTS.OFFER_STATUS_DECLINED} 
-            THEN '${CONSTANTS.OFFER_STATUS_REJECTED}'::"enum_Offers_status"
-            END
+      status: db.sequelize.literal(` 
+        CASE
+          WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'::"enum_Offers_status"
+          WHEN "status"!='${CONSTANTS.OFFER_STATUS_DECLINED}'::"enum_Offers_status"
+          THEN '${CONSTANTS.OFFER_STATUS_REJECTED}'::"enum_Offers_status"
+          ELSE "status"
+        END
     `),
     },
     {
@@ -186,7 +187,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
       const offer = await rejectOffer(offerId, creatorId, contestId);
       res.send(offer);
     } catch (err) {
-      next(ServerError('cannot reject offer'));
+      next(new ServerError('cannot reject offer'));
     }
   } else if (command === 'resolve') {
     try {
@@ -202,7 +203,8 @@ module.exports.setOfferStatus = async (req, res, next) => {
       res.send(winningOffer);
     } catch (err) {
       if (transaction) await transaction.rollback();
-      next(ServerError('cannot resolve offer'));
+      console.log(err)
+      next(new ServerError('cannot resolve offer'));
     }
   }
 };

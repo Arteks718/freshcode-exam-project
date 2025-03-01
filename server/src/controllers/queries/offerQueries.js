@@ -42,7 +42,7 @@ module.exports.updateOffer = async (data, predicate, transaction) => {
     raw: true,
     transaction,
   });
-  if (updatedCount !== 1 || updatedCount < 1) {
+  if (updatedCount < 1) {
     throw new ServerError('cannot update offer!');
   } else {
     return updatedOffers;

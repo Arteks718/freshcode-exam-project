@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
 import { withRouter } from 'react-router-dom';
@@ -18,72 +18,72 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmStyle.css';
 
 const OfferBox = (props) => {
-  const findConversationInfo = () => {
-    const { messagesPreview, id } = props;
-    const participants = [id, props.data.User.id];
-    participants.sort(
+  const {
+    id,
+    data,
+    role,
+    contestType,
+    setOfferStatus,
+    messagesPreview,
+    clearError,
+    changeMark,
+    needButtons,
+    changeShowImage,
+    goToExpandedDialog
+  } = props;
+
+  const { id: offerId, mark, User, status, fileName, text } = data;
+  const { id: userId, avatar, firstName, lastName, email, rating } = User;
+
+  const conversationInfo = useMemo(() => {
+    const participants = [offerId, userId].sort(
       (participant1, participant2) => participant1 - participant2
     );
-    for (let i = 0; i < messagesPreview.length; i++) {
-      if (isEqual(participants, messagesPreview[i].participants)) {
-        return {
-          participants: messagesPreview[i].participants,
-          id: messagesPreview[i].id,
-          blackList: messagesPreview[i].blackList,
-          favoriteList: messagesPreview[i].favoriteList,
-        };
-      }
-    }
-    return null;
-  };
 
-  const resolveOffer = () => {
-    confirmAlert({
-      title: 'confirm',
-      message: 'Are u sure?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () =>
-            props.setOfferStatus(props.data.User.id, props.data.id, CONSTANTS.OFFER_STATUS_WON),
-        },
-        {
-          label: 'No',
-        },
-      ],
-    });
-  };
+    return (
+      messagesPreview.find((message) =>
+        isEqual(participants, message.participants)
+      ) || null
+    );
+  }, [messagesPreview, offerId, userId]);
 
-  const rejectOffer = () => {
-    confirmAlert({
-      title: 'confirm',
-      message: 'Are u sure?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () =>
-            props.setOfferStatus(props.data.User.id, props.data.id, CONSTANTS.OFFER_STATUS_REJECTED),
-        },
-        {
-          label: 'No',
-        },
-      ],
-    });
-  };
+  const respondOffer = useCallback(
+    (status) => {
+      confirmAlert({
+        title: 'confirm',
+        message: 'Are u sure?',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => setOfferStatus(userId, offerId, status),
+          },
+          {
+            label: 'No',
+          },
+        ],
+      });
+    },
+    [setOfferStatus, userId, offerId]
+  );
 
-  const changeMark = (value) => {
-    props.clearError();
-    props.changeMark({
+  const onMarkChange = useCallback((value) => {
+    clearError();
+    changeMark({
       mark: value,
-      offerId: props.data.id,
-      isFirst: !props.data.mark,
-      creatorId: props.data.User.id,
+      offerId,
+      isFirst: !mark,
+      creatorId: userId,
     });
-  };
+  }, [clearError, changeMark, mark, offerId, userId]);
+
+  const handleGoChat = useCallback(() => {
+    goToExpandedDialog({
+      interlocutor: User,
+      conversationData: conversationInfo,
+    });
+  }, [User, conversationInfo, goToExpandedDialog]);
 
   const offerStatus = () => {
-    const { status } = props.data;
-
     switch (status) {
       case CONSTANTS.OFFER_STATUS_REJECTED:
         return (
@@ -118,15 +118,6 @@ const OfferBox = (props) => {
     }
   };
 
-  const goChat = () => {
-    props.goToExpandedDialog({
-      interlocutor: props.data.User,
-      conversationData: findConversationInfo(),
-    });
-  };
-
-  const { data, role, id, contestType } = props;
-  const { avatar, firstName, lastName, email, rating } = props.data.User;
   return (
     <div className={styles.offerContainer}>
       {offerStatus()}
@@ -168,19 +159,19 @@ const OfferBox = (props) => {
           {contestType === CONSTANTS.LOGO_CONTEST ? (
             <img
               onClick={() =>
-                props.changeShowImage({
-                  imagePath: data.fileName,
+                changeShowImage({
+                  imagePath: fileName,
                   isShowOnFull: true,
                 })
               }
               className={styles.responseLogo}
-              src={`${CONSTANTS.publicURL}${data.fileName}`}
+              src={`${CONSTANTS.publicURL}${fileName}`}
               alt="logo"
             />
           ) : (
-            <span className={styles.response}>{data.text}</span>
+            <span className={styles.response}>{text}</span>
           )}
-          {data.User.id !== id && (
+          {userId !== id && (
             <Rating
               fractions={2}
               fullSymbol={
@@ -192,21 +183,27 @@ const OfferBox = (props) => {
               emptySymbol={
                 <MdOutlineStarBorder size="20" color="#556da5" alt="star" />
               }
-              onClick={changeMark}
-              placeholderRating={data.mark}
+              onClick={onMarkChange}
+              placeholderRating={mark}
             />
           )}
         </div>
         {role !== CONSTANTS.CREATOR && (
-          <i onClick={goChat} className="fas fa-comments" />
+          <i onClick={handleGoChat} className="fas fa-comments" />
         )}
       </div>
-      {props.needButtons(data.status) && (
+      {needButtons(status) && (
         <div className={styles.btnsContainer}>
-          <div onClick={resolveOffer} className={styles.resolveBtn}>
+          <div
+            onClick={() => respondOffer(CONSTANTS.OFFER_STATUS_WON)}
+            className={styles.resolveBtn}
+          >
             Resolve
           </div>
-          <div onClick={rejectOffer} className={styles.rejectBtn}>
+          <div
+            onClick={() => respondOffer(CONSTANTS.OFFER_STATUS_REJECTED)}
+            className={styles.rejectBtn}
+          >
             Reject
           </div>
         </div>

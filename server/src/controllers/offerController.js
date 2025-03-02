@@ -156,13 +156,15 @@ const resolveOffer = async (
     )
     .map((offer) => offer.userId);
 
-  controller
-    .getNotificationController()
-    .emitChangeOfferStatus(
-      arrayRoomsId,
-      'Someone of yours offers was rejected',
-      contestId
-    );
+  if (arrayRoomsId.length > 0) {
+    controller
+      .getNotificationController()
+      .emitChangeOfferStatus(
+        arrayRoomsId,
+        'Someone of yours offers was rejected',
+        contestId
+      );
+  }
   controller
     .getNotificationController()
     .emitChangeOfferStatus(creatorId, 'Someone of your offers WIN', contestId);
@@ -203,7 +205,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
       res.send(winningOffer);
     } catch (err) {
       if (transaction) await transaction.rollback();
-      console.log(err)
+      console.log(err);
       next(new ServerError('cannot resolve offer'));
     }
   }

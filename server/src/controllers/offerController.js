@@ -182,14 +182,14 @@ module.exports.setOfferStatus = async (req, res, next) => {
   } = req;
 
   let transaction;
-  if (command === 'reject') {
+  if (command === CONSTANTS.OFFER_STATUS_REJECTED) {
     try {
       const offer = await rejectOffer(offerId, creatorId, contestId);
       res.send(offer);
     } catch (err) {
       next(new ServerError('cannot reject offer'));
     }
-  } else if (command === 'resolve') {
+  } else if (command === CONSTANTS.OFFER_STATUS_WON) {
     try {
       transaction = await db.sequelize.transaction();
       const winningOffer = await resolveOffer(

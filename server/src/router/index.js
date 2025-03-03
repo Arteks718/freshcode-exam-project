@@ -90,7 +90,7 @@ router.post(
 router.post(
   '/setOfferStatus',
   checkToken.checkToken,
-  basicMiddlewares.onlyForCustomerWhoCreateContest,
+  basicMiddlewares.onlyForCustomerWhoCreatedContest,
   offerController.setOfferStatus,
 );
 

@@ -4,6 +4,7 @@ const hashPass = require('../middlewares/hashPassMiddle');
 const userController = require('../controllers/userController');
 const offerController = require('../controllers/offerController')
 const contestController = require('../controllers/contestController');
+const bankController = require('../controllers/bankController');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
 const chatController = require('../controllers/chatController');
@@ -36,7 +37,7 @@ router.post(
   upload.uploadContestFiles,
   basicMiddlewares.parseBody,
   validators.validateContestCreation,
-  userController.payment,
+  bankController.payment,
 );
 
 router.post(
@@ -110,7 +111,7 @@ router.post(
   '/cashout',
   checkToken.checkToken,
   basicMiddlewares.onlyForCreative,
-  userController.cashout,
+  bankController.cashout,
 );
 
 router.post(

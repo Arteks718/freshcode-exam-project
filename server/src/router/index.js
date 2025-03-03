@@ -96,7 +96,7 @@ router.post(
   '/changeMark',
   checkToken.checkToken,
   basicMiddlewares.onlyForCustomer,
-  userController.changeMark,
+  userController.changeRatingMark,
 );
 
 router.post(

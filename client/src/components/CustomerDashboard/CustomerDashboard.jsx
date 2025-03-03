@@ -107,10 +107,11 @@ const CustomerDashboard = (props) => {
       </div>
       <div className={styles.contestsContainer}>
         {error ? (
-          <TryAgain getData={tryToGetContest()} />
+          <TryAgain getData={tryToGetContest} />
         ) : (
           <ContestsContainer
             isFetching={isFetching}
+            error={error}
             loadMore={loadMore}
             history={history}
             haveMore={haveMore}

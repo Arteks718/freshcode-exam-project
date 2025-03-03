@@ -4,13 +4,18 @@ const contestQueries = require('./queries/contestQueries');
 const UtilFunctions = require('../utils/functions');
 const CONSTANTS = require('../constants');
 
+const setCountForContests = (contests) => {
+  contests.forEach((contest) => {
+    contest.count = contest.Offers ? contest.Offers.length : 0;
+  });
+};
+
 module.exports.dataForContest = async (req, res, next) => {
   const response = {};
   try {
     const {
       body: { characteristic1, characteristic2 },
     } = req;
-    console.log(req.body, characteristic1, characteristic2);
     const types = [characteristic1, characteristic2, 'industry'].filter(
       Boolean
     );
@@ -23,7 +28,7 @@ module.exports.dataForContest = async (req, res, next) => {
       },
     });
     if (!characteristics) {
-      return next(new ServerError());
+      return next(new ServerError('cannot get charactetistics'));
     }
     characteristics.forEach((characteristic) => {
       if (!response[characteristic.type]) {
@@ -33,15 +38,19 @@ module.exports.dataForContest = async (req, res, next) => {
     });
     res.send(response);
   } catch (err) {
-    console.log(err);
     next(new ServerError('cannot get contest preferences'));
   }
 };
 
 module.exports.getContestById = async (req, res, next) => {
+  const {
+    headers: { contestid },
+    tokenData: { userId, role },
+  } = req;
+
   try {
     let contestInfo = await db.Contests.findOne({
-      where: { id: req.headers.contestid },
+      where: { id: contestid },
       order: [
         [
           db.Sequelize.literal(
@@ -69,10 +78,7 @@ module.exports.getContestById = async (req, res, next) => {
         {
           model: db.Offers,
           required: false,
-          where:
-            req.tokenData.role === CONSTANTS.CREATOR
-              ? { userId: req.tokenData.userId }
-              : {},
+          where: role === CONSTANTS.CREATOR ? { userId } : {},
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -85,13 +91,17 @@ module.exports.getContestById = async (req, res, next) => {
             {
               model: db.Ratings,
               required: false,
-              where: { userId: req.tokenData.userId },
+              where: { userId },
               attributes: { exclude: ['userId', 'offerId'] },
             },
           ],
         },
       ],
     });
+
+    if (!contestInfo) {
+      return next(new ServerError('Contest not found'));
+    }
 
     contestInfo = contestInfo.get({ plain: true });
     contestInfo.Offers.forEach((offer) => {
@@ -117,96 +127,119 @@ module.exports.getContestById = async (req, res, next) => {
     contestInfo.rejectedCount = rejectedOffersCount;
 
     res.send(contestInfo);
-  } catch (e) {
-    console.log(e);
-    next(new ServerError());
+  } catch (err) {
+    next(new ServerError('cannot get contest by id'));
   }
 };
 
 module.exports.downloadFile = async (req, res, next) => {
-  const file = CONSTANTS.CONTESTS_DEFAULT_DIR + req.params.fileName;
-  res.download(file);
+  try {
+    const file = CONSTANTS.CONTESTS_DEFAULT_DIR + req.params.fileName;
+    res.download(file);
+  } catch (error) {
+    next(new ServerError('cannot download file'));
+  }
 };
 
 module.exports.updateContest = async (req, res, next) => {
-  if (req.file) {
-    req.body.fileName = req.file.filename;
-    req.body.originalFileName = req.file.originalname;
+  const {
+    file,
+    body,
+    tokenData: { userId },
+  } = req;
+
+  if (file) {
+    body.fileName = file.filename;
+    body.originalFileName = file.originalname;
   }
-  const contestId = req.body.contestId;
-  delete req.body.contestId;
+  const contestId = body.contestId;
+  delete body.contestId;
+
   try {
-    const updatedContest = await contestQueries.updateContest(req.body, {
+    const updatedContest = await contestQueries.updateContest(body, {
       id: contestId,
-      userId: req.tokenData.userId,
+      userId,
     });
+
     res.send(updatedContest);
-  } catch (e) {
-    next(e);
+  } catch (err) {
+    // throw err from query
+    next(err);
   }
 };
 
-module.exports.getCustomersContests = (req, res, next) => {
-  db.Contests.findAll({
-    where: { status: req.headers.status, userId: req.tokenData.userId },
-    limit: req.body.limit,
-    offset: req.body.offset ? req.body.offset : 0,
-    order: [['id', 'DESC']],
-    include: [
-      {
-        model: db.Offers,
-        required: false,
-        attributes: ['id'],
-      },
-    ],
-  })
-    .then((contests) => {
-      contests.forEach(
-        (contest) =>
-          (contest.dataValues.count = contest.dataValues.Offers.length)
-      );
-      let haveMore = true;
-      if (contests.length === 0) {
-        haveMore = false;
-      }
-      res.send({ contests, haveMore });
-    })
-    .catch((err) => next(new ServerError(err)));
+module.exports.getCustomersContests = async(req, res, next) => {
+  try {
+    const {
+      tokenData: { userId },
+      headers: { status },
+      body: { limit, offset },
+    } = req;
+
+    const contests = await db.Contests.findAll({
+      where: { status, userId },
+      limit,
+      offset: offset ?? 0,
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: db.Offers,
+          required: false,
+          attributes: ['id'],
+        },
+      ],
+      raw: true
+    });
+    console.log(contests)
+
+    setCountForContests(contests);
+    const haveMore = contests.length > 0;
+    res.send({ contests, haveMore });
+  } catch (err) {
+    next(new ServerError('cannot get contests'));
+  }
 };
 
-module.exports.getContests = (req, res, next) => {
-  const predicates = UtilFunctions.createWhereForAllContests(
-    req.body.typeIndex,
-    req.body.contestId,
-    req.body.industry,
-    req.body.awardSort
-  );
-  db.Contests.findAll({
-    where: predicates.where,
-    order: predicates.order,
-    limit: req.body.limit,
-    offset: req.body.offset ? req.body.offset : 0,
-    include: [
-      {
-        model: db.Offers,
-        required: req.body.ownEntries,
-        where: req.body.ownEntries ? { userId: req.tokenData.userId } : {},
-        attributes: ['id'],
+module.exports.getContests = async (req, res, next) => {
+  try {
+    const {
+      body: {
+        typeIndex,
+        contestId,
+        industry,
+        awardSort,
+        limit,
+        offset,
+        ownEntries,
       },
-    ],
-  })
-    .then((contests) => {
-      contests.forEach(
-        (contest) =>
-          (contest.dataValues.count = contest.dataValues.Offers.length)
-      );
-      let haveMore = true;
-      if (contests.length === 0) {
-        haveMore = false;
-      }
-      res.send({ contests, haveMore });
+      tokenData: { userId },
+    } = req;
+    const predicates = UtilFunctions.createWhereForAllContests(
+      typeIndex,
+      contestId,
+      industry,
+      awardSort
+    );
+    const contests = await db.Contests.findAll({
+      where: predicates.where,
+      order: predicates.order,
+      limit,
+      offset: offset ?? 0,
+      include: [
+        {
+          model: db.Offers,
+          required: ownEntries,
+          where: ownEntries ? { userId } : {},
+          attributes: ['id'],
+        },
+      ],
+      raw: true
     })
-    .catch((err) => {
-      next(new ServerError());
-    });
+  
+    setCountForContests(contests);
+    const haveMore = contests.length > 0;
+    res.send({ contests, haveMore });
+  } catch (err) {
+    next(new ServerError('cannot get contests'));
+  }
 };

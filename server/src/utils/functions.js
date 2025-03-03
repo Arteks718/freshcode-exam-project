@@ -1,4 +1,5 @@
 const bd = require('../db/models');
+const ratingQueries = require('../controllers/queries/ratingQueries');
 const CONSTANTS = require('../constants');
 
 module.exports.createWhereForAllContests = (
@@ -45,3 +46,22 @@ const types = [
   'logo,tagline',
   'name,logo',
 ];
+
+module.exports.getRatingQuery = (offerId, userId, mark, isFirst, transaction) => {
+  if (isFirst) {
+    return ratingQueries.createRating(
+      {
+        offerId,
+        mark,
+        userId,
+      },
+      transaction
+    );
+  } else {
+    return ratingQueries.updateRating(
+      { mark },
+      { offerId, userId },
+      transaction
+    );
+  }
+}

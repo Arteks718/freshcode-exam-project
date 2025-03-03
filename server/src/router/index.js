@@ -5,6 +5,7 @@ const userController = require('../controllers/userController');
 const offerController = require('../controllers/offerController')
 const contestController = require('../controllers/contestController');
 const bankController = require('../controllers/bankController');
+const ratingController = require('../controllers/ratingController');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
 const chatController = require('../controllers/chatController');
@@ -97,7 +98,7 @@ router.post(
   '/changeMark',
   checkToken.checkToken,
   basicMiddlewares.onlyForCustomer,
-  userController.changeRatingMark,
+  ratingController.changeRatingMark,
 );
 
 router.post(

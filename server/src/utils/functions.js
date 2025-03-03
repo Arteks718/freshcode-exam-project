@@ -1,40 +1,6 @@
-const bd = require('../db/models');
+const db = require('../db/models');
 const ratingQueries = require('../controllers/queries/ratingQueries');
 const CONSTANTS = require('../constants');
-
-module.exports.createWhereForAllContests = (
-  typeIndex, contestId, industry, awardSort) => {
-  const object = {
-    where: {},
-    order: [],
-  };
-  if (typeIndex) {
-    Object.assign(object.where, { contestType: getPredicateTypes(typeIndex) });
-  }
-  if (contestId) {
-    Object.assign(object.where, { id: contestId });
-  }
-  if (industry) {
-    Object.assign(object.where, { industry });
-  }
-  if (awardSort) {
-    object.order.push(['prize', awardSort]);
-  }
-  Object.assign(object.where, {
-    status: {
-      [ bd.Sequelize.Op.or ]: [
-        CONSTANTS.CONTEST_STATUS_FINISHED,
-        CONSTANTS.CONTEST_STATUS_ACTIVE,
-      ],
-    },
-  });
-  object.order.push(['id', 'desc']);
-  return object;
-};
-
-function getPredicateTypes (index) {
-  return { [ bd.Sequelize.Op.or ]: [types[ index ].split(',')] };
-}
 
 const types = [
   '',
@@ -47,7 +13,51 @@ const types = [
   'name,logo',
 ];
 
-module.exports.getRatingQuery = (offerId, userId, mark, isFirst, transaction) => {
+function getPredicateTypes(index) {
+  return { [db.Sequelize.Op.or]: [types[index].split(',')] };
+}
+
+module.exports.createWhereForAllContests = (
+  typeIndex,
+  contestId,
+  industry,
+  awardSort
+) => {
+  const where = {};
+  const order = [];
+
+  if (typeIndex) {
+    where.contestType = getPredicateTypes(typeIndex);
+  }
+  if (contestId) {
+    where.id = contestId;
+  }
+  if (industry) {
+    where.industry = industry;
+  }
+  if (awardSort) {
+    order.push(['prize', awardSort]);
+  }
+
+  where.status = {
+    [db.Sequelize.Op.or]: [
+      CONSTANTS.CONTEST_STATUS_FINISHED,
+      CONSTANTS.CONTEST_STATUS_ACTIVE,
+    ],
+  };
+
+  order.push(['id', 'desc']);
+
+  return { where, order };
+};
+
+module.exports.getRatingQuery = (
+  offerId,
+  userId,
+  mark,
+  isFirst,
+  transaction
+) => {
   if (isFirst) {
     return ratingQueries.createRating(
       {
@@ -64,4 +74,4 @@ module.exports.getRatingQuery = (offerId, userId, mark, isFirst, transaction) =>
       transaction
     );
   }
-}
+};

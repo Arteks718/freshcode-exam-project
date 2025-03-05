@@ -7,7 +7,7 @@ const path = require('path');
 const CONSTANTS = require('../constants');
 const ServerError = require('../errors/ServerError');
 
-const LOGS_DIR = path.resolve(__dirname, '..', CONSTANTS.LOGS.DIR);
+const LOGS_DIR = path.resolve(__dirname, '..', '..', CONSTANTS.LOGS.DIR);
 const ERROR_LOG_FILE = path.join(LOGS_DIR, CONSTANTS.LOGS.ERRORS_FILE_NAME);
 
 const calculateTimeUntilNextTarget = (time) => {
@@ -39,19 +39,18 @@ const saveLogs = async () => {
     await fs.writeFile(newFilePath, logsArray.join('\n'));
     await fs.writeFile(ERROR_LOG_FILE, '');
   } catch (error) {
-    new ServerError('Error in schedule logger')
+    new ServerError(`Error in schedule logger, ${error}`)
   }
 };
 
 const scheduleLogger = async () => {
   const timeUntilNextTarget = calculateTimeUntilNextTarget(CONSTANTS.LOGS.SCHEDULE_TIME);
-
   setTimeout(async () => {
     await saveLogs();
-    scheduleLogSaving();
+    scheduleLogger();
   }, timeUntilNextTarget);
 }
 
-module.exports.start = () => {
-  scheduleLogger().catch((err) => new ServerError('Schedule logger error:', err))
+module.exports.start = async () => {
+  await scheduleLogger().catch((err) => new ServerError('Schedule logger error:', err))
 }

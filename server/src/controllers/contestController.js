@@ -49,8 +49,6 @@ module.exports.getContestById = async (req, res, next) => {
     tokenData: { userId, role },
   } = req;
 
-  console.log(req);
-
   try {
     let contestInfo = await db.Contests.findOne({
       where: { id: contestId },
@@ -116,13 +114,13 @@ module.exports.getContestById = async (req, res, next) => {
 
     const onReviewOffersCount = await db.Offers.count({
       where: {
-        contestId: req.headers.contestid,
+        contestId,
         status: CONSTANTS.OFFER_STATUS_REVIEW,
       },
     });
     const rejectedOffersCount = await db.Offers.count({
       where: {
-        contestId: req.headers.contestid,
+        contestId,
         status: CONSTANTS.OFFER_STATUS_REJECTED,
       },
     });
@@ -236,7 +234,7 @@ module.exports.getContests = async (req, res, next) => {
         },
       ],
     })
-  
+
     setCountForContests(contests);
     const haveMore = contests.length > 0;
     res.send({ contests, haveMore });

@@ -1,67 +1,58 @@
 import http from '../interceptor';
 
-export const registerRequest = (data) => http.post('registration', data);
-export const loginRequest = (data) => http.post('login', data);
-export const getUser = () => http.post('getUser');
-export const updateContest = (data) => http.post('updateContest', data);
-export const setNewOffer = (data) => http.post('setNewOffer', data);
-export const setOfferStatus = (data) => http.post('setOfferStatus', data);
+/////////////////////// CONTESTS ///////////////////////
+
+export const getActiveContests = (data) =>
+  http.get('contests/', { params: data });
+export const updateContest = (data) => http.patch('contests/', data);
+export const getContestById = (data) => http.get(`contests/${data.contestId}`);
+export const dataForContest = (data) =>
+  http.get('contests/data', { params: data });
+export const getCustomersContests = (data) =>
+  http.get('contests/customer', {
+    params: { limit: data.limit, offset: data.offset, status: data.contestStatus },
+    headers: { status: data.contestStatus },
+  });
+
 export const downloadContestFile = (data) =>
   http.get(`downloadFile/${data.fileName}`);
-export const payMent = (data) => http.post('pay', data.formData);
+
+///////////////////////// USER /////////////////////////
+
+export const registerRequest = (data) => http.post('registration', data);
+export const loginRequest = (data) => http.post('login', data);
+export const updateUser = (data) => http.post('updateUser', data);
+export const getUser = () => http.post('getUser');
 export const changeMark = (data) => http.post('changeMark', data);
+
+///////////////////////// CHAT /////////////////////////
+
 export const getPreviewChat = () => http.post('getPreview');
 export const getDialog = (data) => http.post('getChat', data);
-export const dataForContest = (data) => http.post('dataForContest', data);
-export const cashOut = (data) => http.post('cashout', data);
-export const updateUser = (data) => http.post('updateUser', data);
 export const newMessage = (data) => http.post('newMessage', data);
 export const changeChatFavorite = (data) => http.post('favorite', data);
 export const changeChatBlock = (data) => http.post('blackList', data);
+
+/////////////////////// CATALOGS ///////////////////////
+
 export const getCatalogList = (data) => http.post('getCatalogs', data);
 export const addChatToCatalog = (data) =>
   http.post('addNewChatToCatalog', data);
 export const createCatalog = (data) => http.post('createCatalog', data);
 export const deleteCatalog = (data) => http.post('deleteCatalog', data);
-export const getOffers = (data) =>
-  http.get('getOffers', { params: { ...data } });
-export const updateOffer = (data) => http.put('updateOffer', data);
 export const removeChatFromCatalog = (data) =>
   http.post('removeChatFromCatalog', data);
 export const changeCatalogName = (data) => http.post('updateNameCatalog', data);
-export const getCustomersContests = (data) =>
-  http.post(
-    'getCustomersContests',
-    { limit: data.limit, offset: data.offset },
-    {
-      headers: {
-        status: data.contestStatus,
-      },
-    }
-  );
 
-export const getActiveContests = ({
-  offset,
-  limit,
-  typeIndex,
-  contestId,
-  industry,
-  awardSort,
-  ownEntries,
-}) =>
-  http.post('getAllContests', {
-    offset,
-    limit,
-    typeIndex,
-    contestId,
-    industry,
-    awardSort,
-    ownEntries,
-  });
+/////////////////////// PAYMENTS ///////////////////////
 
-export const getContestById = (data) =>
-  http.get('getContestById', {
-    headers: {
-      contestId: data.contestId,
-    },
-  });
+export const payMent = (data) => http.post('pay', data.formData);
+export const cashOut = (data) => http.post('cashout', data);
+
+//////////////////////// OFFERS ////////////////////////
+
+export const updateOffer = (data) => http.put('updateOffer', data);
+export const getOffers = (data) =>
+  http.get('getOffers', { params: { ...data } });
+export const setNewOffer = (data) => http.post('setNewOffer', data);
+export const setOfferStatus = (data) => http.post('setOfferStatus', data);

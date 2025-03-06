@@ -3,7 +3,6 @@ const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const hashPass = require('../middlewares/hashPassMiddle');
 const userController = require('../controllers/userController');
 const offerController = require('../controllers/offerController')
-const contestController = require('../controllers/contestController');
 const bankController = require('../controllers/bankController');
 const ratingController = require('../controllers/ratingController');
 const checkToken = require('../middlewares/checkToken');
@@ -11,6 +10,9 @@ const validators = require('../middlewares/validators');
 const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
 const router = express.Router();
+const contestRouter = require('./contestRouter');
+
+router.use('/contests', contestRouter);
 
 router.post(
   '/registration',
@@ -26,12 +28,6 @@ router.post(
 );
 
 router.post(
-  '/dataForContest',
-  checkToken.checkToken,
-  contestController.dataForContest,
-);
-
-router.post(
   '/pay',
   checkToken.checkToken,
   basicMiddlewares.onlyForCustomer,
@@ -42,41 +38,8 @@ router.post(
 );
 
 router.post(
-  '/getCustomersContests',
-  checkToken.checkToken,
-  contestController.getCustomersContests,
-);
-
-router.get(
-  '/getContestById',
-  checkToken.checkToken,
-  basicMiddlewares.canGetContest,
-  contestController.getContestById,
-);
-
-router.post(
-  '/getAllContests',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCreative,
-  contestController.getContests,
-);
-
-router.post(
   '/getUser',
   checkToken.checkAuth,
-);
-
-router.get(
-  '/downloadFile/:fileName',
-  checkToken.checkToken,
-  contestController.downloadFile,
-);
-
-router.post(
-  '/updateContest',
-  checkToken.checkToken,
-  upload.updateContestFile,
-  contestController.updateContest,
 );
 
 router.post(

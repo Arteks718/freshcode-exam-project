@@ -14,8 +14,9 @@ module.exports.dataForContest = async (req, res, next) => {
   const response = {};
   try {
     const {
-      body: { characteristic1, characteristic2 },
+      query: { characteristic1, characteristic2 },
     } = req;
+
     const types = [characteristic1, characteristic2, 'industry'].filter(
       Boolean
     );
@@ -44,13 +45,15 @@ module.exports.dataForContest = async (req, res, next) => {
 
 module.exports.getContestById = async (req, res, next) => {
   const {
-    headers: { contestid },
+    params: { id: contestId },
     tokenData: { userId, role },
   } = req;
 
+  console.log(req);
+
   try {
     let contestInfo = await db.Contests.findOne({
-      where: { id: contestid },
+      where: { id: contestId },
       order: [
         [
           db.Sequelize.literal(
@@ -172,8 +175,7 @@ module.exports.getCustomersContests = async(req, res, next) => {
   try {
     const {
       tokenData: { userId },
-      headers: { status },
-      body: { limit, offset },
+      query: { limit, offset, status },
     } = req;
 
     const contests = await db.Contests.findAll({
@@ -188,14 +190,13 @@ module.exports.getCustomersContests = async(req, res, next) => {
           attributes: ['id'],
         },
       ],
-      raw: true
     });
-    console.log(contests)
 
     setCountForContests(contests);
     const haveMore = contests.length > 0;
     res.send({ contests, haveMore });
   } catch (err) {
+    console.log(err);
     next(new ServerError('cannot get contests'));
   }
 };
@@ -203,7 +204,7 @@ module.exports.getCustomersContests = async(req, res, next) => {
 module.exports.getContests = async (req, res, next) => {
   try {
     const {
-      body: {
+      query: {
         typeIndex,
         contestId,
         industry,
@@ -214,6 +215,7 @@ module.exports.getContests = async (req, res, next) => {
       },
       tokenData: { userId },
     } = req;
+
     const predicates = UtilFunctions.createWhereForAllContests(
       typeIndex,
       contestId,
@@ -233,7 +235,6 @@ module.exports.getContests = async (req, res, next) => {
           attributes: ['id'],
         },
       ],
-      raw: true
     })
   
     setCountForContests(contests);

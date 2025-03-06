@@ -13,10 +13,10 @@ module.exports.login = async (req, res, next) => {
 
   try {
     const foundUser = await userQueries.findUser({ email });
-    const { id: userId, ...userWithoutId } = foundUser;
+    const { id: userId, accessToken, ...userWithoutId } = foundUser;
 
     await userQueries.passwordCompare(password, foundUser.password);
-    const accessToken = jwt.sign(
+    const newToken = jwt.sign(
       {
         ...userWithoutId,
         userId,
@@ -24,9 +24,9 @@ module.exports.login = async (req, res, next) => {
       CONSTANTS.JWT_SECRET,
       { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME }
     );
-    await userQueries.updateUser({ accessToken }, userId);
+    await userQueries.updateUser({ accessToken: newToken }, userId);
 
-    res.send({ token: accessToken });
+    res.send({ token: newToken });
   } catch (err) {
     next(err);
   }

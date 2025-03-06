@@ -19,11 +19,11 @@ export const downloadContestFile = (data) =>
 
 ///////////////////////// USER /////////////////////////
 
-export const registerRequest = (data) => http.post('registration', data);
-export const loginRequest = (data) => http.post('login', data);
-export const updateUser = (data) => http.post('updateUser', data);
-export const getUser = () => http.post('getUser');
-export const changeMark = (data) => http.post('changeMark', data);
+export const getUser = () => http.get('user/');
+export const loginRequest = (data) => http.post('user/login', data);
+export const registerRequest = (data) => http.post('user/registration', data);
+export const updateUser = (data) => http.patch('user/', data);
+export const changeMark = (data) => http.patch('user/changeRatingMark', data);
 
 ///////////////////////// CHAT /////////////////////////
 

@@ -13,25 +13,12 @@ const router = express.Router();
 const contestRouter = require('./contestRouter');
 const userRouter = require('./userRouter');
 const bankRouter = require('./bankRouter');
+const offerRouter = require('./offerRouter');
 
 router.use('/contests', contestRouter);
 router.use('/user', userRouter);
 router.use('/bank', bankRouter);
-
-router.post(
-  '/setNewOffer',
-  checkToken.checkToken,
-  upload.uploadLogoFiles,
-  basicMiddlewares.canSendOffer,
-  offerController.setNewOffer,
-);
-
-router.post(
-  '/setOfferStatus',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCustomerWhoCreatedContest,
-  offerController.setOfferStatus,
-);
+router.use('/offers', offerRouter)
 
 router.post(
   '/newMessage',
@@ -98,17 +85,5 @@ router.post(
   checkToken.checkToken,
   chatController.getCatalogs,
 );
-
-router.get(
-  '/getOffers',
-  checkToken.checkToken,
-  offerController.getOffers
-)
-
-router.put(
-  '/updateOffer',
-  checkToken.checkToken,
-  offerController.updateOffer
-)
 
 module.exports = router;

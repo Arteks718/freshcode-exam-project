@@ -21,7 +21,10 @@ module.exports.getOffers = async (req, res, next) => {
 };
 
 module.exports.updateOffer = async (req, res, next) => {
-  const { status, offerId, message } = req.body;
+  const {
+    body: { status, message },
+    params: { offerId },
+  } = req;
   try {
     const [updatedOffer] = await offerQueries.updateOffer(
       { status },
@@ -180,7 +183,8 @@ const resolveOffer = async (
 
 module.exports.setOfferStatus = async (req, res, next) => {
   const {
-    body: { command, offerId, creatorId, contestId, orderId, priority },
+    body: { command, creatorId, contestId, orderId, priority },
+    params: { offerId },
   } = req;
 
   let transaction;

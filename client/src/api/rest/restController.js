@@ -10,7 +10,11 @@ export const dataForContest = (data) =>
   http.get('contests/data', { params: data });
 export const getCustomersContests = (data) =>
   http.get('contests/customer', {
-    params: { limit: data.limit, offset: data.offset, status: data.contestStatus },
+    params: {
+      limit: data.limit,
+      offset: data.offset,
+      status: data.contestStatus,
+    },
     headers: { status: data.contestStatus },
   });
 
@@ -51,8 +55,8 @@ export const cashOut = (data) => http.post('bank/cashout', data);
 
 //////////////////////// OFFERS ////////////////////////
 
-export const updateOffer = (data) => http.put('updateOffer', data);
-export const getOffers = (data) =>
-  http.get('getOffers', { params: { ...data } });
-export const setNewOffer = (data) => http.post('setNewOffer', data);
-export const setOfferStatus = (data) => http.post('setOfferStatus', data);
+export const getOffers = (data) => http.get('offers/', { params: { ...data } });
+export const setNewOffer = (data) => http.post('offers/', data);
+
+export const setOfferStatus = (data) => http.post(`offers/${data.offerId}`, data);
+export const updateOffer = (data) => http.put(`offers/${data.offerId}`, data);

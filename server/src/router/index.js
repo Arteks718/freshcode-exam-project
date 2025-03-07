@@ -12,19 +12,11 @@ const upload = require('../utils/fileUpload');
 const router = express.Router();
 const contestRouter = require('./contestRouter');
 const userRouter = require('./userRouter');
+const bankRouter = require('./bankRouter');
 
 router.use('/contests', contestRouter);
 router.use('/user', userRouter);
-
-router.post(
-  '/pay',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCustomer,
-  upload.uploadContestFiles,
-  basicMiddlewares.parseBody,
-  validators.validateContestCreation,
-  bankController.payment,
-);
+router.use('/bank', bankRouter);
 
 router.post(
   '/setNewOffer',
@@ -39,13 +31,6 @@ router.post(
   checkToken.checkToken,
   basicMiddlewares.onlyForCustomerWhoCreatedContest,
   offerController.setOfferStatus,
-);
-
-router.post(
-  '/cashout',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCreative,
-  bankController.cashout,
 );
 
 router.post(

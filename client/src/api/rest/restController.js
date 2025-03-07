@@ -46,8 +46,8 @@ export const changeCatalogName = (data) => http.post('updateNameCatalog', data);
 
 /////////////////////// PAYMENTS ///////////////////////
 
-export const payMent = (data) => http.post('pay', data.formData);
-export const cashOut = (data) => http.post('cashout', data);
+export const payMent = (data) => http.post('bank/pay', data.formData);
+export const cashOut = (data) => http.post('bank/cashout', data);
 
 //////////////////////// OFFERS ////////////////////////
 

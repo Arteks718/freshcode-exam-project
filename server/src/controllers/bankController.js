@@ -69,7 +69,7 @@ module.exports.payment = async (req, res, next) => {
 
 module.exports.cashout = async (req, res, next) => {
   const {
-    body: { sum, number, expiry },
+    body: { sum, number, expiry, cvc },
     tokenData: { userId },
   } = req;
   let transaction;
@@ -83,6 +83,7 @@ module.exports.cashout = async (req, res, next) => {
       userId,
       transaction
     );
+    // TODO Add new card if it doesn't exist
     await bankQueries.updateBankBalance(
       {
         balance: db.sequelize.literal(`

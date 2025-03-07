@@ -31,22 +31,24 @@ export const changeMark = (data) => http.patch('user/changeRatingMark', data);
 
 ///////////////////////// CHAT /////////////////////////
 
-export const getPreviewChat = () => http.post('getPreview');
-export const getDialog = (data) => http.post('getChat', data);
-export const newMessage = (data) => http.post('newMessage', data);
-export const changeChatFavorite = (data) => http.post('favorite', data);
-export const changeChatBlock = (data) => http.post('blackList', data);
+export const getPreviewChat = () => http.get('chat/');
+export const getDialog = (data) => http.get(`chat/${data.interlocutorId}`);
+export const newMessage = (data) => http.post('chat/', data);
+export const changeChatFavorite = (data) => http.patch('chat/favorite', data);
+export const changeChatBlock = (data) => http.patch('chat/block', data);
 
 /////////////////////// CATALOGS ///////////////////////
 
-export const getCatalogList = (data) => http.post('getCatalogs', data);
+export const getCatalogList = () => http.get('chat/catalogs/');
+export const createCatalog = (data) => http.post('chat/catalogs/', data);
+export const changeCatalogName = (data) =>
+  http.patch(`chat/catalogs/${data.catalogId}`, data);
+export const deleteCatalog = (data) =>
+  http.delete(`chat/catalogs/${data.catalogId}`);
 export const addChatToCatalog = (data) =>
-  http.post('addNewChatToCatalog', data);
-export const createCatalog = (data) => http.post('createCatalog', data);
-export const deleteCatalog = (data) => http.post('deleteCatalog', data);
+  http.post(`chat/catalogs/${data.catalogId}/chats`, data);
 export const removeChatFromCatalog = (data) =>
-  http.post('removeChatFromCatalog', data);
-export const changeCatalogName = (data) => http.post('updateNameCatalog', data);
+  http.delete(`chat/catalogs/${data.catalogId}/chats/${data.chatId}`);
 
 /////////////////////// PAYMENTS ///////////////////////
 
@@ -58,5 +60,6 @@ export const cashOut = (data) => http.post('bank/cashout', data);
 export const getOffers = (data) => http.get('offers/', { params: { ...data } });
 export const setNewOffer = (data) => http.post('offers/', data);
 
-export const setOfferStatus = (data) => http.post(`offers/${data.offerId}`, data);
+export const setOfferStatus = (data) =>
+  http.post(`offers/${data.offerId}`, data);
 export const updateOffer = (data) => http.put(`offers/${data.offerId}`, data);

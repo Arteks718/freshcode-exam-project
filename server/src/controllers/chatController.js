@@ -70,7 +70,7 @@ module.exports.addMessage = async (req, res, next) => {
 
 module.exports.getChat = async (req, res, next) => {
   const {
-    body: { interlocutorId },
+    params: { interlocutorId },
     tokenData: { userId },
   } = req;
 
@@ -263,7 +263,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
 
 module.exports.removeChatFromCatalog = async (req, res, next) => {
   const {
-    body: { catalogId, chatId },
+    params: { catalogId, chatId },
   } = req;
 
   try {
@@ -286,8 +286,8 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
 
 module.exports.deleteCatalog = async (req, res, next) => {
   const {
-    body: { catalogId },
-    tokenDate: { userId },
+    params: { catalogId },
+    tokenData: { userId },
   } = req;
   try {
     await db.Catalogs.destroy({
@@ -327,6 +327,7 @@ module.exports.getCatalogs = async (req, res, next) => {
 
     res.send(catalogsWithChats);
   } catch (err) {
+    console.log('errrroor', err);
     next(err);
   }
 };

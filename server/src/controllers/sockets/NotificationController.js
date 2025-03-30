@@ -7,7 +7,7 @@ class NotificationController extends WebSocket{
     this.io.to(target).emit(CONSTANTS.NOTIFICATION_ENTRY_CREATED);
   }
 
-  emitChangeMark (target) {
+  emitChangeRatingMark (target) {
     this.io.to(target).emit(CONSTANTS.NOTIFICATION_CHANGE_MARK);
   }
 

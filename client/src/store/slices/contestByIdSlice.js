@@ -16,7 +16,7 @@ const initialState = {
   offers: [],
   addOfferError: null,
   setOfferStatusError: null,
-  changeMarkError: null,
+  changeRatingMarkError: null,
   isEditContest: false,
   isBrief: true,
   isShowOnFull: false,
@@ -101,17 +101,17 @@ const setOfferStatusExtraReducers = createExtraReducers({
   },
 });
 
-//---------- changeMark
-export const changeMark = decorateAsyncThunk({
-  key: `${CONTEST_BY_ID_SLICE_NAME}/changeMark`,
+//---------- changeRatingMark
+export const changeRatingMark = decorateAsyncThunk({
+  key: `${CONTEST_BY_ID_SLICE_NAME}/changeRatingMark`,
   thunk: async payload => {
-    const { data } = await restController.changeMark(payload);
+    const { data } = await restController.changeRatingMark(payload);
     return { data, offerId: payload.offerId, mark: payload.mark };
   },
 });
 
-const changeMarkExtraReducers = createExtraReducers({
-  thunk: changeMark,
+const changeRatingMarkExtraReducers = createExtraReducers({
+  thunk: changeRatingMark,
   fulfilledReducer: (state, { payload: { data, offerId, mark } }) => {
     state.offers.forEach(offer => {
       if (offer.User.id === data.userId) {
@@ -124,7 +124,7 @@ const changeMarkExtraReducers = createExtraReducers({
     state.error = null;
   },
   rejectedReducer: (state, { payload }) => {
-    state.changeMarkError = payload;
+    state.changeRatingMarkError = payload;
   },
 });
 
@@ -149,8 +149,8 @@ const reducers = {
   clearSetOfferStatusError: state => {
     state.setOfferStatusError = null;
   },
-  clearChangeMarkError: state => {
-    state.changeMarkError = null;
+  clearChangeRatingMarkError: state => {
+    state.changeRatingMarkError = null;
   },
   changeShowImage: (state, { payload: { isShowOnFull, imagePath } }) => {
     state.isShowOnFull = isShowOnFull;
@@ -162,7 +162,7 @@ const extraReducers = builder => {
   getContestByIdExtraReducers(builder);
   addOfferExtraReducers(builder);
   setOfferStatusExtraReducers(builder);
-  changeMarkExtraReducers(builder);
+  changeRatingMarkExtraReducers(builder);
 };
 
 const contestByIdSlice = createSlice({
@@ -180,7 +180,7 @@ export const {
   changeEditContest,
   clearAddOfferError,
   clearSetOfferStatusError,
-  clearChangeMarkError,
+  clearChangeRatingMarkError,
   changeShowImage,
 } = actions;
 

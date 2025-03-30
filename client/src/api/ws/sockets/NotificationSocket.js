@@ -10,12 +10,12 @@ class NotificationSocket extends WebSocket {
 
   anotherSubscribes = () => {
     this.onEntryCreated();
-    this.onChangeMark();
+    this.onChangeRatingMark();
     this.onChangeOfferStatus();
   };
 
-  onChangeMark = () => {
-    this.socket.on('changeMark', () => {
+  onChangeRatingMark = () => {
+    this.socket.on('changeRatingMark', () => {
       toast('Someone liked your offer');
     });
   };

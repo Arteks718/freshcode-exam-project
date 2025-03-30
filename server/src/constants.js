@@ -29,7 +29,7 @@ module.exports = {
   SOCKET_SUBSCRIBE: 'subscribe',
   SOCKET_UNSUBSCRIBE: 'unsubscribe',
   NOTIFICATION_ENTRY_CREATED: 'onEntryCreated',
-  NOTIFICATION_CHANGE_MARK: 'changeMark',
+  NOTIFICATION_CHANGE_MARK: 'changeRatingMark',
   NOTIFICATION_CHANGE_OFFER_STATUS: 'changeOfferStatus',
   NEW_MESSAGE: 'newMessage',
   CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',

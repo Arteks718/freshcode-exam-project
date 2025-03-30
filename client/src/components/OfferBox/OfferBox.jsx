@@ -8,8 +8,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import { MdOutlineStar, MdOutlineStarBorder } from 'react-icons/md';
 import { goToExpandedDialog } from '../../store/slices/chatSlice';
 import {
-  changeMark,
-  clearChangeMarkError,
+  changeRatingMark,
+  clearChangeRatingMarkError,
   changeShowImage,
 } from '../../store/slices/contestByIdSlice';
 import CONSTANTS from '../../constants';
@@ -26,7 +26,7 @@ const OfferBox = (props) => {
     setOfferStatus,
     messagesPreview,
     clearError,
-    changeMark,
+    changeRatingMark,
     needButtons,
     changeShowImage,
     goToExpandedDialog
@@ -68,13 +68,13 @@ const OfferBox = (props) => {
 
   const onMarkChange = useCallback((value) => {
     clearError();
-    changeMark({
+    changeRatingMark({
       mark: value,
       offerId,
       isFirst: !mark,
       creatorId: userId,
     });
-  }, [clearError, changeMark, mark, offerId, userId]);
+  }, [clearError, changeRatingMark, mark, offerId, userId]);
 
   const handleGoChat = useCallback(() => {
     goToExpandedDialog({
@@ -213,18 +213,18 @@ const OfferBox = (props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changeMark: (data) => dispatch(changeMark(data)),
-  clearError: () => dispatch(clearChangeMarkError()),
+  changeRatingMark: (data) => dispatch(changeRatingMark(data)),
+  clearError: () => dispatch(clearChangeRatingMarkError()),
   goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
   changeShowImage: (data) => dispatch(changeShowImage(data)),
 });
 
 const mapStateToProps = (state) => {
-  const { changeMarkError } = state.contestByIdStore;
+  const { changeRatingMarkError } = state.contestByIdStore;
   const { id, role } = state.userStore.data;
   const { messagesPreview } = state.chatStore;
   return {
-    changeMarkError,
+    changeRatingMarkError,
     id,
     role,
     messagesPreview,

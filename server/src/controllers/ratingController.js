@@ -35,7 +35,7 @@ module.exports.changeRatingMark = async (req, res, next) => {
 
     await userQueries.updateUser({ rating: avg }, creatorId, transaction);
     transaction.commit();
-    controller.getNotificationController().emitChangeMark(creatorId);
+    controller.getNotificationController().emitChangeRatingMark(creatorId);
     res.send({ userId: creatorId, rating: avg });
   } catch (err) {
     transaction.rollback();

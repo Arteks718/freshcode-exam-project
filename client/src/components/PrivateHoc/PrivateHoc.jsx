@@ -2,9 +2,8 @@ import React from 'react';
 import Spinner from '../Spinner/Spinner';
 import useUser from '../../hooks/useUser';
 
-const PrivateHoc = (Component) => {
-  const Hoc = (props) => {
-    const { history, match } = props;
+const PrivateHoc = (Component, props) => {
+  const Hoc = ({ history, match }) => {
     const { isFetching, isLoading, token } = useUser();
 
     if (isLoading && isFetching) {

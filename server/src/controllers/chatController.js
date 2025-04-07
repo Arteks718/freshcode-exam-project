@@ -185,18 +185,18 @@ module.exports.blackList = async (req, res, next) => {
 
 module.exports.favoriteChat = async (req, res, next) => {
   const {
-    body: { blackListFlag, participants, currentFavoriteList },
+    body: { favoriteFlag, participants, currentFavoriteList },
     tokenData: { userId },
   } = req;
 
   try {
-    const predicate = 'blackList';
+    const predicate = 'favoriteList';
     const participantIndex = participants.indexOf(userId);
-    currentFavoriteList[participantIndex] = blackListFlag;
+    currentFavoriteList[participantIndex] = favoriteFlag;
 
     const conversation = await updateConversation(
       predicate,
-      currentBlackList,
+      currentFavoriteList,
       participants
     );
 

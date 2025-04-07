@@ -19,23 +19,22 @@ const EventNotification = (props) => {
   useEffect(() => {
     if (role === CONSTANTS.CUSTOMER) {
       const nextEventTime = events.reduce((nextTime, event) => {
-        const reminderTime = new Date(event.reminderDate).getTime();
-        const finishTime = new Date(event.finishDate).getTime();
-        const currentTime = currentDate.getTime();
+        const reminderTime = new Date(event.reminderDate);
+        const finishTime = new Date(event.finishDate);
 
-        if (reminderTime > currentTime && (nextTime === null || reminderTime < nextTime)) {
+        if (reminderTime > currentDate && (nextTime === null || reminderTime < nextTime)) {
           return reminderTime;
         }
-        if (finishTime > currentTime && (nextTime === null || finishTime < nextTime)) {
+        if (finishTime > currentDate && (nextTime === null || finishTime < nextTime)) {
           return finishTime;
         }
         return nextTime;
       }, null);
 
       if (nextEventTime !== null) {
-        const delay = nextEventTime - currentDate.getTime();
+        const delay = nextEventTime - currentDate;
         timeoutRef.current = setTimeout(() => {
-          checkTime(currentDate.getTime());
+          checkTime(currentDate);
         }, delay);
       }
     }

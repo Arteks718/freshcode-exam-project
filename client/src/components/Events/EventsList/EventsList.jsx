@@ -20,7 +20,7 @@ const EventsList = (props) => {
       <div className={styles.eventsList}>
         {events.length !== 0 ? (
           sortedEvents.map((event) => (
-            <EventItem event={event} deleteEvent={deleteEvent} />
+            <EventItem event={event} deleteEvent={deleteEvent} key={event.id} />
           ))
         ) : (
           <p>No events</p>

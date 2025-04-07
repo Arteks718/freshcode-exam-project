@@ -28,7 +28,6 @@ const reducers = {
     const currentTime = payload;
     state.finishedCount = 0;
     state.reminderCount = 0;
-    console.log('checkTime')
     state.events.forEach((event) => {
       const isOver = isAfter(currentTime + 1, event.finishDate),
         isRemind = isAfter(currentTime + 1, event.reminderDate);

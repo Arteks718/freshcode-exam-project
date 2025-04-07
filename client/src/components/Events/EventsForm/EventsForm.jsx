@@ -29,10 +29,14 @@ const EventsForm = (props) => {
         validateOnBlur={true}
         validateOnChange={false}
         onSubmit={(values, { resetForm }) => {
-          addEvent({
+          const newEvent = {
             ...values,
-            id: new Date().getTime().toString(),
-          });
+            id: Date.now().toString(),
+            startDate: values.startDate.getTime(),
+            finishDate: values.finishDate?.getTime(),
+            reminderDate: values.reminderDate?.getTime(),
+          };
+          addEvent(newEvent);
           resetForm();
         }}
       >

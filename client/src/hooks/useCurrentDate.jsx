@@ -10,7 +10,7 @@ const useCurrentDate = (interval = 1000) => {
     return () => clearInterval(timer);
   }, [interval]);
 
-  return currentDate;
+  return currentDate.getTime();
 }
 
 export default useCurrentDate

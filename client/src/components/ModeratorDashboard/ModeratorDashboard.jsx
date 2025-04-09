@@ -1,52 +1,39 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Formik, Form, Field } from 'formik';
 import { toast } from 'react-toastify';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
 
+import { getOffers, updateOffer } from '../../store/slices/offersSlice';
 import OffersContainer from '../OffersContainer/OffersContainer';
 import OffersItem from '../OffersContainer/OffersItem/OffersItem';
-import { getOffers, updateOffer } from '../../store/slices/offersSlice';
+import ModeratorModal from './ModeratorModal/ModeratorModal';
 import styles from './ModeratorDashboard.module.sass';
 import SpinnerLoader from '../Spinner/Spinner';
 import CONSTANTS from '../../constants';
 
 const ModeratorDashboard = (props) => {
   const { getOffers, updateOffer, offers, haveMore, isFetching } = props;
-  const [open, setOpen] = useState(false);
-  const [currentOfferId, setCurrentOfferId] = useState(null);
-
-  const handleOpen = (offerId) => {
-    setCurrentOfferId(offerId);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setCurrentOfferId(null);
-  };
+  const modalOpenRef = useRef(null);
 
   useEffect(() => {
     getOffers({ limit: 10 });
   }, [getOffers]);
 
-  const sendOffer = useCallback((status, offerId, message = '') => {
-    if (status === CONSTANTS.OFFER_STATUS_DECLINED) {
-      toast(`Offer#${offerId} was declined!`);
-      return updateOffer({
-        status,
-        offerId,
-        message,
-      });
-    } else {
-      toast(`Offer#${offerId} was approved!`);
-      return updateOffer({ status, offerId });
-    }
-  }, [updateOffer]);
+  const sendOffer = useCallback(
+    (status, offerId, message = '') => {
+      if (status === CONSTANTS.OFFER_STATUS_DECLINED) {
+        toast(`Offer#${offerId} was declined!`);
+        return updateOffer({
+          status,
+          offerId,
+          message,
+        });
+      } else {
+        toast(`Offer#${offerId} was approved!`);
+        return updateOffer({ status, offerId });
+      }
+    },
+    [updateOffer]
+  );
 
   const offersList = useMemo(() => {
     return offers.map((offer) => (
@@ -54,7 +41,7 @@ const ModeratorDashboard = (props) => {
         data={offer}
         sendOffer={sendOffer}
         key={offer.id}
-        openModal={() => handleOpen(offer.id)}
+        openModal={() => modalOpenRef.current(offer.id)}
       />
     ));
   }, [offers, sendOffer]);
@@ -76,65 +63,10 @@ const ModeratorDashboard = (props) => {
           <SpinnerLoader />
         )}
       </div>
-      <Modal open={open} onClose={handleClose}>
-        <Box className={styles.modalContainer}>
-          <Typography variant="h6" component="h2">
-            Send Answering message
-          </Typography>
-          <Formik
-            initialValues={{ message: '' }}
-            onSubmit={(values, { resetForm }) => {
-              sendOffer(
-                CONSTANTS.OFFER_STATUS_DECLINED,
-                currentOfferId,
-                values.message
-              );
-              resetForm();
-              handleClose();
-            }}
-          >
-            {({ values, setFieldValue }) => (
-              <Form>
-                <Field
-                  as={TextField}
-                  name="message"
-                  label="Message"
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                />
-                <Box className={styles.btnsContainer}>
-                  <Button
-                    className={styles.closeBtn}
-                    variant="contained"
-                    onClick={handleClose}
-                  >
-                    Close
-                  </Button>
-                  <Button
-                    className={styles.sendBtn}
-                    type="submit"
-                    variant="contained"
-                    onClick={() => setFieldValue('message', '')}
-                  >
-                    Send without answer
-                  </Button>
-                  <Button
-                    className={styles.sendBtn}
-                    type="submit"
-                    variant="contained"
-                    disabled={values.message.length < 5}
-                  >
-                    Send
-                  </Button>
-                </Box>
-              </Form>
-            )}
-          </Formik>
-        </Box>
-      </Modal>
+      <ModeratorModal
+        sendOffer={sendOffer}
+        onRef={(ref) => (modalOpenRef.current = ref)}
+      />
     </>
   );
 };

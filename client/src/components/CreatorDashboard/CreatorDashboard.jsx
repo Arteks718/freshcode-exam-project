@@ -11,7 +11,6 @@ import {
 } from '../../store/slices/contestsSlice';
 import { getDataForContest } from '../../store/slices/dataForContestSlice';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
-import ContestBox from '../ContestBox/ContestBox';
 import styles from './CreatorDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
 import CONSTANTS from '../../constants';
@@ -30,7 +29,7 @@ const types = [
 
 const CreatorDashboard = (props) => {
   const {
-    getCreatorContests,
+    getContests,
     getDataForContest,
     contests,
     clearContestsList,
@@ -44,14 +43,14 @@ const CreatorDashboard = (props) => {
     dataForContest,
   } = props;
 
-  const getContests = useCallback(
+  const getCreatorContests = useCallback(
     (offset, filter) =>
-      getCreatorContests({
-        limit: 8,
+      getContests({
+        limit: CONSTANTS.LIMIT_GETTING_CONTESTS,
         offset,
         ...filter,
       }),
-    [getCreatorContests]
+    [getContests]
   );
 
   const parseParamsToUrl = useCallback(
@@ -80,10 +79,9 @@ const CreatorDashboard = (props) => {
         newFilter(filter);
       }
       clearContestsList();
-      getContests(0, filter);
-      console.log('parseUrlForParams', new Date().getTime());
+      getCreatorContests(0, filter);
     },
-    [creatorFilter, newFilter, clearContestsList, getContests]
+    [creatorFilter, newFilter, clearContestsList, getCreatorContests]
   );
 
   const changePredicate = ({ name, value }) => {
@@ -161,28 +159,13 @@ const CreatorDashboard = (props) => {
     return obj;
   };
 
-  const setContestList = () => {
-    const array = [];
-    for (let i = 0; i < contests.length; i++) {
-      array.push(
-        <ContestBox
-          data={contests[i]}
-          key={contests[i].id}
-          history={history}
-          goToExtended={goToExtended}
-        />
-      );
-    }
-    return array;
-  };
-
   const loadMore = (startFrom) => {
-    getContests(startFrom, getPredicateOfRequest());
+    getCreatorContests(startFrom, getPredicateOfRequest());
   };
 
   const tryLoadAgain = () => {
     clearContestsList();
-    getContests(0, getPredicateOfRequest());
+    getCreatorContests(0, getPredicateOfRequest());
   };
 
   useEffect(() => {
@@ -260,12 +243,13 @@ const CreatorDashboard = (props) => {
       ) : (
         <ContestsContainer
           isFetching={isFetching}
+          error={error}
           loadMore={loadMore}
           history={history}
           haveMore={haveMore}
-        >
-          {setContestList()}
-        </ContestsContainer>
+          contests={contests}
+          goToExtended={goToExtended}
+        />
       )}
     </div>
   );
@@ -277,7 +261,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getCreatorContests: (data) =>
+  getContests: (data) =>
     dispatch(getContests({ requestData: data, role: CONSTANTS.CREATOR })),
   clearContestsList: () => dispatch(clearContestsList()),
   newFilter: (filter) => dispatch(setNewCreatorFilter(filter)),

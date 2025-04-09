@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
-import { withRouter } from 'react-router';
+import React, { useEffect, useMemo } from 'react';
 import styles from './ContestContainer.module.sass';
 import Spinner from '../Spinner/Spinner';
+import ContestBox from '../ContestBox/ContestBox';
 
 const ContestsContainer = (props) => {
-  const { isFetching, loadMore, haveMore, children } = props;
+  const { isFetching, loadMore, haveMore, contests, goToExtended, history } =
+    props;
 
   useEffect(() => {
     const scrollHandler = () => {
@@ -13,7 +14,7 @@ const ContestsContainer = (props) => {
         document.documentElement.offsetHeight
       ) {
         if (haveMore) {
-          loadMore(children.length);
+          loadMore(contests.length);
         }
       }
     };
@@ -22,11 +23,26 @@ const ContestsContainer = (props) => {
     return () => {
       window.removeEventListener('scroll', scrollHandler);
     };
-  }, []);
+  }, [contests, haveMore, loadMore]);
+
+  const setContestList = useMemo(() =>
+    contests.map((contest) => (
+      <ContestBox
+        data={contest}
+        key={contest.id}
+        history={history}
+        goToExtended={goToExtended}
+      />
+    )), [contests, goToExtended, history]);
 
   return (
     <div>
-      {children}
+      {setContestList}
+      {!contests.length && !isFetching && (
+        <div className={styles.emptyNotification}>
+          This contests list is empty
+        </div>
+      )}
       {isFetching && (
         <div className={styles.spinnerContainer}>
           <Spinner />

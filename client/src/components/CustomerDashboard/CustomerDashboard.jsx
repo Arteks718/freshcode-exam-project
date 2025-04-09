@@ -9,7 +9,6 @@ import {
 } from '../../store/slices/contestsSlice';
 import CONSTANTS from '../../constants';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
-import ContestBox from '../ContestBox/ContestBox';
 import styles from './CustomerDashboard.module.sass';
 import TryAgain from '../TryAgain/TryAgain';
 import { goToExtended } from '../../utils/contestUtils';
@@ -28,32 +27,21 @@ const CustomerDashboard = (props) => {
   } = props;
 
   useEffect(() => {
-    getContests({ limit: 8, contestStatus: customerFilter });
-  }, [customerFilter, getContests]);
+    getContests({ limit: CONSTANTS.LIMIT_GETTING_CONTESTS, contestStatus: customerFilter });
+    return () => clearContestsList()
+  }, [customerFilter, getContests, clearContestsList]);
 
   const loadMore = (startFrom) => {
     getContests({
-      limit: 8,
+      limit: CONSTANTS.LIMIT_GETTING_CONTESTS,
       offset: startFrom,
       contestStatus: customerFilter,
     });
   };
 
-  const setContestList = () => {
-    const array = contests.map((contest) => (
-      <ContestBox
-        data={contest}
-        key={contest.id}
-        history={history}
-        goToExtended={goToExtended}
-      />
-    ));
-    return array;
-  };
-
   const tryToGetContest = () => {
     clearContestsList();
-    getContests({ limit: 8, contestStatus: customerFilter });
+    getContests({ limit: CONSTANTS.LIMIT_GETTING_CONTESTS, contestStatus: customerFilter });
   };
 
   const updateFilter = (status) => {
@@ -110,19 +98,14 @@ const CustomerDashboard = (props) => {
           <TryAgain getData={tryToGetContest} />
         ) : (
           <ContestsContainer
+            contests={contests}
             isFetching={isFetching}
             error={error}
             loadMore={loadMore}
-            history={history}
             haveMore={haveMore}
-          >
-            {setContestList()}
-            {!contests.length && !isFetching && (
-              <div className={styles.emptyNotification}>
-                This contests list is empty
-              </div>
-            )}
-          </ContestsContainer>
+            history={history}
+            goToExtended={goToExtended}
+          />
         )}
       </div>
     </div>

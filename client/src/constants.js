@@ -104,5 +104,6 @@ export default {
       items: ['Terms of Service', 'Privacy Policy', 'Cookie Policy'],
     },
   ],
-  PUBLIC_LOCATIONS: ['/', '/login', '/registration', '/how-it-works', '/events']
+  PUBLIC_LOCATIONS: ['/', '/login', '/registration', '/how-it-works', '/events'],
+  LIMIT_GETTING_CONTESTS: 8
 };

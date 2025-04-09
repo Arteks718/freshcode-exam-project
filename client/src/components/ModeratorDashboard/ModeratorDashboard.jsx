@@ -7,11 +7,19 @@ import OffersContainer from '../OffersContainer/OffersContainer';
 import OffersItem from '../OffersContainer/OffersItem/OffersItem';
 import ModeratorModal from './ModeratorModal/ModeratorModal';
 import styles from './ModeratorDashboard.module.sass';
-import SpinnerLoader from '../Spinner/Spinner';
 import CONSTANTS from '../../constants';
+import TryAgain from '../TryAgain/TryAgain';
 
 const ModeratorDashboard = (props) => {
-  const { getOffers, updateOffer, offers, haveMore, isFetching } = props;
+  const {
+    getOffers,
+    updateOffer,
+    offers,
+    haveMore,
+    isFetching,
+    clearOffersList,
+    error,
+  } = props;
   const modalOpenRef = useRef(null);
 
   useEffect(() => {
@@ -48,19 +56,24 @@ const ModeratorDashboard = (props) => {
 
   const loadMore = (startFrom) => {
     if (offers.length !== 0) {
-      getOffers({ limit: 10, offset: startFrom });
+      getOffers({ limit: CONSTANTS.LIMIT_GETTING_CONTESTS, offset: startFrom });
     }
+  };
+
+  const tryLoadAgain = () => {
+    clearOffersList();
+    getOffers({ limit: CONSTANTS.LIMIT_GETTING_CONTESTS });
   };
 
   return (
     <>
       <div className={styles.mainContainer}>
-        {!isFetching ? (
-          <OffersContainer haveMore={haveMore} loadMore={loadMore}>
+        {error ? (
+          <TryAgain getData={tryLoadAgain} />
+        ) : (
+          <OffersContainer haveMore={haveMore} loadMore={loadMore} isFetching={isFetching}>
             {offersList}
           </OffersContainer>
-        ) : (
-          <SpinnerLoader />
         )}
       </div>
       <ModeratorModal

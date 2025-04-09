@@ -1,18 +1,30 @@
+import SpinnerLoader from '../Spinner/Spinner';
 import styles from './OffersContainer.module.sass';
 
 const OffersContainer = (props) => {
-  const { children, loadMore, haveMore } = props;
+  const { children, loadMore, haveMore, isFetching } = props;
 
   return (
     <div className={styles.offerContainer}>
-      {children.length !== 0 ? (
-        <div className={styles.offersList}>{children}</div>
-      ) : (
+      {<div className={styles.offersList}>{children}</div>}
+      {!children.length && !isFetching && (
         <div className={styles.emptyNotification}>
           At the moment, list of offers is empty!
         </div>
       )}
-      {haveMore && <button className={styles.loadMore} onClick={() => loadMore(children.length)}>LOAD MORE</button>}
+      {isFetching && (
+        <div className={styles.spinnerContainer}>
+          <SpinnerLoader />
+        </div>
+      )}
+      {haveMore && (
+        <button
+          className={styles.loadMore}
+          onClick={() => loadMore(children.length)}
+        >
+          LOAD MORE
+        </button>
+      )}
     </div>
   );
 };

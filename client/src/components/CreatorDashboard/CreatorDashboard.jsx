@@ -69,11 +69,11 @@ const CreatorDashboard = (props) => {
     (search) => {
       const obj = queryString.parse(search);
       const filter = {
-        typeIndex: obj.typeIndex || 1,
+        typeIndex: Number(obj.typeIndex) || 1,
         contestId: obj.contestId ?? '',
         industry: obj.industry ?? '',
         awardSort: obj.awardSort || 'asc',
-        ownEntries: obj.ownEntries !== undefined ? obj.ownEntries : false,
+        ownEntries: obj.ownEntries !== undefined ? Boolean(obj.ownEntries) : false,
       };
       if (!isEqual(filter, creatorFilter)) {
         newFilter(filter);

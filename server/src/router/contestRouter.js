@@ -19,7 +19,7 @@ contestRouter
       parseNumber: true,
       parseUndefined: true,
     }),
-    contestController.getContests
+    contestController.getCreativeContests
   )
   .patch(
     basicMiddlewares.onlyForCustomer,

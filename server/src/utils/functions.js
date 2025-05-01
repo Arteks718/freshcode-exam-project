@@ -17,7 +17,7 @@ function getPredicateTypes(index) {
   return { [db.Sequelize.Op.or]: [types[index].split(',')] };
 }
 
-module.exports.createWhereForAllContests = (
+module.exports.createWhereForCreativeContests = (
   typeIndex,
   contestId,
   industry,

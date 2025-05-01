@@ -199,7 +199,7 @@ module.exports.getCustomersContests = async(req, res, next) => {
   }
 };
 
-module.exports.getContests = async (req, res, next) => {
+module.exports.getCreativeContests = async (req, res, next) => {
   try {
     const {
       query: {
@@ -214,7 +214,7 @@ module.exports.getContests = async (req, res, next) => {
       tokenData: { userId },
     } = req;
 
-    const predicates = UtilFunctions.createWhereForAllContests(
+    const predicates = UtilFunctions.createWhereForCreativeContests(
       typeIndex,
       contestId,
       industry,
@@ -234,7 +234,6 @@ module.exports.getContests = async (req, res, next) => {
         },
       ],
     })
-
     setCountForContests(contests);
     const haveMore = contests.length > 0;
     res.send({ contests, haveMore });

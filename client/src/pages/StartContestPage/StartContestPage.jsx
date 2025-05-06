@@ -46,7 +46,7 @@ const StartContestPage = props => {
       <div className={styles.baseBundleContainer}>
         <div className={styles.infoBaseBundles}>
           <span className={styles.headerInfo}>
-            Our Most Popular
+            Our Most Popular&#8200;
             <span>Categories</span>
           </span>
           <span className={styles.info}>

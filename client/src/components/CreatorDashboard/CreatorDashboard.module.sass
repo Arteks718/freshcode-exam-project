@@ -72,20 +72,26 @@
         justify-content: space-between
         flex-wrap: wrap
 
-      .myEntries
+      .checkboxBtn
         color: #556da5
         margin-bottom: 20px
         font-size: 20px
         box-sizing: border-box
         padding: 10px 0
+        border-radius: 6px
+        border: 1px solid #556da5
+        cursor: pointer
+        padding: 10px 20px
         @media(max-width: 1000px)
           width: 100%
           text-align: center
           margin: 0 10px
 
-      .activeMyEntries
-        border-radius: 6px
-        padding: 10px 20px
+        &:hover
+          background-color: #556da5
+          color: white
+
+      .activeCheckboxBtn
         color: white
         background-color: #556da5
 
@@ -111,7 +117,7 @@
           background-color: white
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
 
-        span
+        label
           margin-bottom: 5px
           font-weight: 700
           font-size: 15px

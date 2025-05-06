@@ -210,6 +210,7 @@ module.exports.getCreativeContests = async (req, res, next) => {
         limit,
         offset,
         ownEntries,
+        isActive
       },
       tokenData: { userId },
     } = req;
@@ -218,7 +219,8 @@ module.exports.getCreativeContests = async (req, res, next) => {
       typeIndex,
       contestId,
       industry,
-      awardSort
+      awardSort,
+      isActive
     );
     const contests = await db.Contests.findAll({
       where: predicates.where,

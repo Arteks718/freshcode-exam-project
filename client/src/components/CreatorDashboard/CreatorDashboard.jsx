@@ -73,7 +73,12 @@ const CreatorDashboard = (props) => {
         contestId: obj.contestId ?? '',
         industry: obj.industry ?? '',
         awardSort: obj.awardSort || 'asc',
-        ownEntries: obj.ownEntries !== undefined ? Boolean(obj.ownEntries) : false,
+        ownEntries:
+          obj.ownEntries !== undefined ? Boolean(obj.ownEntries) : false,
+        isActive:
+          obj.isActive !== undefined
+            ? Boolean(obj.isActive)
+            : creatorFilter.isActive,
       };
       if (!isEqual(filter, creatorFilter)) {
         newFilter(filter);
@@ -189,18 +194,27 @@ const CreatorDashboard = (props) => {
                 value: !creatorFilter.ownEntries,
               })
             }
-            className={classNames(styles.myEntries, {
-              [styles.activeMyEntries]: creatorFilter.ownEntries,
+            className={classNames(styles.checkboxBtn, {
+              [styles.activeCheckboxBtn]: creatorFilter.ownEntries,
             })}
           >
             My Entries
           </div>
-          <div className={styles.inputContainer}>
-            <span>By contest type</span>
-            {renderSelectType()}
+          <div
+            onClick={() =>
+              changePredicate({
+                name: 'isActive',
+                value: !creatorFilter.isActive,
+              })
+            }
+            className={classNames(styles.checkboxBtn, {
+              [styles.activeCheckboxBtn]: creatorFilter.isActive,
+            })}
+          >
+            Show Active Only
           </div>
           <div className={styles.inputContainer}>
-            <span>By contest ID</span>
+            <label>By contest ID</label>
             <input
               type="text"
               onChange={({ target }) =>
@@ -215,11 +229,15 @@ const CreatorDashboard = (props) => {
             />
           </div>
           <div className={styles.inputContainer}>
-            <span>By industry</span>
+            <label>By contest type</label>
+            {renderSelectType()}
+          </div>
+          <div className={styles.inputContainer}>
+            <label>By industry</label>
             {renderIndustryType()}
           </div>
           <div className={styles.inputContainer}>
-            <span>By amount award</span>
+            <label>By amount award</label>
             <select
               onChange={({ target }) =>
                 changePredicate({

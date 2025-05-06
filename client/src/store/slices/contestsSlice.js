@@ -16,6 +16,7 @@ const initialState = {
     industry: '',
     awardSort: 'asc',
     ownEntries: false,
+    isActive: false,
   },
   haveMore: true,
 };

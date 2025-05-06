@@ -21,11 +21,11 @@ module.exports.createWhereForCreativeContests = (
   typeIndex,
   contestId,
   industry,
-  awardSort
+  awardSort,
+  isActive
 ) => {
   const where = {};
   const order = [];
-
   if (typeIndex) {
     where.contestType = getPredicateTypes(typeIndex);
   }
@@ -38,13 +38,18 @@ module.exports.createWhereForCreativeContests = (
   if (awardSort) {
     order.push(['prize', awardSort]);
   }
+  if (isActive) {
+    where.status = CONSTANTS.CONTEST_STATUS_ACTIVE
+  } else {
+    where.status = {
+      [db.Sequelize.Op.or]: [
+        CONSTANTS.CONTEST_STATUS_FINISHED,
+        CONSTANTS.CONTEST_STATUS_ACTIVE,
+      ],
+    };
+  }
 
-  where.status = {
-    [db.Sequelize.Op.or]: [
-      CONSTANTS.CONTEST_STATUS_FINISHED,
-      CONSTANTS.CONTEST_STATUS_ACTIVE,
-    ],
-  };
+  console.log(isActive)
 
   order.push(['id', 'desc']);
 

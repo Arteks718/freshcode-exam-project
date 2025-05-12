@@ -1,14 +1,17 @@
 import React, { useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import queryString from 'query-string';
 import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
 import {
   getContests,
   clearContestsList,
   setNewCreatorFilter,
 } from '../../store/slices/contestsSlice';
+import {
+  getPredicateOfRequest,
+  parseParamsToUrl,
+  parseUrlForParams,
+} from '../../utils/filterUtils';
 import { getDataForContest } from '../../store/slices/dataForContestSlice';
 import ContestsContainer from '../ContestsContainer/ContestsContainer';
 import styles from './CreatorDashboard.module.sass';
@@ -53,50 +56,17 @@ const CreatorDashboard = (props) => {
     [getContests]
   );
 
-  const parseParamsToUrl = useCallback(
-    (creatorFilter) => {
-      const obj = { ...creatorFilter };
-
-      Object.keys(obj).forEach((el) => {
-        if (!obj[el]) delete obj[el];
-      });
-      history.push(`/Dashboard?${queryString.stringify(obj)}`);
-    },
-    [history]
-  );
-
-  const parseUrlForParams = useCallback(
-    (search) => {
-      const obj = queryString.parse(search);
-      const filter = {
-        typeIndex: Number(obj.typeIndex) || 1,
-        contestId: obj.contestId ?? '',
-        industry: obj.industry ?? '',
-        awardSort: obj.awardSort || 'asc',
-        ownEntries:
-          obj.ownEntries !== undefined ? Boolean(obj.ownEntries) : false,
-        isActive:
-          obj.isActive !== undefined
-            ? Boolean(obj.isActive)
-            : creatorFilter.isActive,
-      };
-      if (!isEqual(filter, creatorFilter)) {
-        newFilter(filter);
-      }
-      clearContestsList();
-      getCreatorContests(0, filter);
-    },
-    [creatorFilter, newFilter, clearContestsList, getCreatorContests]
-  );
-
   const changePredicate = ({ name, value }) => {
     newFilter({
       [name]: value === 'Choose industry' ? null : value,
     });
-    parseParamsToUrl({
-      ...creatorFilter,
-      ...{ [name]: value === 'Choose industry' ? null : value },
-    });
+    parseParamsToUrl(
+      {
+        ...creatorFilter,
+        ...{ [name]: value === 'Choose industry' ? null : value },
+      },
+      history
+    );
   };
 
   const renderSelectType = () => {
@@ -153,24 +123,13 @@ const CreatorDashboard = (props) => {
     );
   };
 
-  const getPredicateOfRequest = () => {
-    const obj = {};
-    Object.keys(creatorFilter).forEach((el) => {
-      if (creatorFilter[el]) {
-        obj[el] = creatorFilter[el];
-      }
-    });
-    obj.ownEntries = creatorFilter.ownEntries;
-    return obj;
-  };
-
   const loadMore = (startFrom) => {
-    getCreatorContests(startFrom, getPredicateOfRequest());
+    getCreatorContests(startFrom, getPredicateOfRequest(creatorFilter));
   };
 
   const tryLoadAgain = () => {
     clearContestsList();
-    getCreatorContests(0, getPredicateOfRequest());
+    getCreatorContests(0, getPredicateOfRequest(creatorFilter));
   };
 
   useEffect(() => {
@@ -179,8 +138,14 @@ const CreatorDashboard = (props) => {
   }, [clearContestsList, getDataForContest]);
 
   useEffect(() => {
-    parseUrlForParams(search);
-  }, [search, parseUrlForParams]);
+    parseUrlForParams(
+      search,
+      creatorFilter,
+      newFilter,
+      clearContestsList,
+      getCreatorContests
+    );
+  }, [clearContestsList, creatorFilter, getCreatorContests, newFilter, search]);
 
   return (
     <div className={styles.mainContainer}>
@@ -195,7 +160,7 @@ const CreatorDashboard = (props) => {
               })
             }
             className={classNames(styles.checkboxBtn, {
-              [styles.activeCheckboxBtn]: creatorFilter.ownEntries,
+              [styles['checkboxBtn--active']]: creatorFilter.ownEntries,
             })}
           >
             My Entries
@@ -208,7 +173,7 @@ const CreatorDashboard = (props) => {
               })
             }
             className={classNames(styles.checkboxBtn, {
-              [styles.activeCheckboxBtn]: creatorFilter.isActive,
+              [styles['checkboxBtn--active']]: creatorFilter.isActive,
             })}
           >
             Show Active Only

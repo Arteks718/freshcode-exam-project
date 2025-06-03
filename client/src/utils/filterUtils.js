@@ -7,7 +7,7 @@ export const parseParamsToUrl = (creatorFilter, history) => {
   Object.keys(obj).forEach((el) => {
     if (!obj[el]) delete obj[el];
   });
-  history.push(`/Dashboard?${queryString.stringify(obj)}`);
+  history.push(`/dashboard?${queryString.stringify(obj)}`);
 };
 
 export const parseUrlForParams = (

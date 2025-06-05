@@ -11,9 +11,19 @@ import { changeProfileViewMode } from '../../store/slices/userProfileSlice';
 import Error from '../../components/Error/Error';
 
 const UserProfile = (props) => {
+  const {
+    balance,
+    role,
+    profileViewMode,
+    error,
+    changeProfileViewMode,
+    clearPaymentStore,
+    cashOut
+  } = props;
+
   const pay = (values) => {
     const { number, expiry, cvc, sum } = values;
-    props.cashOut({
+    cashOut({
       number,
       expiry,
       cvc,
@@ -21,14 +31,6 @@ const UserProfile = (props) => {
     });
   };
 
-  const {
-    balance,
-    role,
-    profileViewMode,
-    changeProfileViewMode,
-    error,
-    clearPaymentStore,
-  } = props;
   return (
     <div>
       <Header />
@@ -86,12 +88,13 @@ const UserProfile = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const { balance, role } = state.userStore.data;
+  // const { balance, role } = state.userStore?.data;
   const { profileViewMode } = state.userProfile;
   const { error } = state.payment;
+
   return {
-    balance,
-    role,
+    balance: state.userStore?.data?.balance,
+    role: state.userStore?.data?.role,
     profileViewMode,
     error,
   };

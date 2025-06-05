@@ -5,10 +5,9 @@ import Header from '../../components/Header/Header';
 import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
 import UserInfo from '../../components/UserInfo/UserInfo';
-import PayForm from '../../components/PayForm/PayForm';
 import { cashOut, clearPaymentStore } from '../../store/slices/paymentSlice';
 import { changeProfileViewMode } from '../../store/slices/userProfileSlice';
-import Error from '../../components/Error/Error';
+import PaymentInfo from '../../components/PaymentInfo/PaymentInfo';
 
 const UserProfile = (props) => {
   const {
@@ -18,36 +17,26 @@ const UserProfile = (props) => {
     error,
     changeProfileViewMode,
     clearPaymentStore,
-    cashOut
+    cashOut,
   } = props;
-
-  const pay = (values) => {
-    const { number, expiry, cvc, sum } = values;
-    cashOut({
-      number,
-      expiry,
-      cvc,
-      sum,
-    });
-  };
 
   return (
     <div>
       <Header />
       <div className={styles.mainContainer}>
-        <div className={styles.aside}>
-          <span className={styles.headerAside}>Select Option</span>
-          <div className={styles.optionsContainer}>
-            <div
-              className={classNames(styles.optionContainer, {
-                [styles.currentOption]:
-                  profileViewMode === CONSTANTS.USER_INFO_MODE,
-              })}
-              onClick={() => changeProfileViewMode(CONSTANTS.USER_INFO_MODE)}
-            >
-              UserInfo
-            </div>
-            {role === CONSTANTS.CREATOR && (
+        {role === CONSTANTS.CREATOR && (
+          <div className={styles.aside}>
+            <span className={styles.headerAside}>Select Option</span>
+            <div className={styles.optionsContainer}>
+              <div
+                className={classNames(styles.optionContainer, {
+                  [styles.currentOption]:
+                    profileViewMode === CONSTANTS.USER_INFO_MODE,
+                })}
+                onClick={() => changeProfileViewMode(CONSTANTS.USER_INFO_MODE)}
+              >
+                UserInfo
+              </div>
               <div
                 className={classNames(styles.optionContainer, {
                   [styles.currentOption]:
@@ -57,30 +46,19 @@ const UserProfile = (props) => {
               >
                 Cashout
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
+
         {profileViewMode === CONSTANTS.USER_INFO_MODE ? (
           <UserInfo />
         ) : (
-          <div className={styles.container}>
-            {parseInt(balance) === 0 ? (
-              <span className={styles.notMoney}>
-                There is no money on your balance
-              </span>
-            ) : (
-              <div>
-                {error && (
-                  <Error
-                    data={error.data}
-                    status={error.status}
-                    clearError={clearPaymentStore}
-                  />
-                )}
-                <PayForm sendRequest={pay} />
-              </div>
-            )}
-          </div>
+          <PaymentInfo
+            balance={balance}
+            cashOut={cashOut}
+            error={error}
+            clearPaymentStore={clearPaymentStore}
+          />
         )}
       </div>
     </div>

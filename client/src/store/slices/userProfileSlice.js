@@ -15,6 +15,10 @@ const reducers = {
   changeEditModeOnUserProfile: (state, { payload }) => {
     state.isEdit = payload;
   },
+  resetState: (state) => {
+    state.profileViewMode = CONSTANTS.USER_INFO_MODE;
+    state.isEdit = false;
+  },
 };
 
 const userProfileSlice = createSlice({
@@ -25,6 +29,6 @@ const userProfileSlice = createSlice({
 
 const { actions, reducer } = userProfileSlice;
 
-export const { changeProfileViewMode, changeEditModeOnUserProfile } = actions;
+export const { changeProfileViewMode, changeEditModeOnUserProfile, resetState } = actions;
 
 export default reducer;

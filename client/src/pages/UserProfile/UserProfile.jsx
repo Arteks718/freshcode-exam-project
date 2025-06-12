@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Header from '../../components/Header/Header';
@@ -6,8 +5,9 @@ import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
 import UserInfo from '../../components/UserInfo/UserInfo';
 import { cashOut, clearPaymentStore } from '../../store/slices/paymentSlice';
-import { changeProfileViewMode } from '../../store/slices/userProfileSlice';
+import { changeProfileViewMode, resetState } from '../../store/slices/userProfileSlice';
 import PaymentInfo from '../../components/PaymentInfo/PaymentInfo';
+import { useEffect } from 'react';
 
 const UserProfile = (props) => {
   const {
@@ -18,7 +18,14 @@ const UserProfile = (props) => {
     changeProfileViewMode,
     clearPaymentStore,
     cashOut,
+    resetProfileState
   } = props;
+
+  useEffect(() => {
+    return () => {
+      resetProfileState()
+    }
+  }, [resetProfileState]);
 
   const optionTab = ({ optionName, viewMode }) => {
     return (
@@ -84,6 +91,7 @@ const mapDispatchToProps = (dispatch) => ({
   cashOut: (data) => dispatch(cashOut(data)),
   changeProfileViewMode: (data) => dispatch(changeProfileViewMode(data)),
   clearPaymentStore: () => dispatch(clearPaymentStore()),
+  resetProfileState: () => dispatch(resetState())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

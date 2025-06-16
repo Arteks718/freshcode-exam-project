@@ -10,6 +10,7 @@ import { clearUserStore, getUser } from '../../store/slices/userSlice';
 import { checkTime } from '../../store/slices/eventSlice';
 import { clearOffersList } from '../../store/slices/offersSlice';
 import EventNotification from '../Events/EventNotification/EventNotification';
+import { changeChatShow } from '../../store/slices/chatSlice';
 
 const Header = (props) => {
   const {
@@ -21,7 +22,8 @@ const Header = (props) => {
     reminderCount,
     history,
     isFetching,
-    events
+    events,
+    changeChatShow,
   } = props;
 
   useEffect(() => {
@@ -88,7 +90,12 @@ const Header = (props) => {
               </li>
             </ul>
           </div>
-          <FiMail className={styles.icon} alt="email" />
+          <FiMail
+            className={styles.icon}
+            style={{ cursor: 'pointer' }}
+            alt="email"
+            onClick={() => changeChatShow()}
+          />
           <EventNotification
             style={{ icon: styles.icon }}
             checkTime={checkTime}
@@ -292,6 +299,7 @@ const mapDispatchToProps = (dispatch) => ({
   getUser: () => dispatch(getUser()),
   clearUserStore: () => dispatch(clearUserStore()),
   checkTime: (time) => dispatch(checkTime(time)),
+  changeChatShow: () => dispatch(changeChatShow()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

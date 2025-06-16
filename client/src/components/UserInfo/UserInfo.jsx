@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import UpdateUserInfoForm from '../UpdateUserInfoForm/UpdateUserInfoForm';
 import { updateUser } from '../../store/slices/userSlice';
 import { changeEditModeOnUserProfile } from '../../store/slices/userProfileSlice';
@@ -19,8 +20,13 @@ const UserInfo = (props) => {
     formData.append('lastName', lastName);
     formData.append('displayName', displayName);
     formData.append('file', file);
+    try {
+      updateUser(formData);
+      toast.success('User data updated successfully!');
+    } catch (error) {
+      toast.error('User data update failed!');
+    }
 
-    updateUser(formData);
   }, [updateUser]);
 
   return (

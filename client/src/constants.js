@@ -55,18 +55,158 @@ export default {
       answerId: 1,
       answer: 'Yes',
       description: 'But minor variations are allowed',
-      recommended: true
+      recommended: true,
     },
     {
       answerId: 2,
       answer: 'Yes',
-      description: 'The Domain should exactly match the name'
+      description: 'The Domain should exactly match the name',
     },
     {
       answerId: 3,
       answer: 'No',
-      description: 'I am only looking for a name, not a Domain'
-    }
+      description: 'I am only looking for a name, not a Domain',
+    },
+  ],
+  HEADER_ITEMS: [
+    {
+      title: 'NAME IDEAS',
+      items: [
+        {
+          title: 'Beauty',
+          link: '',
+        },
+        {
+          title: 'Consulting',
+          link: '',
+        },
+        {
+          title: 'E-Commerce',
+          link: '',
+        },
+        {
+          title: 'Fashion & Clothing',
+          link: '',
+        },
+        {
+          title: 'Finance',
+          link: '',
+        },
+        {
+          title: 'Real Estate',
+          link: '',
+        },
+        {
+          title: 'Tech',
+          link: '',
+        },
+        {
+          title: 'More Categories',
+          link: '/categories',
+        },
+      ],
+    },
+    {
+      title: 'CONTESTS',
+      items: [
+        {
+          title: 'How It Works',
+          link: '/how-it-works',
+        },
+        {
+          title: 'Pricing',
+          link: '/pricing',
+        },
+        {
+          title: 'Agency Service',
+          link: '/agency-service',
+        },
+        {
+          title: 'Winners',
+          link: '/winners',
+        },
+        {
+          title: 'Leaderboard',
+          link: '/leaderboard',
+        },
+        {
+          title: 'Become a Creative',
+          link: '/registration?mode=creator',
+        },
+      ],
+    },
+    {
+      title: 'Our Works',
+      items: [
+        {
+          title: 'NAMES',
+          link: '',
+        },
+        {
+          title: 'TAGLINES',
+          link: '',
+        },
+        {
+          title: 'LOGOS',
+          link: '',
+        },
+        {
+          title: 'TESTIMONIALS',
+          link: '',
+        },
+      ],
+    },
+    {
+      title: 'Names For Sale',
+      items: [
+        {
+          title: 'POPULAR NAMES',
+          link: '',
+        },
+        {
+          title: 'SHORT NAMES',
+          link: '',
+        },
+        {
+          title: 'INTRIGUING NAMES',
+          link: '',
+        },
+        {
+          title: 'NAMES BY CATEGORY',
+          link: '',
+        },
+        {
+          title: 'VISUAL NAME SEARCH',
+          link: '',
+        },
+        {
+          title: 'SELL YOUR DOMAINS',
+          link: '',
+        },
+      ],
+    },
+
+    {
+      title: 'Blog',
+      items: [
+        {
+          title: 'ULTIMATE NAMING GUIDE',
+          link: '',
+        },
+        {
+          title: 'POETIC DEVICES IN BUSINESS NAMING',
+          link: '',
+        },
+        {
+          title: 'CROWDED BAR THEORY',
+          link: '',
+        },
+        {
+          title: 'ALL ARTICLES',
+          link: '',
+        },
+      ],
+    },
   ],
   FOOTER_ITEMS: [
     {
@@ -104,6 +244,12 @@ export default {
       items: ['Terms of Service', 'Privacy Policy', 'Cookie Policy'],
     },
   ],
-  PUBLIC_LOCATIONS: ['/', '/login', '/registration', '/how-it-works', '/events'],
-  LIMIT_GETTING_CONTESTS: 8
+  PUBLIC_LOCATIONS: [
+    '/',
+    '/login',
+    '/registration',
+    '/how-it-works',
+    '/events',
+  ],
+  LIMIT_GETTING_CONTESTS: 8,
 };

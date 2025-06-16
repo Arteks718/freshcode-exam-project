@@ -23,7 +23,7 @@ const Header = (props) => {
     history,
     isFetching,
     events,
-    changeChatShow
+    changeChatShow,
   } = props;
 
   useEffect(() => {
@@ -90,7 +90,11 @@ const Header = (props) => {
               </li>
             </ul>
           </div>
-          <FiMail className={styles.icon} alt="email" onClick={() => changeChatShow()} />
+          <FiMail
+            className={styles.icon}
+            alt="email"
+            onClick={() => changeChatShow()}
+          />
           <EventNotification
             style={{ icon: styles.icon }}
             checkTime={checkTime}
@@ -151,128 +155,29 @@ const Header = (props) => {
         </a>
         <div className={styles.leftNav}>
           <div className={styles.nav}>
-            <ul>
-              <li>
-                <span>NAME IDEAS</span>
-                <IoMdArrowDropdown color="#718888" alt="menu" />
-                <ul>
-                  <li>
-                    <a href="http://www.google.com">Beauty</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">Consulting</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">E-Commerce</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">Fashion & Clothing</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">Finance</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">Real Estate</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">Tech</a>
-                  </li>
-                  <li className={styles.last}>
-                    <a href="http://www.google.com">More Categories</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <span>CONTESTS</span>
-                <IoMdArrowDropdown color="#718888" alt="menu" />
-                <ul>
-                  <li>
-                    <Link to="/how-it-works" style={{ textDecoration: 'none' }}>
-                      HOW IT WORKS
-                    </Link>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">PRICING</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">AGENCY SERVICE</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">ACTIVE CONTESTS</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">WINNERS</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">LEADERBOARD</a>
-                  </li>
-                  <li className={styles.last}>
-                    <a href="http://www.google.com">BECOME A CREATIVE</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <span>Our Work</span>
-                <IoMdArrowDropdown color="#718888" alt="menu" />
-                <ul>
-                  <li>
-                    <a href="http://www.google.com">NAMES</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">TAGLINES</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">LOGOS</a>
-                  </li>
-                  <li className={styles.last}>
-                    <a href="http://www.google.com">TESTIMONIALS</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <span>Names For Sale</span>
-                <IoMdArrowDropdown color="#718888" alt="menu" />
-                <ul>
-                  <li>
-                    <a href="http://www.google.com">POPULAR NAMES</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">SHORT NAMES</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">INTRIGUING NAMES</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">NAMES BY CATEGORY</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">VISUAL NAME SEARCH</a>
-                  </li>
-                  <li className={styles.last}>
-                    <a href="http://www.google.com">SELL YOUR DOMAINS</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <span>Blog</span>
-                <IoMdArrowDropdown color="#718888" alt="menu" />
-                <ul>
-                  <li>
-                    <a href="http://www.google.com">ULTIMATE NAMING GUIDE</a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">
-                      POETIC DEVICES IN BUSINESS NAMING
-                    </a>
-                  </li>
-                  <li>
-                    <a href="http://www.google.com">CROWDED BAR THEORY</a>
-                  </li>
-                  <li className={styles.last}>
-                    <a href="http://www.google.com">ALL ARTICLES</a>
-                  </li>
-                </ul>
-              </li>
+            <ul className={styles.navList}>
+              {CONSTANTS.HEADER_ITEMS.map((item, index) => (
+                <li key={index} className={styles.navItem}>
+                  <span>{item.title}</span>
+                  {item.items && item.items.length > 0 && (
+                    <>
+                      <IoMdArrowDropdown color="#718888" alt="menu" />
+                      <ul className={styles.navSubMenu}>
+                        {item.items.map((subItem, subIndex) => (
+                          <li key={subIndex}>
+                            <Link
+                              to={subItem.link || '/404'}
+                              style={{ textDecoration: 'none' }}
+                            >
+                              {subItem.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
           {data && data.role === CONSTANTS.CUSTOMER && (

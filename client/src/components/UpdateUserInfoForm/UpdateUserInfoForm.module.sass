@@ -1,102 +1,106 @@
 .updateContainer
-  margin: 40px 0
   display: flex
   flex-direction: column
-  align-items: center
-  justify-content: flex-start
+  max-width: 500px
+  width: 100%
+
+  @media (max-width: 800px)
+    width: auto
 
   button
     align-self: flex-end
     background-color: #4e618d
     color: white
     border-radius: 6px
-    padding: 5px 10px
+    padding: 10px 15px
+    margin-top: 20px
     font-size: 16px
     font-weight: 500
     border: none
+    transition: background-color 0.2s
 
     &:hover
+      transition: background-color 0.2s
       background-color: #f27e51
 
   .imageUploadContainer
     display: flex
     flex-direction: column
     justify-content: flex-start
+    margin-bottom: 20px
 
     .imgStyle
-      width: 120px
-      height: 120px
+      width: 200px
+      height: 200px
+      padding: 2px
+      border: 2px solid #c0c0c0
+      border-radius: 4px
       align-self: center
 
     .uploadInputContainer
       display: flex
       flex-direction: column
-      align-items: center
       justify-content: flex-start
       margin-bottom: 10px
 
       span
         font-size: 14px
-        margin-bottom: 4px
+        margin-bottom: 10px
         color: red
 
       input
         display: none
         border: none
         border-radius: 8px
+        padding: 5px 10px
         color: white
         background-color: #66afe9
 
       label
-        padding: 5px 10px
+        padding: 10px 15px
         color: white
         background-color: #455a89
         border-radius: 4px
         align-self: flex-start
         cursor: pointer
+        transition: background-color 0.2s
 
         &:hover
           color: white
           background-color: #f27e51
+          transition: background-color 0.2s
 
-  .container
+  .inputContainer
     display: flex
     flex-direction: column
-    justify-content: flex-start
-    align-items: flex-start
+    justify-content: center
+    margin-bottom: 20px
 
     .label
-      margin-bottom: 2px
+      margin-bottom: 10px
       font-size: 16px
       font-weight: 500
       color: #585859
 
-    .inputContainer
-      display: flex
-      flex-direction: column
-      justify-content: center
-      align-items: flex-start
-      margin-bottom: 20px
+    .notValid
+      border: 1px solid red !important
 
-      .notValid
-        border: 1px solid red !important
+    .error
+      display: inline-block
+      align-self: stretch
+      margin-bottom: 5px
+      color: red
+      font-size: 14px
 
-      .error
-        display: inline-block
-        align-self: stretch
-        margin-bottom: 5px
-        color: red
-        font-size: 14px
+    .input
+      outline: none
+      height: 48px
+      border: 2px solid #d0d0d0
+      border-radius: 4px
+      padding: 0 8px
+      font-size: 17px
+      color: #555
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
 
-      .input
-        outline: none
-        height: 48px
-        border: 2px solid #d0d0d0
-        padding: 0 8px
-        font-size: 17px
-        color: #555
-        border-radius: 4px
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
-
-        &:focus
-          border-color: #66afe9
+      &:focus
+        border-color: #66afe9

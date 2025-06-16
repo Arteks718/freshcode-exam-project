@@ -10,7 +10,7 @@ import CONSTANTS from '../../constants';
 
 const UpdateUserInfoForm = (props) => {
   const { onSubmit, submitting, error, clearUserError, initialValues } = props;
-  console.log(initialValues);
+
   return (
     <Formik
       onSubmit={onSubmit}
@@ -25,6 +25,14 @@ const UpdateUserInfoForm = (props) => {
             clearError={clearUserError}
           />
         )}
+        <ImageUpload
+          name="file"
+          classes={{
+            uploadContainer: styles.imageUploadContainer,
+            inputContainer: styles.uploadInputContainer,
+            imgStyle: styles.imgStyle,
+          }}
+        />
 
         <FormInput
           name="firstName"
@@ -65,14 +73,7 @@ const UpdateUserInfoForm = (props) => {
             notValid: styles.notValid,
           }}
         />
-        <ImageUpload
-          name="file"
-          classes={{
-            uploadContainer: styles.imageUploadContainer,
-            inputContainer: styles.uploadInputContainer,
-            imgStyle: styles.imgStyle,
-          }}
-        />
+
         <button type="submit" disabled={submitting}>
           Submit
         </button>

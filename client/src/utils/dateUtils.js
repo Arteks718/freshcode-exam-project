@@ -6,16 +6,16 @@ import {
   differenceInHours,
 } from 'date-fns';
 
-export const formatTimeRemaining = (startDate, finishDate) => {
-  return formatDuration(
-    intervalToDuration({ start: startDate, end: finishDate })
-  )
+export const formatTimeRemaining = (startDate, finishDate) =>
+  formatDuration(intervalToDuration({ start: startDate, end: finishDate }))
     .replace(
       /\b(years?|months?|days?|hours?|minutes?|seconds?)\b/g,
       (match) => match[0]
     )
-    .replace(/(\d)\s+([a-zA-Z])/g, '$1$2');
-};
+    .replace(/(\d)\s+([a-zA-Z])/g, '$1$2')
+    .split(' ')
+    .slice(0, 2)
+    .join(' ');
 
 export const calculateProgress = (startDate, currentDate, finishDate) => {
   const totalDuration =
@@ -32,7 +32,7 @@ export const calculateProgress = (startDate, currentDate, finishDate) => {
 export const getTimeStr = (createdAt, long = false) => {
   const now = new Date();
   const createdDate = parseISO(createdAt);
-  
+
   const days = differenceInDays(now, createdDate);
   const hours = differenceInHours(now, createdDate) % 24;
 

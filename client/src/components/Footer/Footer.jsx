@@ -1,27 +1,23 @@
-import React, { Component } from 'react';
 import styles from './Footer.module.sass';
 import CONSTANTS from '../../constants';
 
 const Footer = () => {
-  const topFooterItemsRender = (item) => (
-    <div key={item.title}>
-      <h4>{item.title}</h4>
-      {item.items.map((i) => (
-        <a key={i} href="https://google.com">
-          {i}
-        </a>
-      ))}
-    </div>
-  );
-
-  const topFooterRender = () => {
-    return CONSTANTS.FOOTER_ITEMS.map((item) => topFooterItemsRender(item));
-  };
+  const topFooterRender = () =>
+    CONSTANTS.FOOTER_ITEMS.map((item) => (
+      <div key={item.title} className={styles.list}>
+        <h4 className={styles.listTitle}>{item.title}</h4>
+        {item.items.map((subItem) => (
+          <a key={subItem.title} href={subItem.link || '/404'} className={styles.listItem}>
+            {subItem.title}
+          </a>
+        ))}
+      </div>
+    ));
 
   return (
     <div className={styles.footerContainer}>
       <div className={styles.footerTop}>
-        <div>{topFooterRender()}</div>
+        <div className={styles.footerTopContainer}>{topFooterRender()}</div>
       </div>
     </div>
   );

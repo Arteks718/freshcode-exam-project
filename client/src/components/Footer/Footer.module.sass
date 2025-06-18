@@ -1,6 +1,53 @@
 .footerContainer
   width: 100%
 
+  .footerTop
+    width: 100%
+    background-color: #2B3030
+    padding: 80px 0
+    color: white
+    font-family: 'Raleway', sans-serif
+
+    .footerTopContainer
+      margin: 0 auto
+      display: flex
+      flex-direction: row
+      align-items: baseline
+      flex-wrap: wrap
+      justify-content: space-around
+      @media (min-width: 768px)
+        width: 750px
+
+      @media (min-width: 992px)
+        width: 970px
+
+      @media (min-width: 1200px)
+        width: 1170px
+
+      .list
+        display: flex
+        flex: 1
+        min-width: 250px
+        max-width: 300px
+        flex-direction: column
+        padding: 15px
+
+        .listTitle
+          font-size: 16px
+          color: #fff
+          display: block
+          padding-bottom: 20px
+          margin-bottom: 0
+
+        .listItem
+          padding-bottom: 7px
+          font-size: 14px
+          text-decoration: none
+          color: #767979
+
+          &:hover
+            color: #f3875d
+
   .bottomFooterContainer
     padding: 40px
     box-sizing: border-box
@@ -49,50 +96,5 @@
           border-radius: 100%
           margin-left: 15px
 
-  .footerTop
-    width: 100%
-    background-color: #2B3030
-    padding: 80px 0
-    color: white
-    font-family: 'Raleway', sans-serif
 
-    div
-      margin: 0 auto
-      display: flex
-      flex-direction: row
-      align-items: baseline
-      flex-wrap: wrap
-      justify-content: space-around
-      @media (min-width: 768px)
-        width: 750px
-
-      @media (min-width: 992px)
-        width: 970px
-
-      @media (min-width: 1200px)
-        width: 1170px
-
-      div
-        display: flex
-        flex: 1
-        min-width: 250px
-        max-width: 300px
-        flex-direction: column
-        padding: 15px
-
-        h4
-          font-size: 16px
-          color: #fff
-          display: block
-          padding-bottom: 20px
-          margin-bottom: 0
-
-        a
-          padding-bottom: 7px
-          font-size: 14px
-          text-decoration: none
-          color: #767979
-
-        a:hover
-          color: rgb(249, 118, 75)
 

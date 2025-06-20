@@ -11,7 +11,7 @@ import {
 } from '../../../../store/slices/chatSlice';
 import { chatController } from '../../../../api/ws/socketController';
 import CatalogCreation from '../../CatalogComponents/CatalogCreation/CatalogCreation';
-import ChatError from '../../../ChatError/ChatError';
+import ChatError from '../../ChatError/ChatError';
 import RenderDialogList from './RenderDialogList/RenderDialogList';
 
 const Chat = (props) => {

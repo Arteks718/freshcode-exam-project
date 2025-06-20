@@ -92,6 +92,7 @@ const Header = (props) => {
           </div>
           <FiMail
             className={styles.icon}
+            style={{ cursor: 'pointer' }}
             alt="email"
             onClick={() => changeChatShow()}
           />

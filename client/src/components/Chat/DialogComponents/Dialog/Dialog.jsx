@@ -87,7 +87,7 @@ const Dialog = (props) => {
 
   return (
     <>
-      <ChatHeader userId={userId} />
+      <ChatHeader />
       {renderMainDialog()}
       <div ref={messagesEnd} />
       {chatData && chatData.blackList.includes(true) ? (

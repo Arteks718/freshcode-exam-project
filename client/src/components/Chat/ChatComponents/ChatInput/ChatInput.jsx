@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
-import { IoIosSend } from "react-icons/io";
+import { IoMdSend } from "react-icons/io";
 import { sendMessage } from '../../../../store/slices/chatSlice';
 import styles from './ChatInput.module.sass';
-import CONSTANTS from '../../../../constants';
 import FormInput from '../../../InputComponents/FormInput/FormInput';
 import Schems from '../../../../utils/validators/validationSchems';
 
@@ -31,13 +30,14 @@ const ChatInput = (props) => {
             type="text"
             label="message"
             classes={{
-              container: styles.container,
+              inputContainer: styles.container,
               input: styles.input,
+              warning: styles.warning,
               notValid: styles.notValid,
             }}
           />
           <button type="submit">
-            <IoIosSend />
+            <IoMdSend />
           </button>
         </Form>
       </Formik>

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { isEqual, formatISO, format } from 'date-fns';
-import className from 'classnames';
+import classNames from 'classnames';
 import {
   getDialogMessages,
   clearMessageList,
@@ -20,6 +20,10 @@ const Dialog = (props) => {
     chatData,
   } = props;
 
+  const [initialized, setInitialized] = useState(false);
+  const [animatedMsgId, setAnimatedMsgId] = useState(null);
+  const prevMessagesCount = useRef(0);
+
   const messagesEnd = useRef(null);
 
   const scrollToBottom = () => {
@@ -29,20 +33,38 @@ const Dialog = (props) => {
   };
 
   useEffect(() => {
+    if (!initialized && messages.length > 0) {
+      setInitialized(true);
+      prevMessagesCount.current = messages.length;
+      return;
+    }
+    if (initialized && messages.length > prevMessagesCount.current) {
+      const lastMsg = messages[messages.length - 1];
+      setAnimatedMsgId(lastMsg?.id);
+    }
+    prevMessagesCount.current = messages.length;
+  }, [messages, initialized]);
+
+  useEffect(() => {
     getDialog({ interlocutorId: interlocutor.id });
     scrollToBottom();
-    return clearMessageList
+    return () => {
+      clearMessageList();
+    };
   }, [interlocutor.id, getDialog, clearMessageList]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   const renderMainDialog = () => {
     const messagesArray = [];
     let currentTime = new Date();
 
-    messages.forEach((message, i) => {
-      const messageDate = formatISO(message.createdAt, { representation: 'date' });
+    messages.forEach((message) => {
+      const messageDate = formatISO(message.createdAt, {
+        representation: 'date',
+      });
       const currentDate = formatISO(currentTime, { representation: 'date' });
 
       if (!isEqual(currentDate, messageDate)) {
@@ -56,9 +78,10 @@ const Dialog = (props) => {
 
       messagesArray.push(
         <div
-          key={`message-${i}`}
-          className={className(
-            userId === message.sender ? styles.ownMessage : styles.message
+          key={`message-${message.id}`}
+          className={classNames(
+            userId === message.sender ? styles.ownMessage : styles.message,
+            message.id === animatedMsgId ? styles.newMessage : null
           )}
         >
           <span>{message.body}</span>

@@ -1,9 +1,38 @@
+$ownMessage-bg-color: #6b89b0
+$message-bg-color: #4e618d
+
+@keyframes slideIn
+  from
+    opacity: 0
+    transform: translateY(30px)
+  to
+    opacity: 1
+    transform: translateY(0)
+  
+@mixin message ($bgColor)
+  color: white
+  max-width: 200px
+  padding: 6px
+  background-color: $bgColor
+  border-bottom-left-radius: 8px
+  border-bottom-right-radius: 8px
+  margin: 4px 0
+  overflow-wrap: break-word
+  box-sizing: border-box
+
+  .messageTime
+    position: relative
+    float: right
+    margin-left: 5px
+    top: 10px
+    font-size: 10px
+    color: white
+  
 .messageBlock
   display: inline-block
   color: red
   width: 100%
   text-align: center
-
 
 .messageList
   height: 280px
@@ -29,52 +58,21 @@
     background-color: black
     opacity: 0.4
     border-radius: 6px
-    padding: 2px
-
+    padding: 4px
+    font-size: 14px
 
   .ownMessage
+    @include message($ownMessage-bg-color)
     align-self: flex-end
-    color: white
-    max-width: 200px
-    padding: 6px
-    background-color: #6b89b0
-    border-bottom-left-radius: 8px
     border-top-left-radius: 8px
     border-top-right-radius: 4px
-    border-bottom-right-radius: 8px
-    margin: 4px 0
-    overflow-wrap: break-word
-    box-sizing: border-box
-
-    .messageTime
-      position: relative
-      float: right
-      margin-left: 5px
-      top: 12px
-      font-size: 10px
-      color: white
-
 
   .message
+    @include message($message-bg-color)
     align-self: flex-start
-    color: white
-    max-width: 200px
-    background-color: #4e618d
-    border-bottom-left-radius: 8px
     border-top-left-radius: 4px
     border-top-right-radius: 8px
-    border-bottom-right-radius: 8px
-    margin: 4px 0
-    padding: 6px
-    overflow-wrap: break-word
-    box-sizing: border-box
 
-    .messageTime
-      position: relative
-      float: right
-      margin-left: 5px
-      top: 12px
-      font-size: 10px
-      color: white
-
+  .newMessage
+    animation: slideIn 0.2s linear
 

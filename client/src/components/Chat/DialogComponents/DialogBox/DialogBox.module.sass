@@ -1,6 +1,5 @@
 .previewChatBox
   display: flex
-  flex-direction: row
   justify-content: flex-start
   align-items: center
   height: 60px
@@ -17,7 +16,6 @@
     align-items: flex-start
     padding: 0 15px
     padding-right: 10px
-    overflow: hidden
     padding-bottom: 5px
 
     .buttonsContainer
@@ -30,14 +28,14 @@
         margin-right: 10px
 
       i
-        margin-right: 5px
+        margin-right: 8px
         font-size: 16px
-        transition: font-size 0.2s ease
+        transition: transform 0.2s ease
 
-        &:hover
-          font-size: 20px
-          color: red
-          transition: font-size 0.2s ease
+        &:hover > svg
+          transform: scale(1.2)
+          color: red !important
+          transition: transform 0.2s ease
 
     span
       color: grey

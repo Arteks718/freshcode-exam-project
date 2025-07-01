@@ -1,9 +1,15 @@
-import React from 'react';
-import classNames from 'classnames';
 import styles from './DialogBox.module.sass';
 import CONSTANTS from '../../../../constants';
+import {
+  FaHeart,
+  FaMinusCircle,
+  FaRegHeart,
+  FaRegPlusSquare,
+  FaUnlock,
+  FaUserLock,
+} from 'react-icons/fa';
 
-const DialogBox = props => {
+const DialogBox = (props) => {
   const {
     chatPreview,
     userId,
@@ -15,16 +21,38 @@ const DialogBox = props => {
     chatMode,
     interlocutor,
   } = props;
-  const {
-    favoriteList,
-    participants,
-    blackList,
-    id,
-    text,
-    createdAt,
-  } = chatPreview;
+
+  const { favoriteList, participants, blackList, id, text, createdAt } =
+    chatPreview;
+
   const isFavorite = favoriteList[participants.indexOf(userId)];
   const isBlocked = blackList[participants.indexOf(userId)];
+
+  const handleFavorite = (event) => {
+    changeFavorite(
+      {
+        participants,
+        favoriteFlag: !isFavorite,
+        currentFavoriteList: favoriteList,
+      },
+      event
+    );
+  };
+
+  const handleBlock = (event) => {
+    changeBlackList(
+      {
+        participants,
+        blackListFlag: !isBlocked,
+        currentBlackList: blackList,
+      },
+      event
+    );
+  };
+
+  const handleShowCatalogCreation = (event) => {
+    catalogOperation(event, id);
+  };
 
   return (
     <div
@@ -47,7 +75,7 @@ const DialogBox = props => {
             ? CONSTANTS.ANONYM_IMAGE_PATH
             : `${CONSTANTS.publicURL}${interlocutor.avatar}`
         }
-        alt='user'
+        alt="user"
       />
       <div className={styles.infoContainer}>
         <div className={styles.interlocutorInfo}>
@@ -58,47 +86,19 @@ const DialogBox = props => {
         </div>
         <div className={styles.buttonsContainer}>
           <span className={styles.time}>{getTimeStr(createdAt)}</span>
-          <i
-            onClick={event =>
-              changeFavorite(
-                {
-                  participants,
-                  favoriteFlag: !isFavorite,
-                  currentFavoriteList: favoriteList
-                },
-                event
-              )
-            }
-            className={classNames({
-              'far fa-heart': !isFavorite,
-              'fas fa-heart': isFavorite,
-            })}
-          />
-          <i
-            onClick={event =>
-              changeBlackList(
-                {
-                  participants,
-                  blackListFlag: !isBlocked,
-                  currentBlackList: blackList
-                },
-                event
-              )
-            }
-            className={classNames({
-              'fas fa-user-lock': !isBlocked,
-              'fas fa-unlock': isBlocked,
-            })}
-          />
-          <i
-            onClick={event => catalogOperation(event, id)}
-            className={classNames({
-              'far fa-plus-square':
-                chatMode !== CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
-              'fas fa-minus-circle':
-                chatMode === CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
-            })}
-          />
+          <i onClick={handleFavorite}>
+            {isFavorite ? <FaHeart /> : <FaRegHeart />}
+          </i>
+          <i onClick={handleBlock}>
+            {isBlocked ? <FaUnlock /> : <FaUserLock />}
+          </i>
+          <i onClick={handleShowCatalogCreation}>
+            {chatMode !== CONSTANTS.CATALOG_PREVIEW_CHAT_MODE ? (
+              <FaRegPlusSquare />
+            ) : (
+              <FaMinusCircle />
+            )}
+          </i>
         </div>
       </div>
     </div>

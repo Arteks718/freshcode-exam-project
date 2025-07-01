@@ -7,6 +7,7 @@ import {
   changeChatShow,
   changeShowModeCatalog,
   clearChatError,
+  clearChatStore,
   getPreviewChat,
 } from '../../../../store/slices/chatSlice';
 import { chatController } from '../../../../api/ws/socketController';
@@ -17,6 +18,7 @@ import RenderDialogList from './RenderDialogList/RenderDialogList';
 const Chat = (props) => {
   const {
     changeShow,
+    clearChatStore,
     chatStore: {
       isExpanded,
       isShow,
@@ -33,6 +35,7 @@ const Chat = (props) => {
     getPreviewChat()
     return () => {
       chatController.unsubscribeChat(id);
+      clearChatStore()
     };
   }, [id]);
 
@@ -62,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeShowModeCatalog: () => dispatch(changeShowModeCatalog()),
   clearChatError: () => dispatch(clearChatError()),
   getPreviewChat: () => dispatch(getPreviewChat()),
+  clearChatStore: () => dispatch(clearChatStore()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

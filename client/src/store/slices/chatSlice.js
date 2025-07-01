@@ -384,6 +384,24 @@ const reducers = {
   clearChatError: state => {
     state.error = null;
   },
+  clearChatStore: state => {
+    state.isFetching = true;
+    state.addChatId = null;
+    state.isShowCatalogCreation = false;
+    state.currentCatalog = null;
+    state.chatData = null;
+    state.messages = [];
+    state.error = null;
+    state.isExpanded = false;
+    state.interlocutor = [];
+    state.messagesPreview = [];
+    state.isShow = false;
+    state.chatMode = CONSTANTS.NORMAL_PREVIEW_CHAT_MODE;
+    state.catalogList = [];
+    state.isRenameCatalog = false;
+    state.isShowChatsInCatalog = false;
+    state.catalogCreationMode = CONSTANTS.ADD_CHAT_TO_OLD_CATALOG;
+  }
 };
 
 const extraReducers = builder => {
@@ -422,6 +440,7 @@ export const {
   changeShowAddChatToCatalogMenu,
   changeRenameCatalogMode,
   clearChatError,
+  clearChatStore
 } = actions;
 
 export default reducer;

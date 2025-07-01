@@ -6,22 +6,20 @@ import { addChatToCatalog } from '../../../../store/slices/chatSlice';
 import styles from './AddToCatalog.module.sass';
 
 const AddToCatalog = (props) => {
-  const { catalogList, addChatId } = props;
+  const { catalogList, addChatId, addChatToCatalog } = props;
+  
   const getFilteredValues = () => {
-    const array = catalogList
-      .filter((catalog) =>
-        !catalog.chats.find((c) => c.conversationId === addChatId)
-      )
+    const array = catalogList.filter(
+      (catalog) => !catalog.chats.find((c) => c.conversationId === addChatId)
+    );
     return {
       ids: array.map((catalog) => catalog.id),
       names: array.map((catalog) => catalog.catalogName),
-    }
+    };
   };
 
-  const click = (values) => {
-    const { addChatId } = props;
-    props.addChatToCatalog({ chatId: addChatId, catalogId: values.catalogId });
-  };
+  const click = (values) =>
+    addChatToCatalog({ chatId: addChatId, catalogId: values.catalogId });
 
   const filteredArray = getFilteredValues();
   return (
@@ -31,7 +29,7 @@ const AddToCatalog = (props) => {
           <Form className={styles.form}>
             <SelectInput
               name="catalogId"
-              header="name of catalog"
+              header="Name of catalog"
               classes={{
                 inputContainer: styles.selectInputContainer,
                 inputHeader: styles.selectHeader,

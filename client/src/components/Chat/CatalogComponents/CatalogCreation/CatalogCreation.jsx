@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { FaRegTimesCircle } from 'react-icons/fa';
 import classNames from 'classnames';
 import CONSTANTS from '../../../../constants';
 import {
@@ -11,6 +12,17 @@ import styles from './CatalogCreation.module.sass';
 import AddToCatalog from '../AddToCatalog/AddToCatalog';
 import CreateCatalog from '../CreateCatalog/CreateCatalog';
 
+const MODES = [
+  {
+    label: 'Old',
+    value: CONSTANTS.ADD_CHAT_TO_OLD_CATALOG,
+  },
+  {
+    label: 'New',
+    value: CONSTANTS.CREATE_NEW_CATALOG_AND_ADD_CHAT,
+  },
+];
+
 const CatalogCreation = (props) => {
   const {
     changeTypeOfChatAdding,
@@ -19,44 +31,31 @@ const CatalogCreation = (props) => {
     isFetching,
     getCatalogList,
   } = props;
-  const { ADD_CHAT_TO_OLD_CATALOG, CREATE_NEW_CATALOG_AND_ADD_CHAT } =
-    CONSTANTS;
 
   useEffect(() => {
     getCatalogList();
-  }, []);
+  }, [getCatalogList]);
 
   return (
     <>
       {!isFetching && (
         <div className={styles.catalogCreationContainer}>
-          <i
-            className="far fa-times-circle"
-            onClick={() => changeShowAddChatToCatalogMenu()}
-          />
+          <FaRegTimesCircle onClick={changeShowAddChatToCatalogMenu} />
+
           <div className={styles.buttonsContainer}>
-            <span
-              onClick={() => changeTypeOfChatAdding(ADD_CHAT_TO_OLD_CATALOG)}
-              className={classNames({
-                [styles.active]:
-                  catalogCreationMode === ADD_CHAT_TO_OLD_CATALOG,
-              })}
-            >
-              Old
-            </span>
-            <span
-              onClick={() =>
-                changeTypeOfChatAdding(CREATE_NEW_CATALOG_AND_ADD_CHAT)
-              }
-              className={classNames({
-                [styles.active]:
-                  catalogCreationMode === CREATE_NEW_CATALOG_AND_ADD_CHAT,
-              })}
-            >
-              New
-            </span>
+            {MODES.map(({ label, value}) => (
+              <span
+                onClick={() => changeTypeOfChatAdding(value)}
+                className={classNames({
+                  [styles.active]:
+                    catalogCreationMode=== value,
+                })}
+              >
+                {label}
+              </span>
+            ))}
           </div>
-          {catalogCreationMode === CREATE_NEW_CATALOG_AND_ADD_CHAT ? (
+          {catalogCreationMode === CONSTANTS.CREATE_NEW_CATALOG_AND_ADD_CHAT ? (
             <CreateCatalog />
           ) : (
             <AddToCatalog />

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { FaArrowLeft, FaHeart, FaRegHeart, FaUnlock, FaUserLock } from 'react-icons/fa';
 import {
   backToDialogList,
@@ -62,7 +61,7 @@ const ChatHeader = (props) => {
         className={styles.buttonContainer}
         onClick={() => backToDialogList()}
       >
-        <FaArrowLeft color="white" size="28" alt="back" />
+        <FaArrowLeft alt="back" />
       </div>
       <div className={styles.infoContainer}>
         <div>
@@ -78,20 +77,6 @@ const ChatHeader = (props) => {
         </div>
         {chatData && (
           <div>
-            {/* <i
-              onClick={handleFavorite}
-              className={classNames({
-                'far fa-heart': !isFavorite(chatData, userId),
-                'fas fa-heart': isFavorite(chatData, userId),
-              })}
-            />
-            <i
-              onClick={handleBlock}
-              className={classNames({
-                'fas fa-user-lock': !isBlocked(chatData, userId),
-                'fas fa-unlock': isBlocked(chatData, userId),
-              })}
-            /> */}
             <i onClick={handleFavorite}>
               {isFavorite(chatData, userId) ? (
                 <FaHeart color="red" size={20} />

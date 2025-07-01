@@ -8,7 +8,7 @@ import CatalogList from '../CatalogList/CatalogList';
 import DialogList from '../../DialogComponents/DialogList/DialogList';
 
 const CatalogListContainer = (props) => {
-  const { getCatalogList, removeChatFromCatalog, id } = props;
+  const { getCatalogList, removeChatFromCatalog, userId } = props;
   const { isShowChatsInCatalog, messagesPreview, currentCatalog, catalogList } = props.chatStore;
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const CatalogListContainer = (props) => {
     <>
       {isShowChatsInCatalog ? (
         <DialogList
-          userId={id}
+          userId={userId}
           preview={getDialogsPreview()}
           removeChat={handleRemoveChatFromCatalog}
         />
@@ -45,7 +45,8 @@ const CatalogListContainer = (props) => {
 
 const mapStateToProps = (state) => {
   const { chatStore, userStore } = state;
-  return { chatStore, userStore };
+  const userId = userStore.data.id;
+  return { chatStore, userId };
 };
 
 const mapDispatchToProps = (dispatch) => ({

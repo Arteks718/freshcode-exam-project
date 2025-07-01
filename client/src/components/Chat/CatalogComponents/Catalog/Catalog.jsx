@@ -1,22 +1,31 @@
-import React from 'react';
 import styles from './Catalog.module.sass';
+import { FaTrashAlt } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
-const Catalog = props => {
+const Catalog = (props) => {
   const { deleteCatalog, goToCatalog, catalog } = props;
   const { catalogName, chats, id } = catalog;
+
+  const handleDeleteCatalog = (event) => {
+    try {
+      deleteCatalog(event, id);
+      toast.success(`Catalog - ${catalogName} was successfully deleted`);
+    } catch (error) {
+      toast.error(`Error deleting catalog: ${error.message}`);
+      return;
+    }
+  };
+
   return (
     <div
       className={styles.catalogContainer}
-      onClick={event => goToCatalog(event, catalog)}
+      onClick={(event) => goToCatalog(event, catalog)}
     >
       <span className={styles.catalogName}>{catalogName}</span>
       <div className={styles.infoContainer}>
         <span>Chats number: </span>
         <span className={styles.numbers}>{chats.length}</span>
-        <i
-          className='fas fa-trash-alt'
-          onClick={event => deleteCatalog(event, id)}
-        />
+        <FaTrashAlt onClick={handleDeleteCatalog} />
       </div>
     </div>
   );

@@ -22,9 +22,9 @@ const CreateCatalog = (props) => {
         <FormInput
           name="catalogName"
           type="text"
-          label="name of catalog"
+          label="Name of catalog"
           classes={{
-            container: styles.inputContainer,
+            inputContainer: styles.inputContainer,
             input: styles.input,
             warning: styles.fieldWarning,
             notValid: styles.notValid,

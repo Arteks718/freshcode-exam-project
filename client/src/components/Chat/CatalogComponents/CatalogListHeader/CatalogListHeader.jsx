@@ -6,41 +6,33 @@ import {
   changeRenameCatalogMode,
   changeCatalogName,
 } from '../../../../store/slices/chatSlice';
-import styles from './CatalogHeader.module.sass';
+import styles from './CatalogListHeader.module.sass';
 import FormInput from '../../../InputComponents/FormInput/FormInput';
 import Schems from '../../../../utils/validators/validationSchems';
+import { FaArrowLeft, FaEdit } from 'react-icons/fa';
 
 const CatalogListHeader = (props) => {
   const changeCatalogName = (values) => {
     const { changeCatalogName, id } = props;
     changeCatalogName({ catalogName: values.catalogName, catalogId: id });
   };
+  
   const {
     catalogName,
     changeShowModeCatalog,
     changeRenameCatalogMode,
     isRenameCatalog,
+    initialValues
   } = props;
+
   return (
     <div className={styles.headerContainer}>
-      <i
-        className="fas fa-long-arrow-alt-left"
-        onClick={() => changeShowModeCatalog()}
-      />
-      {!isRenameCatalog && (
-        <div className={styles.infoContainer}>
-          <span>{catalogName}</span>
-          <i
-            className="fas fa-edit"
-            onClick={() => changeRenameCatalogMode()}
-          />
-        </div>
-      )}
-      {isRenameCatalog && (
+      <FaArrowLeft alt="back" onClick={changeShowModeCatalog} />
+      {isRenameCatalog ? (
         <div className={styles.changeContainer}>
           <Formik
             onSubmit={changeCatalogName}
-            initialValues={props.initialValues}
+            initialValues={initialValues}
             validationSchema={Schems.CatalogSchema}
           >
             <Form>
@@ -58,6 +50,11 @@ const CatalogListHeader = (props) => {
               <button type="submit">Change</button>
             </Form>
           </Formik>
+        </div>
+      ) : (
+        <div className={styles.infoContainer}>
+          <span>{catalogName}</span>
+          <FaEdit onClick={changeRenameCatalogMode} />
         </div>
       )}
     </div>

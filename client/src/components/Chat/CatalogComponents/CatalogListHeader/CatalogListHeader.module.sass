@@ -4,9 +4,12 @@
   display: flex
   align-items: center
   justify-content: flex-start
-  padding-left: 15px
+  padding: 0 15px
   border-bottom: 1px solid #f3f3f3
   z-index: 600
+
+  svg
+    flex: none
 
   button
     border: none
@@ -15,49 +18,53 @@
     font-size: 14px
     cursor: pointer
 
-  i
+  svg
     cursor: pointer
     font-size: 24px
     color: white
-    transition: font-size 0.2s
+    transition: transform 0.2s ease
 
     &:hover
-      transition: font-size 0.2s
-      font-size: 28px
+      transition: transform 0.2s ease
+      transform: translateX(-3px)
 
   .infoContainer
     margin-left: 25px
     display: flex
     align-items: center
+    justify-content: space-between
+    flex: 1
 
     span
       font-size: 18px
       color: white
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      max-width: 150px
 
-    i
-      font-size: 12px
-      transition: font-size 0.2s
-      margin-left: 5px
+    svg
+      font-size: 16px
+      transition: transform 0.2s ease
+      margin-left: 10px
 
       &:hover
-        font-size: 14px
-        transition: font-size 0.2s
+        transform: scale(1.2)
+        transition: transform 0.2s ease
+
 
   .changeContainer
     display: flex
-    flex-direction: row
     justify-content: flex-start
     align-items: center
 
     form
       display: flex
-      flex-direction: row
       justify-content: flex-start
       align-items: center
 
       .inputContainer
         display: flex
-        flex-direction: row
         justify-content: flex-start
         align-items: center
 
@@ -65,7 +72,6 @@
         margin-right: 5px
         font-size: 15px
         display: flex
-        flex-direction: row
         justify-content: center
         align-items: center
         color: white

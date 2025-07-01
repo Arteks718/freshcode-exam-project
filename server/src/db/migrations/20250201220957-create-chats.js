@@ -14,6 +14,7 @@ module.exports = {
       catalogId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onDelete: 'CASCADE',
         references: {
           model: 'Catalogs',
           key: 'id',

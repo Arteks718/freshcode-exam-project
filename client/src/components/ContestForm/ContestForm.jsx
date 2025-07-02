@@ -99,6 +99,7 @@ const ContestForm = (props) => {
             focusOfWork: '',
             targetCustomer: '',
             file: '',
+            domain: 1,
             ...variableOptions[contestType],
             ...initialValues,
           }}

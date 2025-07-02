@@ -6,9 +6,10 @@ import {
   changeBlockStatusInStore,
 } from '../../../store/slices/chatSlice';
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 
 class ChatSocket extends WebSocket {
-  constructor (dispatch, getState, room) {
+  constructor(dispatch, getState, room) {
     super(dispatch, getState, room);
   }
 
@@ -18,22 +19,23 @@ class ChatSocket extends WebSocket {
   };
 
   onChangeBlockStatus = () => {
-    this.socket.on(CONTANTS.CHANGE_BLOCK_STATUS, data => {
+    this.socket.on(CONTANTS.CHANGE_BLOCK_STATUS, (data) => {
       this.dispatch(changeBlockStatusInStore(data.message));
     });
   };
 
   onNewMessage = () => {
-    this.socket.on('newMessage', data => {
+    this.socket.on('newMessage', (data) => {
       this.dispatch(addMessage(data.message));
+      toast.info('New message received')
     });
   };
 
-  subscribeChat = id => {
+  subscribeChat = (id) => {
     this.socket.emit('subscribeChat', id);
   };
 
-  unsubscribeChat = id => {
+  unsubscribeChat = (id) => {
     this.socket.emit('unsubscribeChat', id);
   };
 }

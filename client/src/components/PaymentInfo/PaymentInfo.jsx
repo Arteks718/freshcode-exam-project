@@ -1,7 +1,6 @@
-import React from 'react';
 import Error from '../Error/Error';
 import styles from './PaymentInfo.module.sass';
-import PayForm from '../PayForm/PayForm';
+import PayForm from '../PaymentForm/PaymentForm';
 
 const PaymentInfo = (props) => {
   const { balance, cashOut, error, clearPaymentStore } = props;
@@ -31,7 +30,7 @@ const PaymentInfo = (props) => {
               clearError={clearPaymentStore}
             />
           )}
-          <PayForm sendRequest={pay} />
+          <PayForm pay={pay} />
         </div>
       )}
     </div>

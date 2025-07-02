@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { pay, clearPaymentStore } from '../../store/slices/paymentSlice';
-import PayForm from '../../components/PayForm/PayForm';
+import PayForm from '../../components/PaymentForm/PaymentForm';
 import styles from './Payment.module.sass';
 import CONSTANTS from '../../constants';
 import Error from '../../components/Error/Error';
@@ -63,7 +63,7 @@ const Payment = (props) => {
               clearError={clearPaymentStore}
             />
           )}
-          <PayForm sendRequest={pay} back={goBack} isPayForOrder />
+          <PayForm pay={pay} back={goBack} isPayForOrder />
         </div>
         <div className={styles.orderInfoContainer}>
           <span className={styles.orderHeader}>Order Summary</span>

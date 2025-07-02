@@ -1,23 +1,15 @@
-import React from 'react';
 import Cards from 'react-credit-cards-2';
 import { Form, Formik } from 'formik';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import { connect } from 'react-redux';
-import styles from './PayForm.module.sass';
+import styles from './PaymentForm.module.sass';
 import { changeFocusOnCard } from '../../store/slices/paymentSlice';
 import PayInput from '../InputComponents/PayInput/PayInput';
 import Schems from '../../utils/validators/validationSchems';
 
 const PayForm = (props) => {
-  const changeFocusOnCard = (name) => {
-    props.changeFocusOnCard(name);
-  };
+  const { changeFocusOnCard, pay, focusOnElement, isPayForOrder, back } = props;
 
-  const pay = (values) => {
-    props.sendRequest(values);
-  };
-
-  const { focusOnElement, isPayForOrder } = props;
   return (
     <div className={styles.payFormContainer}>
       <span className={styles.headerInfo}>Payment Information</span>
@@ -27,6 +19,7 @@ const PayForm = (props) => {
           name: '',
           number: '',
           cvc: '',
+          sum: 100,
           expiry: '',
         }}
         onSubmit={pay}
@@ -73,7 +66,7 @@ const PayForm = (props) => {
                         notValid: styles.notValid,
                         error: styles.error,
                       }}
-                      type="text"
+                      type="number"
                       label="sum"
                     />
                   </div>
@@ -90,7 +83,7 @@ const PayForm = (props) => {
                       notValid: styles.notValid,
                       error: styles.error,
                     }}
-                    type="text"
+                    type="number"
                     label="card number"
                     changeFocus={changeFocusOnCard}
                   />
@@ -125,7 +118,7 @@ const PayForm = (props) => {
                         notValid: styles.notValid,
                         error: styles.error,
                       }}
-                      type="text"
+                      type="number"
                       label="cvc"
                       changeFocus={changeFocusOnCard}
                     />
@@ -143,12 +136,12 @@ const PayForm = (props) => {
       )}
       <div className={styles.buttonsContainer}>
         <button form="myForm" className={styles.payButton} type="submit">
-          <span>{isPayForOrder ? 'Pay Now' : 'CashOut'}</span>
+          <span>{isPayForOrder ? 'Pay Now' : 'Cashout'}</span>
         </button>
         {isPayForOrder && (
-          <div onClick={() => props.back()} className={styles.backButton}>
+          <button onClick={back} className={styles.backButton}>
             <span>Back</span>
-          </div>
+          </button>
         )}
       </div>
     </div>

@@ -132,6 +132,10 @@ export default {
         value => valid.number(value).isValid
       )
       .required('required'),
+    sum: yup
+      .number()
+      .min(5, 'min sum is 5$')
+      .required('required'),
     name: yup
       .string()
       .min(1, 'required atleast one symbol')

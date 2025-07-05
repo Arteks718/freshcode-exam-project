@@ -7,7 +7,7 @@ export default {
     email: yup
       .string()
       .email('check email')
-      .required('required'),
+      .required('Required'),
     password: yup
       .string()
       .test(
@@ -15,7 +15,7 @@ export default {
         'min 6 symbols',
         value => value && value.trim().length >= 6
       )
-      .required('required'),
+      .required('Required'),
   }),
   RegistrationSchem: yup.object().shape({
     email: yup
@@ -26,19 +26,19 @@ export default {
       .string()
       .test(
         'test-password',
-        'min 6 symbols',
+        'Min 6 symbols',
         value => value && value.trim().length >= 6
       )
-      .required('required'),
+      .required('Password is required'),
     confirmPassword: yup
       .string()
-      .required('confirm password is required')
-      .oneOf([yup.ref('password')], 'confirmation pass must match password'),
+      .required('Confirm password is required')
+      .oneOf([yup.ref('password')], 'Not confirm'),
     firstName: yup
       .string()
       .test(
         'test-firstName',
-        'required',
+        'Required',
         value => value && value.trim().length >= 1
       )
       .required('First Name is required'),
@@ -46,7 +46,7 @@ export default {
       .string()
       .test(
         'test-lastName',
-        'required',
+        'Required',
         value => value && value.trim().length >= 1
       )
       .required('Last Name is required'),
@@ -54,7 +54,7 @@ export default {
       .string()
       .test(
         'test-displayName',
-        'required',
+        'Required',
         value => value && value.trim().length >= 1
       )
       .required('Display Name is required'),

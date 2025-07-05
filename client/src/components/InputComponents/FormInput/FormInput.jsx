@@ -16,8 +16,7 @@ const FormInput = ({ classes, label, name, header, ...rest }) => (
       });
       return (
         <div className={classes.inputContainer}>
-          <span className={classes.inputHeader}>{header}</span>
-
+          {header && <span className={classes.inputHeader}>{header}</span>}
           <input
             type="text"
             {...field}

@@ -1,0 +1,39 @@
+.authorizationContainer
+  max-width: 1600px
+  padding: 50px
+  padding-top: 60px
+  margin: 0 auto
+  min-width: 280px
+  min-height: 650px
+  @media (max-width: 900px)
+    max-width: 720px
+  @media (max-width: 568px)
+    padding: 30px
+    padding-top: 60px
+  @media (max-width: 480px)
+    padding: 20px
+    padding-top: 40px
+
+  .authorizationHeader
+    display: flex
+    justify-content: space-between
+    align-items: center
+    @media (max-width: 530px)
+      padding: 0
+
+  .button
+    border: 1px solid white
+    width: 100px
+    border-radius: 4px
+    display: flex
+    justify-content: center
+    align-items: center
+    font-size: 18px
+    font-weight: bold
+    height: 40px
+    text-decoration: none
+    color: white
+
+    &:hover
+      background-color: white
+      color: #3ea9f5

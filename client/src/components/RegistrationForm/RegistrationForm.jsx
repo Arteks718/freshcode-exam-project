@@ -15,8 +15,10 @@ const RegistrationForm = (props) => {
   const { error, isFetching } = props.auth;
 
   useEffect(() => {
-    return authClear;
-  }, []);
+    return () => {
+      authClear();
+    };
+  }, [authClear]);
 
   const clicked = (values) => {
     register({
@@ -33,7 +35,7 @@ const RegistrationForm = (props) => {
   };
 
   const formInputClasses = {
-    container: styles.inputContainer,
+    inputContainer: styles.inputContainer,
     input: styles.input,
     warning: styles.fieldWarning,
     notValid: styles.notValid,
@@ -64,7 +66,7 @@ const RegistrationForm = (props) => {
         validationSchema={Schems.RegistrationSchem}
       >
         <Form>
-          <div className={styles.row}>
+          <div className={styles.inputsContainer}>
             <FormInput
               name="firstName"
               classes={formInputClasses}
@@ -77,8 +79,7 @@ const RegistrationForm = (props) => {
               type="text"
               label="Last name"
             />
-          </div>
-          <div className={styles.row}>
+
             <FormInput
               name="displayName"
               classes={formInputClasses}
@@ -88,11 +89,10 @@ const RegistrationForm = (props) => {
             <FormInput
               name="email"
               classes={formInputClasses}
-              type="text"
+              type="email"
               label="Email Address"
             />
-          </div>
-          <div className={styles.row}>
+
             <FormInput
               name="password"
               classes={formInputClasses}
@@ -106,6 +106,7 @@ const RegistrationForm = (props) => {
               label="Password confirmation"
             />
           </div>
+
           <div className={styles.choseRoleContainer}>
             <Field
               name="role"
@@ -142,7 +143,7 @@ const RegistrationForm = (props) => {
             disabled={submitting}
             className={styles.submitContainer}
           >
-            <span className={styles.inscription}>Create Account</span>
+            Create Account
           </button>
         </Form>
       </Formik>

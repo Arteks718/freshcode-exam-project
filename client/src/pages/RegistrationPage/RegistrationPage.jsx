@@ -1,28 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Logo from '../../components/Logo';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
 import styles from './RegistrationPage.module.sass';
 import { clearAuthError } from '../../store/slices/authSlice';
-import CONSTANTS from '../../constants';
+import AuthorizationHeader from '../../components/AuthorizationHeader/AuthorizationHeader';
 
-const RegistrationPage = props => {
+const RegistrationPage = (props) => {
   props.clearError();
 
   return (
     <div className={styles.signUpPage}>
-      <div className={styles.signUpContainer}>
-        <div className={styles.headerSignUpPage}>
-          <Logo src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} />
-          <div className={styles.linkLoginContainer}>
-            <Link to='/login' style={{ textDecoration: 'none' }}>
-              <span>Login</span>
-            </Link>
-          </div>
-        </div>
+      <AuthorizationHeader linkTo="/login" buttonTitle="Login">
         <RegistrationForm history={props.history} />
-      </div>
+      </AuthorizationHeader>
       <div className={styles.footer}>
         <div className={styles.articlesMainContainer}>
           <div className={styles.ColumnContainer}>
@@ -107,10 +96,9 @@ const RegistrationPage = props => {
             </div>
             <div className={styles.article}>
               Check out our <span className={styles.orangeSpan}>FAQs</span> or
-              send us a<span className={styles.orangeSpan}>message</span>. For
+              send us a <span className={styles.orangeSpan}>message</span>. For
               assistance with launching a contest, you can also call us at (877)
-              355-3585 or schedule a
-              <span className={styles.orangeSpan}>Branding Consultation</span>
+              355-3585 or schedule a <span className={styles.orangeSpan}>Branding Consultation</span>
             </div>
           </div>
         </div>
@@ -119,7 +107,7 @@ const RegistrationPage = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   clearError: () => dispatch(clearAuthError()),
 });
 

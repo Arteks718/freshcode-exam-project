@@ -1,31 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoginForm from '../../components/LoginForm/LoginForm';
-import Logo from '../../components/Logo';
 import styles from './LoginPage.module.sass';
 import { clearAuthError } from '../../store/slices/authSlice';
-import CONSTANTS from '../../constants';
+import AuthorizationHeader from '../../components/AuthorizationHeader/AuthorizationHeader';
 
-const LoginPage = props => (
-  <div className={styles.mainContainer}>
-    <div className={styles.loginContainer}>
-      <div className={styles.headerSignUpPage}>
-        <Logo src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt='logo' />
-        <div className={styles.linkLoginContainer}>
-          <Link to='/registration' style={{ textDecoration: 'none' }}>
-            <span>Signup</span>
-          </Link>
-        </div>
-      </div>
-      <div className={styles.loginFormContainer}>
+const LoginPage = (props) => {
+  props.clearError();
+  return (
+    <div className={styles.mainContainer}>
+      <AuthorizationHeader linkTo="/registration" buttonTitle="Sign Up">
         <LoginForm history={props.history} />
-      </div>
+      </AuthorizationHeader>
     </div>
-  </div>
-);
+  );
+};
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   clearError: () => dispatch(clearAuthError()),
 });
 

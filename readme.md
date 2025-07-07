@@ -1,3 +1,55 @@
+# Виконані завдання іспиту
+4. Task Name: Верстка. 
+  Description: Створена сторінка знаходиться за шляхом `./client/src/pages/HowItWorks`. Посилання на сторінку додані у header та footer. 
+  Branch: `how-it-works-landing page`
+5. Task Name: React, Динамічний брендинг. 
+  Description: Створена сторінка знаходиться за шляхом `./client/src/pages/HowItWorks`. Посилання на сторінку додано у header лише для користувачів з роллю *CUSTOMER*.
+  Branch: `dynamic-branding`
+6. Task Name: React, Button Group. 
+  Description: Створений компонент знаходиться за шляхом `./client/src/components/ContestForm/ButtonGroup/`. Branch: `button-group`
+7. Task Name: DB NO-SQL
+  Description: Створений запит знаходиться за шляхом `./server/src/db/tasks/noSQL/task7.mongodb.js`
+  Branch: `db-nosql`
+8-11. Task Name: DB SQL
+  Description: Створені запити знаходяться за шляхом `./server/src/db/tasks/sql`
+  Branch: db-sql
+12-13. Task Name: NodeJS
+  Description: Для виконання завдання використовувалась бібліотека `winston`.
+  Branch: node-logger
+14. Task Name: FullStack, Moderator
+  Description: Для розсилки використовувалась бібліотека `nodemailer`, креди акаунта вказувати у .env. 
+  Branch: moderator
+15. Task Name: FullStack, Migrate NoSQL to SQL
+  Description: Переніс відбувався у теці `./server/src/db`. Для переносу була створена [ERD діаграма](https://drawsql.app/teams/learning-64/diagrams/squadhelp). 
+  Branch: switch-nosql-tosql
+
+# Додатково пророблена робота
+
+## Доданий функціонал
+
+- Замінений слайдер на головній сторінці з flickity на swiper, через те що останній більш функціональний
+- На сторінці з контестами у Customer можна оновлювати список натискаючи на кнопку зі стрілкою
+- На сторінці з контестами у Creative доданий фільтр по тільки активним контестам(за замовчуванням вимкнутий)
+- Відкриття чату на відповідну іконку у header
+- При створені контесту якщо оновити сторінку, з'явиться підтвердження оновлення сторінки, щоб уникнути випадкових повторних введень даних
+- Для більшості моментів додані toast повідомлення
+
+## Рефактор серверу
+
+- Розподілени endpoints для router
+- Теки які відносяться до баз даних перенесені до теки *db*
+- Відрефакторені контролери для кращої читабельності
+- Створена тека `services` куди були винесені узагальнені функції для контролерів
+- Заміна бібліотеки `moment.js` на `date-fns`
+
+## Рефактор клієнта
+
+- Відрефакторені більшість компонентів, для покращеної читабельності
+- Переписан файл `restController.js` для покращення читабельності
+- Додана тека `hooks` для додавання кастомних хуків
+- Відрефакторені header та footer, де елементи були перенесені до `constants`
+- Додано більше `utils`
+
 # Інструкції для роботи з проектом
 
 ## Робота з контейнеризованою версією додатка при встановленому Docker
@@ -30,3 +82,13 @@
   - **Номер картки:** 4111 1111 1111 1111
   - **Дата кінця дії картки:** 09/26
   - **CVC код:** 505
+2. Дані акаунтів користувачів за замовчуванням
+  **CUSTOMER**:
+    - **Email**: customer@gmail.com
+    - **Password**: 123456
+  **CREATOR**:
+    - **Email**: creative@gmail.com
+    - **Password**: 123456
+  **MODERATOR**:
+    - **Email**: moderator@gmail.com
+    - **Password**: 123456

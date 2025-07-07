@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { pay, clearPaymentStore } from '../../store/slices/paymentSlice';
@@ -6,10 +5,18 @@ import PayForm from '../../components/PaymentForm/PaymentForm';
 import styles from './Payment.module.sass';
 import CONSTANTS from '../../constants';
 import Error from '../../components/Error/Error';
+import { toast } from 'react-toastify';
 
 const Payment = (props) => {
-  const pay = (values) => {
-    const { contests } = props.contestCreationStore;
+  const {
+    clearPaymentStore,
+    history,
+    pay,
+    contestCreationStore: { contests },
+    payment: { error}
+  } = props;
+
+  const handlePay = (values) => {
     const contestArray = [];
     Object.keys(contests).forEach((key) =>
       contestArray.push({ ...contests[key] })
@@ -25,23 +32,21 @@ const Payment = (props) => {
     data.append('cvc', cvc);
     data.append('contests', JSON.stringify(contestArray));
     data.append('price', '100');
-    props.pay({
+    pay({
       data: {
         formData: data,
       },
       history: props.history,
     });
+    toast.success('Payment successful!');
   };
 
   const goBack = () => {
     props.history.goBack();
   };
 
-  const { contests } = props.contestCreationStore;
-  const { error } = props.payment;
-  const { clearPaymentStore } = props;
   if (isEmpty(contests)) {
-    props.history.replace('startContest');
+    history.replace('startContest');
   }
   return (
     <div>
@@ -63,7 +68,7 @@ const Payment = (props) => {
               clearError={clearPaymentStore}
             />
           )}
-          <PayForm pay={pay} back={goBack} isPayForOrder />
+          <PayForm pay={handlePay} back={goBack} isPayForOrder />
         </div>
         <div className={styles.orderInfoContainer}>
           <span className={styles.orderHeader}>Order Summary</span>

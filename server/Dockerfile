@@ -19,7 +19,7 @@ RUN npm install -g sequelize-cli
 
 RUN npm install
 
-RUN chown -R node:node /server/node_modules
+# RUN chown -R node:node /server/node_modules
 
 COPY . .
 

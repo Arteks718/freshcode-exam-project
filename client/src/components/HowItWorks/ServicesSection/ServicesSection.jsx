@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ServicesSection.module.sass';
 import HOW_IT_WORKS_CONSTANTS from '../howItWorksConstants';
 import ServicesItem from './ServicesItem/ServicesItem';

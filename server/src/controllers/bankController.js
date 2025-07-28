@@ -1,6 +1,6 @@
 const { format } = require('date-fns');
-const db = require('../db/models/index');
 const { v4: uuid } = require('uuid');
+const db = require('../db/models/index');
 const bankQueries = require('./queries/bankQueries');
 const userQueries = require('./queries/userQueries');
 const CONSTANTS = require('../constants');

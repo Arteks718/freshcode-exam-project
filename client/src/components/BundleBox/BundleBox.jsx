@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import styles from './BundleBox.module.sass';
 import CONSTANTS from '../../constants';
 

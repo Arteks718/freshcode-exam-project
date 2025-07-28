@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import CONSTANTS from '../../constants';
 import CustomerDashboard from '../../components/CustomerDashboard/CustomerDashboard';

@@ -1,10 +1,7 @@
 const jwt = require('jsonwebtoken');
 const CONSTANTS = require('../constants');
-const db = require('../db/models');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
-const controller = require('../socketInit');
 const userQueries = require('./queries/userQueries');
-const ratingQueries = require('./queries/ratingQueries');
 
 module.exports.login = async (req, res, next) => {
   const {

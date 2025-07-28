@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import { IoMdSend } from "react-icons/io";

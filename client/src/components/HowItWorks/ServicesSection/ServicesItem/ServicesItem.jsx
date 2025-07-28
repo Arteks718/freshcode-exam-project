@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ServicesItem.module.sass';
 
 const ServicesItem = (props) => {

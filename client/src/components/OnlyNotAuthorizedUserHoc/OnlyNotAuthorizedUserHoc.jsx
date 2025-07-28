@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from '../../store/slices/userSlice';
 import Spinner from '../Spinner/Spinner';
@@ -8,7 +8,7 @@ const OnlyNotAuthorizedUserHoc = (Component) => {
     const { checkAuth, isFetching, data, history } = props;
     useEffect(() => {
       checkAuth(history.replace);
-    }, []);
+    }, [checkAuth, history.replace]);
 
     if (isFetching) {
       return <Spinner />;
@@ -18,22 +18,6 @@ const OnlyNotAuthorizedUserHoc = (Component) => {
     }
     return null;
   };
-
-  // class HocForLoginSignUp extends React.Component {
-  //   componentDidMount() {
-  //     this.props.checkAuth(this.props.history.replace);
-  //   }
-
-  //   render() {
-  //     if (this.props.isFetching) {
-  //       return <Spinner />;
-  //     }
-  //     if (!this.props.data) {
-  //       return <Component history={this.props.history} />;
-  //     }
-  //     return null;
-  //   }
-  // }
 
   const mapStateToProps = (state) => state.userStore;
 

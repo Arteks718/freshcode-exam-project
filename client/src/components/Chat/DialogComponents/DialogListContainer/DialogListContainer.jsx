@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getPreviewChat } from '../../../../store/slices/chatSlice';
 import DialogList from '../DialogList/DialogList';

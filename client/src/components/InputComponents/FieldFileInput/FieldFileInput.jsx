@@ -1,4 +1,3 @@
-import React from 'react';
 import { useField } from 'formik';
 import { IoCloseSharp } from 'react-icons/io5';
 
@@ -7,7 +6,7 @@ const FieldFileInput = (props) => {
   const { fileUploadContainer, labelClass, fileNameClass, fileInput, fileBlockClass } =
     props.classes;
 
-  const [{ value, ...field }, meta, helpers] = useField(name);
+  const [{ value, ...field }, , helpers] = useField(name);
 
   const onChange = (e) => {
     helpers.setValue(e.target.files[0]);

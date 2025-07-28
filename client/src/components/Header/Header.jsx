@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { FaPhoneAlt } from 'react-icons/fa';
@@ -30,7 +30,7 @@ const Header = (props) => {
     if (!data) {
       getUser();
     }
-  }, []);
+  }, [data, getUser]);
 
   const logOut = () => {
     localStorage.clear();

@@ -45,7 +45,6 @@ const OffersItem = (props) => {
             readonly
           />
         </div>
-        {/* TODO Refactor */}
         <div>
           <span className={styles.offerSpan}>Offer</span>
           {text ?? (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
@@ -36,12 +36,13 @@ const ContestPage = (props) => {
     userStore,
     chatStore,
     setOfferStatus,
+    match
   } = props;
 
-  const getDataForContest = () => {
-    const { params } = props.match;
+  const getDataForContest = useCallback(() => {
+    const { params } = match;
     getData({ contestId: params.id });
-  };
+  }, [getData, match]);
 
   useEffect(() => {
     getDataForContest();
@@ -49,7 +50,7 @@ const ContestPage = (props) => {
     return () => {
       changeEditContest(false);
     };
-  }, []);
+  }, [getDataForContest]);
 
   const setStatsOffers = () => {
     const { onReviewCount, rejectedCount } = contestByIdStore.contestData;

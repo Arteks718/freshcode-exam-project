@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './HomeHeroSection.module.sass';
 import HOW_IT_WORKS_CONSTANTS from '../howItWorksConstants';
 

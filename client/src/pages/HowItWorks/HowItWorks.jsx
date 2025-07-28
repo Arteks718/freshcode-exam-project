@@ -1,5 +1,3 @@
-import React from 'react';
-import styles from './HowItWorks.module.sass';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import ServicesSection from '../../components/HowItWorks/ServicesSection/ServicesSection';

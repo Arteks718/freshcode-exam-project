@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import classnames from 'classnames';
 import styles from './Accordion.module.sass';
 

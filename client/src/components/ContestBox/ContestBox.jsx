@@ -1,4 +1,3 @@
-import React from 'react';
 import { IoDiamondOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import styles from './ContestBox.module.sass';

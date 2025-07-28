@@ -1,13 +1,13 @@
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import Header from '../../components/Header/Header';
 import styles from './UserProfile.module.sass';
 import CONSTANTS from '../../constants';
+import Header from '../../components/Header/Header';
 import UserInfo from '../../components/UserInfo/UserInfo';
+import PaymentInfo from '../../components/PaymentInfo/PaymentInfo';
 import { cashOut, clearPaymentStore } from '../../store/slices/paymentSlice';
 import { changeProfileViewMode, resetState } from '../../store/slices/userProfileSlice';
-import PaymentInfo from '../../components/PaymentInfo/PaymentInfo';
-import { useEffect } from 'react';
 
 const UserProfile = (props) => {
   const {

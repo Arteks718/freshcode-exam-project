@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { Form, Formik } from 'formik';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';

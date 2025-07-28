@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
 import { withRouter } from 'react-router-dom';

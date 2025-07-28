@@ -1,8 +1,6 @@
 const db = require('../../db/models');
 const ServerError = require('../../errors/ServerError');
 
-module.exports.chatsForCatalog = async () => {};
-
 module.exports.updateConversation = async (predicate, value, participants) => {
   const [updatedCount, [conversation]] = await db.Conversations.update(
     {

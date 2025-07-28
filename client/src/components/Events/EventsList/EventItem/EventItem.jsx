@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import classNames from 'classnames';
 import { isAfter } from 'date-fns';
 import { FaCheck, FaTrashAlt } from 'react-icons/fa';

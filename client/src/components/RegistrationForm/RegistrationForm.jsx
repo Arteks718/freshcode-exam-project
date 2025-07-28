@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Field, Form, Formik } from 'formik';
 import Error from '../Error/Error';
@@ -12,7 +12,7 @@ import Schems from '../../utils/validators/validationSchems';
 
 const RegistrationForm = (props) => {
   const { authClear, register, history, submitting } = props;
-  const { error, isFetching } = props.auth;
+  const { error } = props.auth;
 
   useEffect(() => {
     return () => {

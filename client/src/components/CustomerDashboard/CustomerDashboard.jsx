@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { IoMdRefresh } from 'react-icons/io';

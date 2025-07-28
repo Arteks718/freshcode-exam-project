@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { connect } from 'react-redux';
 import styles from './ContestCreationPage.module.sass';
 import { saveContestToStore } from '../../store/slices/contestCreationSlice';

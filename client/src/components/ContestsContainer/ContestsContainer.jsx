@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import styles from './ContestContainer.module.sass';
 import Spinner from '../Spinner/Spinner';
 import ContestBox from '../ContestBox/ContestBox';

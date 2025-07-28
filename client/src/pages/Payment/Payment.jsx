@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { pay, clearPaymentStore } from '../../store/slices/paymentSlice';
@@ -5,7 +6,6 @@ import PayForm from '../../components/PaymentForm/PaymentForm';
 import styles from './Payment.module.sass';
 import CONSTANTS from '../../constants';
 import Error from '../../components/Error/Error';
-import { toast } from 'react-toastify';
 
 const Payment = (props) => {
   const {

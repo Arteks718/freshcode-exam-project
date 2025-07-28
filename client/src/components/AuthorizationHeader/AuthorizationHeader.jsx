@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom';
 import styles from './AuthorizationHeader.module.sass';
 import Logo from '../Logo';
-import { Link } from 'react-router-dom';
 import CONSTANTS from '../../constants';
 
 const AuthorizationHeader = (props) => {

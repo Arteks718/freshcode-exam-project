@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './StepsItem.module.sass';
 
 const StepsItem = (props) => {

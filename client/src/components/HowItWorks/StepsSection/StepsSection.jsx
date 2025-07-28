@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './StepsSection.module.sass';
 import StepsItem from './StepsItem/StepsItem';
 import HOW_IT_WORKS_CONSTANTS from '../howItWorksConstants';

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { MdOutlineAccessTime } from 'react-icons/md';
 import styles from './EventNotification.module.sass';

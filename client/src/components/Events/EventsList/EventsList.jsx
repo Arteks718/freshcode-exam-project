@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { MdOutlineAccessTime } from "react-icons/md";
 import styles from './EventsList.module.sass';
 import EventItem from './EventItem/EventItem';

@@ -1,11 +1,9 @@
-import isEqual from 'lodash/isEqual';
 import WebSocket from './WebSocket';
 import CONTANTS from '../../../constants';
 import {
   addMessage,
   changeBlockStatusInStore,
 } from '../../../store/slices/chatSlice';
-import _ from 'lodash';
 import { toast } from 'react-toastify';
 
 class ChatSocket extends WebSocket {

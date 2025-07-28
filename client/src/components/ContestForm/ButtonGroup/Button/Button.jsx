@@ -1,4 +1,3 @@
-import React from 'react';
 import { Field } from 'formik';
 import { FaCheck } from "react-icons/fa";
 import classNames from 'classnames';

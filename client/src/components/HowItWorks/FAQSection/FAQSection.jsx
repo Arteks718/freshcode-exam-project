@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Accordion from './Accordion/Accordion';
 import styles from './FAQSection.module.sass';
 import HOW_IT_WORKS_CONSTANTS from '../howItWorksConstants';

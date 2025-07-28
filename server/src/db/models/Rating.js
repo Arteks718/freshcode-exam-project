@@ -1,5 +1,3 @@
-
-
 module.exports = (sequelize, DataTypes) => {
   const Rating = sequelize.define('Ratings', {
     offerId: {

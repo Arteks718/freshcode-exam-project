@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import styles from './Events.module.sass';
 import { addEvent, deleteEvent } from '../../store/slices/eventSlice';
@@ -8,7 +7,7 @@ import EventsForm from '../../components/Events/EventsForm/EventsForm';
 import EventsList from '../../components/Events/EventsList/EventsList';
 
 const Events = (props) => {
-  const { events, loading, addEvent, deleteEvent } = props;
+  const { events, addEvent, deleteEvent } = props;
   return (
     <>
       <Header />

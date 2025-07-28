@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { isEqual, formatISO, format } from 'date-fns';
 import classNames from 'classnames';

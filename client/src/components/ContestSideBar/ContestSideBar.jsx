@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { IoCheckmarkCircle } from 'react-icons/io5';
 import { GrDiamond } from "react-icons/gr";
@@ -10,7 +9,6 @@ import { getTimeStr } from '../../utils/dateUtils';
 const ContestSideBar = (props) => {
   const { totalEntries } = props;
   const { User, prize, createdAt } = props.contestData;
-  // TODO Change images to icon
   return (
     <div className={styles.contestSideBarInfo}>
       <div className={styles.contestInfo}>

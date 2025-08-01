@@ -1,7 +1,4 @@
-const {
-  differenceInMilliseconds,
-  add,
-} = require('date-fns');
+const cron = require('node-cron');
 const fs = require('fs/promises');
 const path = require('path');
 const CONSTANTS = require('../constants');
@@ -9,17 +6,6 @@ const ServerError = require('../errors/ServerError');
 
 const LOGS_DIR = path.resolve(__dirname, '..', '..', CONSTANTS.LOGS.DIR);
 const ERROR_LOG_FILE = path.join(LOGS_DIR, CONSTANTS.LOGS.ERRORS_FILE_NAME);
-
-const calculateTimeUntilNextTarget = (time) => {
-  const now = new Date();
-  let targetTime = new Date(now);
-  targetTime.setHours(time.hour, time.minute, 0, 0);
-  if (targetTime <= now) {
-    targetTime = add(targetTime, { days: 1 });
-  }
-
-  return differenceInMilliseconds(targetTime, now);
-};
 
 const saveLogs = async () => {
   try {
@@ -39,18 +25,21 @@ const saveLogs = async () => {
     await fs.writeFile(newFilePath, logsArray.join('\n'));
     await fs.writeFile(ERROR_LOG_FILE, '');
   } catch (error) {
-    new ServerError(`Error in schedule logger, ${error}`)
+    new ServerError(`Error in schedule logger, ${error}`);
   }
 };
 
-const scheduleLogger = async () => {
-  const timeUntilNextTarget = calculateTimeUntilNextTarget(CONSTANTS.LOGS.SCHEDULE_TIME);
-  setTimeout(async () => {
-    await saveLogs();
-    scheduleLogger();
-  }, timeUntilNextTarget);
-}
-
-module.exports.start = async () => {
-  await scheduleLogger().catch((err) => new ServerError('Schedule logger error:', err))
-}
+cron.schedule(
+  `${CONSTANTS.LOGS.SCHEDULE_CRON}`,
+  async () => {
+    try {
+      await saveLogs();
+    } catch (error) {
+      throw new ServerError(`Error in scheduled task: ${error.message}`, error);
+    }
+  },
+  {
+    scheduled: true,
+    timezone: CONSTANTS.LOGS.SCHEDULE_TIMEZONE,
+  }
+);

@@ -35,10 +35,8 @@ module.exports = {
   CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',
   LOGS: {
     ERRORS_FILE_NAME: 'errors.log',
-    SCHEDULE_TIME: {
-      hour: 12,
-      minute: 0,
-    },
+    SCHEDULE_CRON: '0 0 12 * * *', // Every day at 12:00 PM
+    SCHEDULE_TIMEZONE: 'Europe/Kyiv',
     DIR: "logs"
   }
 };

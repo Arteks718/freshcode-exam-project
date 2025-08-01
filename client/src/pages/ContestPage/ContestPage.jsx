@@ -36,7 +36,7 @@ const ContestPage = (props) => {
     userStore,
     chatStore,
     setOfferStatus,
-    match
+    match,
   } = props;
 
   const getDataForContest = useCallback(() => {
@@ -177,6 +177,12 @@ const ContestPage = (props) => {
   } = contestByIdStore;
   const { role } = userStore.data;
 
+  const totalEntriesCount = offers.filter(
+    ({ status }) =>
+      status !== CONSTANTS.OFFER_STATUS_DECLINED &&
+      status !== CONSTANTS.OFFER_STATUS_REVIEW
+  ).length;
+
   return (
     <div>
       {/* <Chat/> */}
@@ -244,7 +250,7 @@ const ContestPage = (props) => {
           </div>
           <ContestSideBar
             contestData={contestData}
-            totalEntries={offers.length}
+            totalEntries={totalEntriesCount}
           />
         </div>
       )}

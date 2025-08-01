@@ -5,6 +5,7 @@ import HomeHero from '../../components/HowItWorks/HomeHeroSection/HomeHeroSectio
 import StepsSection from '../../components/HowItWorks/StepsSection/StepsSection';
 import FAQSection from '../../components/HowItWorks/FAQSection/FAQSection';
 import { connect } from 'react-redux';
+import SearchSection from '../../components/HowItWorks/SearchSection/SearchSection';
 
 const HowItWorks = (props) => {
   return (
@@ -14,6 +15,7 @@ const HowItWorks = (props) => {
       <ServicesSection />
       <StepsSection />
       <FAQSection />
+      <SearchSection />
       <Footer />
     </>
   );

@@ -158,6 +158,36 @@ const HOW_IT_WORKS_CONSTANTS = {
       ],
     },
   ],
+  tags: [
+    {
+      tag: 'Tech',
+      link: '/tech',
+    },
+    {
+      tag: 'Clothing',
+      link: '/clothing',
+    },
+    {
+      tag: 'Finance',
+      link: '/finance',
+    },
+    {
+      tag: 'Real Estate',
+      link: '/real-estate',
+    },
+    {
+      tag: 'Crypto',
+      link: '/crypto',
+    },
+    {
+      tag: 'Short',
+      link: '/short',
+    },
+    {
+      tag: 'One Word',
+      link: '/one-word',
+    },
+  ],
 };
 
 export default HOW_IT_WORKS_CONSTANTS;

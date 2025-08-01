@@ -1,0 +1,93 @@
+@use '../HowItWorks.module.sass' as c
+
+.searchSection
+  @include c.paddingPage
+  padding: 80px 0
+  
+  .searchContainer
+    max-width: 1480px
+    margin: 0 auto
+    padding-top: 40px
+    padding-bottom: 60px
+    border-bottom: 1px solid #edeff3
+
+    .searchForm
+      position: relative
+      max-width: 650px
+      margin: 0 auto 30px auto
+      padding: 2px
+      display: flex
+      background: linear-gradient(45deg,rgb(142 97 255 / .5333333333) 0,#339bf7 50%,rgb(43 198 215 / .431372549) 100%)
+      border-radius: 30px
+
+      .icon
+        position: absolute
+        top: 21px
+        left: 20px
+        font-size: 22px
+        font-weight: 700
+
+      input
+        display: block
+        padding: 0 50px 0 48px
+        height: 60px
+        width: 100%
+        color: #343434
+        font-size: 18px
+        font-weight: 400
+        line-height: 60px
+        text-align: left
+        outline: 0
+        border: none
+        border-radius: 999px
+        background: #fff
+        box-shadow: 0 16px 40px rgb(0 0 0 / .02)
+
+      button
+        position: absolute
+        top: 5px
+        right: 5px
+        width: 68px
+        height: 54px
+        padding: 0
+        display: flex
+        align-items: center
+        justify-content: center
+        border: none
+        border-radius: 40px
+        background: #ff6955
+        box-shadow: 3px 3px 10px 0 rgb(255 104 85 / .3)
+        transition: all ease .6s
+        cursor: pointer
+
+        @media (max-width: 766px)
+          opacity: .8
+
+        &:hover
+          background-color: #ff533c
+
+        svg
+          color: white
+          font-size: 24px
+
+    .listTags
+      display: flex
+      justify-content: center
+      flex-wrap: wrap
+      margin-top: 35px
+
+      a
+        display: inline-block
+        padding: 6px 12px
+        margin: 0 12px 12px 0
+        border: none
+        border-radius: 20px
+        color: #2b2aaa
+        font-size: 14px
+        font-weight: 400
+        line-height: 1.5
+        text-decoration: none
+        background: rgb(43 42 170 / .1)
+        backdrop-filter: blur(23.7219px)
+        box-shadow: 0 1px 6px rgb(17 17 17 / .06)
+        transition: all ease .3s

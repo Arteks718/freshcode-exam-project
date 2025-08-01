@@ -6,14 +6,10 @@ WITH transactions AS (
     AND
     contests."status" = 'finished'
     AND
-    contests."createdAt" 
-      BETWEEN 
-        make_date(CAST (EXTRACT (year from current_date) as integer ) - 1, 12, 25 )
-      AND
-        make_date(CAST (EXTRACT (year from current_date) as integer ), 1, 30 )
+    contests."createdAt" BETWEEN '2024-12-25' AND '2025-01-14'
   GROUP BY users.id
 )
 UPDATE "Users" as users
-SET balance = transactions.total_prize * 0.1
+SET balance = users.balance + transactions.total_prize * 0.1
 FROM transactions
 WHERE users.id = transactions.id

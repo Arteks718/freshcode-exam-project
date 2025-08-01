@@ -5,9 +5,7 @@ const ServicesItem = (props) => {
   return (
     <div className={styles.item}>
       <div>
-        <div className={styles.icon}>
-          <img src={icon} alt="icon" />
-        </div>
+        <img src={icon} alt="icon" className={styles.icon} />
         <h3 className={styles.itemTitle}>{title}</h3>
         <p className={styles.itemDesc}>{description}</p>
       </div>
@@ -15,7 +13,7 @@ const ServicesItem = (props) => {
         <button className={styles.itemButton}>
           {buttonText}
           <img
-            alt="test"
+            alt="arrow"
             src="https://www.atom.com/html/html/html/static_images/icon-arrow-long-right.svg"
           ></img>
         </button>

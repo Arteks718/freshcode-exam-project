@@ -7,22 +7,22 @@
   background: #fbfbff
 
   .homeHeroContainer
+    max-width: 1040px
+    margin: 0 auto
     display: flex
     justify-content: space-between
     align-items: center
     column-gap: 40px
-    margin: 0 auto
-    max-width: 1040px
 
     @media (max-width: 1200px)
-      column-gap: 20px
       max-width: 960px
+      column-gap: 20px
 
     @media (max-width: 992px)
-      flex-direction: column-reverse
-      row-gap: 30px
       max-width: 720px
       padding: 20px
+      flex-direction: column-reverse
+      row-gap: 30px
 
     @media (max-width: 768px)
       max-width: 540px
@@ -35,20 +35,20 @@
 
       .tag
         display: inline-block
+        margin-bottom: 10px
+        padding: 7px 15px
         color: #377dff
         font-size: 12px
+        line-height: 21px
+        letter-spacing: .6px
         border-radius: 20px
         background: rgba(55, 125, 255, 0.1)
-        padding: 7px 15px
-        letter-spacing: .6px
-        line-height: 21px
-        margin-bottom: 10px
 
       .title
+        margin-bottom: 20px
         color: #19184A
         font-size: 40px
         font-weight: 700
-        margin-bottom: 20px
 
       .desc
         color: rgba(25, 24, 74, 0.5)
@@ -62,17 +62,17 @@
         width: 100%
 
       .videoElement
-        border-radius: 16px
-        border-bottom: 3px solid #637cf7
-        overflow: hidden
-        padding-top: 56.25%
         position: relative
         width: 100%
+        padding-top: 56.25%
+        overflow: hidden
+        border-radius: 16px
+        border-bottom: 3px solid #637cf7
 
         iframe
-          border: none
           position: absolute
           top: 0
-          height: 100%
           width: 100%
+          height: 100%
+          border: none
 

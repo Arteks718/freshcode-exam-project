@@ -4,6 +4,7 @@ import styles from './Accordion.module.sass';
 
 const Accordion = (props) => {
   const { question, answer } = props;
+  
   const [isExpanded, setIsExpanded] = useState(false);
   const faqContentRef = useRef(null);
 
@@ -17,9 +18,9 @@ const Accordion = (props) => {
 
   return (
     <div className={faqAccordionClassName}>
-      <div className={styles.faqCaption} onClick={openAccordion}>
+      <h5 className={styles.faqCaption} onClick={openAccordion}>
         {question}
-      </div>
+      </h5>
       <div
         className={styles.faqContent}
         ref={faqContentRef}
@@ -27,7 +28,7 @@ const Accordion = (props) => {
           height: isExpanded && `${faqContentRef.current.scrollHeight}px`,
         }}
       >
-        <div dangerouslySetInnerHTML={answer} className={styles.text} />
+        <p dangerouslySetInnerHTML={answer} className={styles.text} />
       </div>
     </div>
   );

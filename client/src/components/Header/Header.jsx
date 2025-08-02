@@ -28,9 +28,9 @@ const Header = (props) => {
 
   useEffect(() => {
     if (!data) {
-      getUser();
+      getUser(history.replace);
     }
-  }, [data, getUser]);
+  }, [data, getUser, history]);
 
   const logOut = () => {
     localStorage.clear();
@@ -96,13 +96,14 @@ const Header = (props) => {
             alt="email"
             onClick={() => changeChatShow()}
           />
-          <EventNotification
-            style={{ icon: styles.icon }}
-            checkTime={checkTime}
-            counts={{ finishedCount, reminderCount }}
-            role={data.role}
-            events={events}
-          />
+          {data.role === CONSTANTS.CUSTOMER && (
+            <EventNotification
+              style={{ icon: styles.icon }}
+              checkTime={checkTime}
+              counts={{ finishedCount, reminderCount }}
+              events={events}
+            />
+          )}
         </>
       );
     }
@@ -117,6 +118,33 @@ const Header = (props) => {
       </>
     );
   };
+
+  const renderNavList = () => (
+    <ul className={styles.navList}>
+      {CONSTANTS.HEADER_ITEMS.map((item, index) => (
+        <li key={index} className={styles.navItem}>
+          <span>{item.title}</span>
+          {item.items && item.items.length > 0 && (
+            <>
+              <IoMdArrowDropdown color="#718888" alt="menu" />
+              <ul className={styles.navSubMenu}>
+                {item.items.map((subItem, subIndex) => (
+                  <li key={subIndex}>
+                    <Link
+                      to={subItem.link || '/404'}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      {subItem.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
 
   if (isFetching) {
     return null;
@@ -155,32 +183,7 @@ const Header = (props) => {
           />
         </a>
         <div className={styles.leftNav}>
-          <div className={styles.nav}>
-            <ul className={styles.navList}>
-              {CONSTANTS.HEADER_ITEMS.map((item, index) => (
-                <li key={index} className={styles.navItem}>
-                  <span>{item.title}</span>
-                  {item.items && item.items.length > 0 && (
-                    <>
-                      <IoMdArrowDropdown color="#718888" alt="menu" />
-                      <ul className={styles.navSubMenu}>
-                        {item.items.map((subItem, subIndex) => (
-                          <li key={subIndex}>
-                            <Link
-                              to={subItem.link || '/404'}
-                              style={{ textDecoration: 'none' }}
-                            >
-                              {subItem.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className={styles.nav}>{renderNavList()}</div>
           {data && data.role === CONSTANTS.CUSTOMER && (
             <div className={styles.startContestBtn} onClick={startContests}>
               START CONTEST
@@ -197,7 +200,7 @@ const mapStateToProps = (state) => ({
   ...(({ isFetching, error, ...rest }) => rest)(state.eventStore),
 });
 const mapDispatchToProps = (dispatch) => ({
-  getUser: () => dispatch(getUser()),
+  getUser: (replace) => dispatch(getUser(replace)),
   clearUserStore: () => dispatch(clearUserStore()),
   checkTime: (time) => dispatch(checkTime(time)),
   changeChatShow: () => dispatch(changeChatShow()),

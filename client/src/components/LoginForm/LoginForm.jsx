@@ -9,15 +9,15 @@ import Error from '../Error/Error';
 import CONSTANTS from '../../constants';
 
 const LoginForm = (props) => {
-  const { authClear, loginRequest, history, submitting } = props;
+  const { authClear, history, submitting, loginRequest } = props;
   const { error, isFetching } = props.auth;
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      props.checkAuth();
+      loginRequest();
     }
     return authClear;
-  }, []);
+  }, [loginRequest, authClear]);
 
   const clicked = (values) => {
     loginRequest({ data: values, history });

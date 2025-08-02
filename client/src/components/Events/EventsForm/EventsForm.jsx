@@ -39,13 +39,20 @@ const EventsForm = (props) => {
           resetForm();
         }}
       >
-        {({ values, setFieldValue, setFieldTouched, resetForm }) => {
-          const handleChangeFinishDate = (value) => {
-            setFieldValue('finishDate', value);
+        {({
+          values,
+          setFieldValue,
+          setFieldTouched,
+          resetForm,
+          errors,
+          touched,
+        }) => {
+          const handleChangeFinishDate = async (value) => {
+            await setFieldValue('finishDate', value);
             setFieldTouched('finishDate', true, true);
           };
-          const handleChangeReminderDate = (value) => {
-            setFieldValue('reminderDate', value);
+          const handleChangeReminderDate = async (value) => {
+            await setFieldValue('reminderDate', value);
             setFieldTouched('reminderDate', true, true);
           };
           return (
@@ -70,7 +77,16 @@ const EventsForm = (props) => {
                       sx={dateTimePickerTheme}
                       value={values.finishDate}
                       disablePast
+                      disableIgnoringDatePartForTimeValidation={true}
                       onChange={(value) => handleChangeFinishDate(value)}
+                      slotProps={{
+                        textField: {
+                          error: Boolean(
+                            errors.finishDate && touched.finishDate
+                          ),
+                          helperText: touched.finishDate && errors.finishDate,
+                        },
+                      }}
                     />
                   </div>
                   <div className={styles.inputContainer}>
@@ -82,6 +98,15 @@ const EventsForm = (props) => {
                       disablePast
                       maxDateTime={values.finishDate}
                       onChange={(value) => handleChangeReminderDate(value)}
+                      slotProps={{
+                        textField: {
+                          error: Boolean(
+                            errors.reminderDate && touched.reminderDate
+                          ),
+                          helperText:
+                            touched.reminderDate && errors.reminderDate,
+                        },
+                      }}
                     />
                   </div>
                 </div>

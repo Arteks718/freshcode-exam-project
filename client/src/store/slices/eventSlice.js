@@ -3,6 +3,12 @@ import { isAfter } from 'date-fns';
 
 const EVENT_SLICE_NAME = 'event';
 
+const loadEvents = () =>
+  JSON.parse(localStorage.getItem(EVENT_SLICE_NAME)) ?? [];
+const saveEvents = (events) => {
+  localStorage.setItem(EVENT_SLICE_NAME, JSON.stringify(events));
+};
+
 const initialState = {
   isFetching: true,
   events: JSON.parse(localStorage.getItem(EVENT_SLICE_NAME)) ?? [],
@@ -12,29 +18,35 @@ const initialState = {
 };
 
 const reducers = {
+  getEvents: (state) => {
+    state.events = loadEvents();
+  },
   addEvent: (state, { payload }) => {
-    state.events.push({ ...payload });
-    localStorage.setItem(EVENT_SLICE_NAME, JSON.stringify(state.events));
+    state.events = [...state.events, { ...payload }];
+    saveEvents(state.events);
   },
   deleteEvent: (state, { payload }) => {
     state.events = state.events.filter((event) => event.id !== payload);
-    localStorage.setItem(EVENT_SLICE_NAME, JSON.stringify(state.events));
-    if(state.finishedCount > 0) state.finishedCount--
-    if(state.reminderCount > 0) state.reminderCount--
-    // state.finishedCount--
-    // state.reminderCount--
+    saveEvents(state.events);
+
+    state.finishedCount = state.events.filter((event) =>
+      isAfter(Date.now() + 1, event.finishDate)
+    ).length;
+    state.reminderCount = state.events.filter((event) => {
+      const isOver = isAfter(Date.now() + 1, event.finishDate);
+      const isRemind = isAfter(Date.now() + 1, event.reminderDate);
+      return isRemind && !isOver;
+    }).length;
   },
   checkTime: (state, { payload }) => {
-    const currentTime = payload;
-    state.finishedCount = 0;
-    state.reminderCount = 0;
-    state.events.forEach((event) => {
-      const isOver = isAfter(currentTime + 1, event.finishDate),
-        isRemind = isAfter(currentTime + 1, event.reminderDate);
-
-      if(isOver) state.finishedCount++;
-      if(isRemind && !isOver) state.reminderCount++;
-    });
+    state.finishedCount = state.events.filter((event) =>
+      isAfter(new Date(), new Date(event.finishDate))
+    ).length;
+    state.reminderCount = state.events.filter((event) => {
+      const isOver = isAfter(new Date(), new Date(event.finishDate));
+      const isRemind = isAfter(new Date(), new Date(event.reminderDate));
+      return isRemind && !isOver;
+    }).length;
   },
 };
 

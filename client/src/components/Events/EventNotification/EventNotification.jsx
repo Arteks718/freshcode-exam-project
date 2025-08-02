@@ -1,42 +1,38 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { MdOutlineAccessTime } from 'react-icons/md';
 import styles from './EventNotification.module.sass';
 import useCurrentDate from '../../../hooks/useCurrentDate';
-import { Link } from 'react-router-dom';
-import CONSTANTS from '../../../constants';
 
 const EventNotification = (props) => {
-  const { style, checkTime, role, events } = props;
+  const { style, checkTime, events } = props;
   const { finishedCount, reminderCount } = props.counts;
   const currentDate = useCurrentDate();
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    checkTime(currentDate)
-  }, [])
+    checkTime(currentDate);
+  }, []);
 
   useEffect(() => {
-    if (role === CONSTANTS.CUSTOMER) {
-      const nextEventTime = events.reduce((nextTime, event) => {
-        const reminderTime = new Date(event.reminderDate);
-        const finishTime = new Date(event.finishDate);
+    const futureTimes = events
+      .flatMap((event) => [
+        new Date(event.reminderDate),
+        new Date(event.finishDate),
+      ])
+      .filter((date) => date > new Date());
 
-        if (reminderTime > currentDate && (nextTime === null || reminderTime < nextTime)) {
-          return reminderTime;
-        }
-        if (finishTime > currentDate && (nextTime === null || finishTime < nextTime)) {
-          return finishTime;
-        }
-        return nextTime;
-      }, null);
+    if (futureTimes.length > 0) {
+      const nextEventTime = futureTimes.reduce(
+        (min, date) => (date < min ? date : min),
+        futureTimes[0]
+      );
+      const delay = nextEventTime - new Date();
 
-      if (nextEventTime !== null) {
-        const delay = nextEventTime - currentDate;
-        timeoutRef.current = setTimeout(() => {
-          checkTime(currentDate);
-        }, delay);
-      }
+      timeoutRef.current = setTimeout(() => {
+        checkTime(new Date());
+      }, delay);
     }
 
     return () => {
@@ -44,11 +40,7 @@ const EventNotification = (props) => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [currentDate, checkTime, role, events]);
-
-  if (role !== CONSTANTS.CUSTOMER) {
-    return null;
-  }
+  }, [checkTime, events]);
 
   return (
     <>

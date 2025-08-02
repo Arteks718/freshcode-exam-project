@@ -4,30 +4,24 @@ import valid from 'card-validator';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   LoginSchem: yup.object().shape({
-    email: yup
-      .string()
-      .email('check email')
-      .required('Required'),
+    email: yup.string().email('check email').required('Required'),
     password: yup
       .string()
       .test(
         'test-password',
         'min 6 symbols',
-        value => value && value.trim().length >= 6
+        (value) => value && value.trim().length >= 6
       )
       .required('Required'),
   }),
   RegistrationSchem: yup.object().shape({
-    email: yup
-      .string()
-      .email('check email')
-      .required('Email is required'),
+    email: yup.string().email('check email').required('Email is required'),
     password: yup
       .string()
       .test(
         'test-password',
         'Min 6 symbols',
-        value => value && value.trim().length >= 6
+        (value) => value && value.trim().length >= 6
       )
       .required('Password is required'),
     confirmPassword: yup
@@ -39,7 +33,7 @@ export default {
       .test(
         'test-firstName',
         'Required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('First Name is required'),
     lastName: yup
@@ -47,7 +41,7 @@ export default {
       .test(
         'test-lastName',
         'Required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('Last Name is required'),
     displayName: yup
@@ -55,7 +49,7 @@ export default {
       .test(
         'test-displayName',
         'Required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('Display Name is required'),
     role: yup
@@ -78,7 +72,7 @@ export default {
       .test(
         'test-title',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('title of contest required'),
     industry: yup.string().required('industry required'),
@@ -87,7 +81,7 @@ export default {
       .test(
         'test-focusOfWork',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('focus of work required'),
     targetCustomer: yup
@@ -95,7 +89,7 @@ export default {
       .test(
         'test-targetCustomer',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('target customers required'),
     styleName: yup.string().min(1),
@@ -119,7 +113,7 @@ export default {
       .test(
         'test-offerData',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('suggestion is required'),
   }),
@@ -129,57 +123,48 @@ export default {
       .test(
         'test-cardNumber',
         'Credit Card number is invalid',
-        value => valid.number(value).isValid
+        (value) => valid.number(value).isValid
       )
       .required('required'),
-    sum: yup
-      .number()
-      .min(5, 'min sum is 5$')
-      .required('required'),
+    sum: yup.number().min(5, 'min sum is 5$').required('required'),
     name: yup
       .string()
       .min(1, 'required atleast one symbol')
       .required('required'),
     cvc: yup
       .string()
-      .test('test-cvc', 'cvc is invalid', value => valid.cvv(value).isValid)
+      .test('test-cvc', 'cvc is invalid', (value) => valid.cvv(value).isValid)
       .required('required'),
     expiry: yup
       .string()
       .test(
         'test-expiry',
         'expiry is invalid',
-        value => valid.expirationDate(value).isValid
+        (value) => valid.expirationDate(value).isValid
       )
       .required('required'),
   }),
   CashoutSchema: yup.object().shape({
-    sum: yup
-      .number()
-      .min(5, 'min sum is 5$')
-      .required('required'),
+    sum: yup.number().min(5, 'min sum is 5$').required('required'),
     number: yup
       .string()
       .test(
         'test-cardNumber',
         'Credit Card number is invalid',
-        value => valid.number(value).isValid
+        (value) => valid.number(value).isValid
       )
       .required('required'),
-    name: yup
-      .string()
-      .min(1)
-      .required('required'),
+    name: yup.string().min(1).required('required'),
     cvc: yup
       .string()
-      .test('test-cvc', 'cvc is invalid', value => valid.cvv(value).isValid)
+      .test('test-cvc', 'cvc is invalid', (value) => valid.cvv(value).isValid)
       .required('required'),
     expiry: yup
       .string()
       .test(
         'test-expiry',
         'expiry is invalid',
-        value => valid.expirationDate(value).isValid
+        (value) => valid.expirationDate(value).isValid
       )
       .required('required'),
   }),
@@ -189,7 +174,7 @@ export default {
       .test(
         'test-firstName',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('required'),
     lastName: yup
@@ -197,7 +182,7 @@ export default {
       .test(
         'test-lastName',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('required'),
     displayName: yup
@@ -205,7 +190,7 @@ export default {
       .test(
         'test-displayName',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('required'),
     file: yup.mixed(),
@@ -216,7 +201,7 @@ export default {
       .test(
         'test-message',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('required'),
   }),
@@ -226,7 +211,7 @@ export default {
       .test(
         'test-catalogName',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('required'),
   }),
@@ -236,16 +221,21 @@ export default {
       .test(
         'test-title',
         'required',
-        value => value && value.trim().length >= 1
+        (value) => value && value.trim().length >= 1
       )
       .required('title of contest required'),
     finishDate: yup
       .date()
-      .typeError("Invalid date")
+      .nullable()
+      .min(new Date(), 'Finish Date must be in the future')
+      .typeError('Invalid date')
       .required('Finish Date is required'),
     reminderDate: yup
       .date()
-      .typeError("Invalid date")
+      .nullable()
+      .typeError('Invalid date')
       .required('Reminder Date is required')
+      .max(yup.ref('finishDate'), 'End date cannot be earlier than start date')
+      .min(new Date(), 'Reminder Date must be in the future')
   }),
 };

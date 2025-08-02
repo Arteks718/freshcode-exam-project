@@ -10,6 +10,24 @@ import {
 
 const CHAT_SLICE_NAME = 'chat';
 
+const sendNewMessage = (state, payload) => {
+  const { message, preview } = payload;
+  const { messagesPreview } = state;
+  messagesPreview.forEach((preview) => {
+    if (isEqual(preview.participants, message.participants)) {
+      preview.text = message.body;
+      preview.sender = message.sender;
+      preview.createdAt = message.createdAt;
+    }
+  });
+  const idxForReplace = messagesPreview.findIndex(
+    (item) => item.id === preview.id
+  );
+  messagesPreview[idxForReplace] = preview;
+  state.messagesPreview = messagesPreview;
+  state.messages = [...state.messages, message];
+};
+
 const initialState = {
   isFetching: true,
   addChatId: null,
@@ -84,28 +102,15 @@ export const sendMessage = decorateAsyncThunk({
 const sendMessageExtraReducers = createExtraReducers({
   thunk: sendMessage,
   fulfilledReducer: (state, { payload }) => {
-    const { messagesPreview } = state;
-    let isNew = true;
-    messagesPreview.forEach((preview) => {
-      if (isEqual(preview.participants, payload.message.participants)) {
-        preview.text = payload.message.body;
-        preview.sender = payload.message.sender;
-        preview.createdAt = payload.message.createdAt;
-        isNew = false;
-      }
-    });
-    if (isNew) {
-      messagesPreview.push(payload.preview);
-    }
+    const { preview } = payload;
+    sendNewMessage(state, payload);
     const chatData = {
-      id: payload.preview.id,
-      participants: payload.preview.participants,
-      favoriteList: payload.preview.favoriteList,
-      blackList: payload.preview.blackList,
+      id: preview.id,
+      participants: preview.participants,
+      favoriteList: preview.favoriteList,
+      blackList: preview.blackList,
     };
     state.chatData = { ...state.chatData, ...chatData };
-    state.messagesPreview = messagesPreview;
-    state.messages = [...state.messages, payload.message];
   },
   rejectedReducer: (state, { payload }) => {
     state.error = payload;
@@ -319,27 +324,7 @@ const reducers = {
   },
 
   addMessage: (state, { payload }) => {
-    const { message, preview } = payload;
-    const { messagesPreview } = state;
-    console.log(payload);
-    let isNew = true;
-    messagesPreview.forEach((preview) => {
-      if (isEqual(preview.participants, message.participants)) {
-        preview.text = message.body;
-        preview.sender = message.sender;
-        preview.createdAt = message.createdAt;
-        isNew = false;
-      }
-    });
-    if (isNew) {
-      const inxForReplace = messagesPreview.findIndex(
-        (item) => item.id === preview.id
-      );
-      messagesPreview[inxForReplace] = preview;
-      // messagesPreview.push(preview);
-    }
-    state.messagesPreview = messagesPreview;
-    state.messages = [...state.messages, payload.message];
+    sendNewMessage(state, payload);
   },
 
   backToDialogList: (state) => {

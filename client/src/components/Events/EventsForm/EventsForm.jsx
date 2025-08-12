@@ -6,7 +6,7 @@ import styles from './EventsForm.module.sass';
 import validationSchems from '../../../utils/validators/validationSchems';
 
 const EventsForm = (props) => {
-  const { addEvent } = props;
+  const { addEvent, userId } = props;
   const validationSchema = validationSchems.EventsSchema;
   const dateTimePickerTheme = {
     bgcolor: '#fff',
@@ -35,7 +35,7 @@ const EventsForm = (props) => {
             finishDate: values.finishDate?.getTime(),
             reminderDate: values.reminderDate?.getTime(),
           };
-          addEvent(newEvent);
+          addEvent({ event: newEvent, userId });
           resetForm();
         }}
       >

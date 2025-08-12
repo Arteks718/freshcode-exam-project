@@ -8,13 +8,12 @@ import styles from './Header.module.sass';
 import CONSTANTS from '../../constants';
 import { clearUserStore, getUser } from '../../store/slices/userSlice';
 import { checkTime } from '../../store/slices/eventSlice';
-import { clearOffersList } from '../../store/slices/offersSlice';
 import EventNotification from '../Events/EventNotification/EventNotification';
 import { changeChatShow } from '../../store/slices/chatSlice';
+import resetUser from '../../utils/resetUser';
 
 const Header = (props) => {
   const {
-    clearUserStore,
     data,
     getUser,
     checkTime,
@@ -33,10 +32,7 @@ const Header = (props) => {
   }, [data, getUser, history]);
 
   const logOut = () => {
-    localStorage.clear();
-    clearUserStore();
-    clearOffersList();
-    history.replace('/login');
+    resetUser(history)
   };
 
   const startContests = () => {

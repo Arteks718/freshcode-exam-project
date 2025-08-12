@@ -5,7 +5,7 @@ import EventItem from './EventItem/EventItem';
 import { sortEvents } from '../../../utils/formatUtils';
 
 const EventsList = (props) => {
-  const { events, deleteEvent } = props;
+  const { events, deleteEvent, userId } = props;
   const sortedEvents = useMemo(() => { return sortEvents(events) }, [events]);
 
   return (
@@ -20,7 +20,7 @@ const EventsList = (props) => {
       <div className={styles.eventsList}>
         {events.length !== 0 ? (
           sortedEvents.map((event) => (
-            <EventItem event={event} deleteEvent={deleteEvent} key={event.id} />
+            <EventItem event={event} deleteEvent={deleteEvent} key={event.id} userId={userId} />
           ))
         ) : (
           <p>No events</p>

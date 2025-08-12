@@ -11,7 +11,7 @@ import {
 } from '../../../../utils/dateUtils.js';
 
 const EventItem = (props) => {
-  const { deleteEvent } = props;
+  const { deleteEvent, userId } = props;
   const { name, finishDate, reminderDate, startDate, id } = props.event;
 
   const [isHoverItem, setIsHoverItem] = useState(false);
@@ -87,7 +87,7 @@ const EventItem = (props) => {
       >
         <p>Are you sure?</p>
         <div className={styles.buttons}>
-          <button className={styles.accept} onClick={() => deleteEvent(id)}>
+          <button className={styles.accept} onClick={() => deleteEvent({ eventId: id, userId })}>
             <FaCheck size="14px" />
           </button>
           <button

@@ -13,10 +13,10 @@ const Payment = (props) => {
     history,
     pay,
     contestCreationStore: { contests },
-    payment: { error}
+    payment: { error },
   } = props;
 
-  const handlePay = (values) => {
+  const handlePay = async (values) => {
     const contestArray = [];
     Object.keys(contests).forEach((key) =>
       contestArray.push({ ...contests[key] })
@@ -32,13 +32,20 @@ const Payment = (props) => {
     data.append('cvc', cvc);
     data.append('contests', JSON.stringify(contestArray));
     data.append('price', '100');
-    pay({
-      data: {
-        formData: data,
-      },
-      history: props.history,
-    });
-    toast.success('Payment successful!');
+    try {
+      await pay({
+        data: {
+          formData: data,
+        },
+      }).unwrap();
+      history.replace('dashboard');
+      toast.success('Payment successful!');
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast.error('Payment failed. Please try again.');
+      clearPaymentStore();
+      history.replace('startContest');
+    }
   };
 
   const goBack = () => {
@@ -93,7 +100,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  pay: ({ data, history }) => dispatch(pay({ data, history })),
+  pay: ({ data }) => dispatch(pay({ data })),
   clearPaymentStore: () => dispatch(clearPaymentStore()),
 });
 
